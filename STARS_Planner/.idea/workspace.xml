@@ -31,8 +31,13 @@
       <file leaf-file-name="StudentManager.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/StudentManager.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="277">
               <caret line="178" column="5" lean-forward="true" selection-start-line="178" selection-start-column="5" selection-end-line="178" selection-end-column="5" />
+=======
+            <state relative-caret-position="192">
+              <caret line="173" column="5" lean-forward="true" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
+>>>>>>> ce2f85732c4caa741f7f6d90f9fef6db37fe5435
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#4302#4303#0" expanded="true" />
@@ -428,8 +433,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/StudentManager.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="277">
           <caret line="178" column="5" lean-forward="true" selection-start-line="178" selection-start-column="5" selection-end-line="178" selection-end-column="5" />
+=======
+        <state relative-caret-position="192">
+          <caret line="173" column="5" lean-forward="true" selection-start-line="173" selection-start-column="5" selection-end-line="173" selection-end-column="5" />
+>>>>>>> ce2f85732c4caa741f7f6d90f9fef6db37fe5435
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#4302#4303#0" expanded="true" />
