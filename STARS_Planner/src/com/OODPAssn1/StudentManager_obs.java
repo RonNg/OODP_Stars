@@ -19,20 +19,20 @@ import java.util.List;
  *
  * @author Tweakisher
  */
-public class StudentManager
+public class StudentManager_obs
 {
     public final static String STUDENT_PATH = "database/student.dat";
-    private List<Student> studentList = null;
+    private List<Student_obs> studentList = null;
 
     private boolean isInitAlready = false;
 
-    public StudentManager() { init(); }
+    public StudentManager_obs() { init(); }
 
     public int init ()
     {
         if(isInitAlready)
         {
-            System.out.println("StudentManager is being reinitialised again!");
+            System.out.println("StudentManager_obs is being reinitialised again!");
             return -1;
         }
 
@@ -45,9 +45,9 @@ public class StudentManager
                 false if the named file already exists
             */
             if(file.createNewFile())
-                System.out.println("Student Database was created");
+                System.out.println("Student_obs Database was created");
             else
-                System.out.println("Student Database already exists.");
+                System.out.println("Student_obs Database already exists.");
 
             //Initialise our studentList here
             studentList = (ArrayList)this.readSerializedObject();
@@ -68,10 +68,10 @@ public class StudentManager
      */
     public int retrieve(String name)
     {
-        Student temp = null;
+        Student_obs temp = null;
         for(int i = 0; i < studentList.size(); ++ i)
         {
-            temp = (Student)studentList.get(i);
+            temp = (Student_obs)studentList.get(i);
 
             if(name == temp.getName())
             {
@@ -91,17 +91,17 @@ public class StudentManager
             return 0;
         }
 
-        Student temp = null;
+        Student_obs temp = null;
         for(int i = 0; i < studentList.size(); ++ i)
         {
-            temp = (Student)studentList.get(i);
+            temp = (Student_obs)studentList.get(i);
             System.out.println(temp.getName() + "\n");
         }
 
         return 1;
     }
 
-    public void addStudent(final Student student)
+    public void addStudent(final Student_obs student)
     {
         try
         {
