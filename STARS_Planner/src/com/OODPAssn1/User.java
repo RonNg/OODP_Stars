@@ -10,11 +10,22 @@ public abstract class User implements Serializable
     //SerialVersionUID of this Class used to deconflict serialisation
     static final long serialVersionUID = 1L;
 
+    public enum GENDER { MALE, FEMALE }
     private enum USER_TYPE { STUDENT, ADMIN }
-    private String username;
-    private String password;
-    private Boolean isPasswordEncrypted = false;
-    private USER_TYPE type; // S = Student_temp A = Admin
+
+    protected String username;
+    protected String password;
+    protected Boolean isPasswordEncrypted = false;
+
+    //Basic Info
+    protected String name;
+    protected String matricNo;
+    protected String email;
+    protected int contact;
+    protected GENDER gender;
+    protected String nationality;
+
+    protected USER_TYPE type; // S = Student_temp A = Admin
 
 
     /*=====================================
@@ -22,6 +33,7 @@ public abstract class User implements Serializable
                     MUTATORS
 
     ======================================*/
+
     /**
      * Sets username of the User
      * @param username String variable to set username of User

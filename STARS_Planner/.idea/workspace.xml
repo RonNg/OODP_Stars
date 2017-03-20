@@ -2,18 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="68b97c87-49bc-4e65-b6fb-d190da5e37d9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/Tweakisher.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/OODPAssn1/AESEncrypter.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Main.class" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/OODPAssn1/FileManager.java" afterPath="$PROJECT_DIR$/src/com/OODPAssn1/DataManager.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/OODPAssn1/Stars.java" afterPath="$PROJECT_DIR$/src/com/OODPAssn1/STARS.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/OODPAssn1/Student.java" afterPath="$PROJECT_DIR$/src/com/OODPAssn1/Student_temp.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/OODPAssn1/StudentManager_obs.java" afterPath="$PROJECT_DIR$/src/com/OODPAssn1/StudentManager.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/OODPAssn1/Student_obs.java" afterPath="$PROJECT_DIR$/src/com/OODPAssn1/Student.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/student.dat" afterPath="$PROJECT_DIR$/database/student.dat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Student.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Student.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/OODPAssn1/Student.java" afterPath="$PROJECT_DIR$/src/com/OODPAssn1/Student.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/OODPAssn1/UI.java" afterPath="$PROJECT_DIR$/src/com/OODPAssn1/UI.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/OODPAssn1/User.java" afterPath="$PROJECT_DIR$/src/com/OODPAssn1/User.java" />
     </list>
@@ -33,21 +23,21 @@
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="UI.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="UI.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/UI.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="204">
-                  <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+                <state relative-caret-position="170">
+                  <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="User.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="User.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/User.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="190">
-                  <caret line="15" column="48" lean-forward="true" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
+                <state relative-caret-position="-31">
+                  <caret line="24" column="28" lean-forward="true" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="28" />
                   <folding />
                 </state>
               </provider>
@@ -60,8 +50,8 @@
           <file leaf-file-name="Student.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/Student.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="131">
-                  <caret line="13" column="2" lean-forward="false" selection-start-line="13" selection-start-column="2" selection-end-line="18" selection-end-column="31" />
+                <state relative-caret-position="102">
+                  <caret line="8" column="1" lean-forward="false" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
                   <folding />
                 </state>
               </provider>
@@ -109,11 +99,11 @@
         <option value="$PROJECT_DIR$/src/com/OODPAssn1/StudentManager_obs.java" />
         <option value="$PROJECT_DIR$/src/com/OODPAssn1/Student_temp.java" />
         <option value="$PROJECT_DIR$/src/com/OODPAssn1/AESEncrypter.java" />
-        <option value="$PROJECT_DIR$/src/com/OODPAssn1/UI.java" />
-        <option value="$PROJECT_DIR$/src/com/OODPAssn1/User.java" />
         <option value="$PROJECT_DIR$/src/com/OODPAssn1/DataManager.java" />
         <option value="$PROJECT_DIR$/src/com/OODPAssn1/StudentManager.java" />
+        <option value="$PROJECT_DIR$/src/com/OODPAssn1/User.java" />
         <option value="$PROJECT_DIR$/src/com/OODPAssn1/Student.java" />
+        <option value="$PROJECT_DIR$/src/com/OODPAssn1/UI.java" />
       </list>
     </option>
   </component>
@@ -493,7 +483,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1296" height="816" extended-state="7" />
+    <frame x="-8" y="-8" width="1296" height="816" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -746,24 +736,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/Student.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="13" column="2" lean-forward="false" selection-start-line="13" selection-start-column="2" selection-end-line="18" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/UI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        <state relative-caret-position="102">
+          <caret line="8" column="1" lean-forward="false" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/User.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="15" column="48" lean-forward="true" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
+        <state relative-caret-position="-31">
+          <caret line="24" column="28" lean-forward="true" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/UI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding />
         </state>
       </provider>

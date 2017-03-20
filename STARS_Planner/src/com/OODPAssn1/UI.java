@@ -9,13 +9,6 @@ public class UI
         studentMag.printAll();
 
 
-
-
-
-
-
-        // studentMag.printAll();
-
         //TODO: Method to check if a password is encrypted
 
     }

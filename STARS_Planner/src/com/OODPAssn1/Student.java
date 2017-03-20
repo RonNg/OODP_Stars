@@ -7,17 +7,6 @@ import java.util.List;
 
 public class Student extends User
 {
-    public enum GENDER { MALE, FEMALE }
-
-
-    //Basic Info
-    private String name;
-    private String matricNo;
-    private String email;
-    private int contact;
-    private GENDER gender;
-    private String nationality;
-
     //Courses info
     private List<Integer> courseIndexList; //Stores the courses that this student is taking
 
@@ -28,9 +17,8 @@ public class Student extends User
         this.name = name; this.email = email; this.matricNo = matricNo;
         this.contact = contact; this.gender = gender; this.nationality = nationality;
 
-
-        this.setUsername(username);
-        this.setPassword(password);
+        this.username = username;
+        this.password = password;
     }
 
     //Accessors
@@ -41,10 +29,6 @@ public class Student extends User
     //Mutator
     public void addCourse(int courseIndex)
     {
-        if(courseIndexList == null)
-            courseIndexList = new ArrayList<>();
-
-        courseIndexList.add(courseIndex);
     }
 
 
