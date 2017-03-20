@@ -7,11 +7,16 @@ import java.util.List;
  */
 public class Student extends User {
 
-    private String name;
-    private char gender; // M = Male, F = Female
+
     private int year;
-    private String nationality;
     private List<String> indexNumberList;
+
+    public Student(String idNum, String password, String name, char gender, int year, String nationality){
+
+        super(idNum, password, name, gender, nationality,'s');
+        this.year = year;
+
+    }
 
     //TODO: Implement SET GET METHOD
 
