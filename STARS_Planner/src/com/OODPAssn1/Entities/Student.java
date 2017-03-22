@@ -1,12 +1,18 @@
-package com.OODPAssn1;
+package com.OODPAssn1.Entities;
 
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Student extends User
 {
+    public enum GENDER { MALE, FEMALE }
+
+    private String matricNo;
+    protected String name;
+    protected int contact;
+    protected GENDER gender;
+    protected String nationality;
+
     //Courses info
     private List<Integer> courseIndexList; //Stores the courses that this student is taking
 
@@ -19,20 +25,17 @@ public class Student extends User
 
         this.username = username;
         this.password = password;
+
+        type = USER_TYPE.STUDENT;
     }
 
     //Accessors
     public String getName(){return this.name;}
     public String getMatricNo(){return this.matricNo;}
-    public String getEmail(){return this.email;}
+
 
     //Mutator
     public void addCourse(int courseIndex)
     {
     }
-
-
-
-
-
 }

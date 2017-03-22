@@ -1,4 +1,4 @@
-package com.OODPAssn1;
+package com.OODPAssn1.Entities;
 
 import java.io.Serializable;
 
@@ -10,22 +10,17 @@ public abstract class User implements Serializable
     //SerialVersionUID of this Class used to deconflict serialisation
     static final long serialVersionUID = 1L;
 
-    public enum GENDER { MALE, FEMALE }
-    private enum USER_TYPE { STUDENT, ADMIN }
+
+    public enum USER_TYPE { STUDENT, ADMIN }
 
     protected String username;
     protected String password;
     protected Boolean isPasswordEncrypted = false;
 
     //Basic Info
-    protected String name;
-    protected String matricNo;
-    protected String email;
-    protected int contact;
-    protected GENDER gender;
-    protected String nationality;
 
-    protected USER_TYPE type; // S = Student_temp A = Admin
+    protected String email;
+    protected USER_TYPE type; // S = Student A = Admin
 
 
     /*=====================================
@@ -33,24 +28,23 @@ public abstract class User implements Serializable
                     MUTATORS
 
     ======================================*/
-
     /**
      * Sets username of the User
      * @param username String variable to set username of User
      */
-    protected void setUsername( String username ) { this.username = username; }
+    public void setUsername( String username ) { this.username = username; }
 
     /**
      * Sets password of User
      * @param password String variable to set password of User
      */
-    protected void setPassword( String password) { this.password = password; }
+    public void setPassword( String password) { this.password = password; }
 
     /**
      * Toggles the boolean to keep track of whether the password is encrpyted
      *
      */
-    protected void toggleEncrypted () { this.isPasswordEncrypted = !this.isPasswordEncrypted; }
+    public void toggleEncrypted () { this.isPasswordEncrypted = !this.isPasswordEncrypted; }
 
 
     /*=====================================
@@ -69,6 +63,8 @@ public abstract class User implements Serializable
      * @return String password
      */
     public String getPassword() { return password; }
+
+    public String getEmail(){return this.email;}
 
     /**
      * Returns type of the User

@@ -1,4 +1,4 @@
-package com.OODPAssn1;
+package com.OODPAssn1.Managers;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -21,7 +21,6 @@ public class DataManager
 
         //IV must be 16 bytes
         this.IV = "NotPokemonIVFour";
-
         //encryptionKey must be 16 bytes
         this.encryptionKey = "GameOverGameOver";
     }
@@ -79,10 +78,11 @@ public class DataManager
     }
 
 
+
     public void setIV (String IV) {this.IV = IV;}
     public void setEncryptionKey(String encryptionKey) {this.encryptionKey = encryptionKey;}
 
-    public String getIV () {return IV;}
-    public String getEncryptionKey() {return encryptionKey;}
+    protected String getIV () {return IV;}
+    protected String getEncryptionKey() {return encryptionKey;}
 
 }

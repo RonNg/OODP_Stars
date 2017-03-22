@@ -1,4 +1,4 @@
-package com.OODPAssn1;
+package com.OODPAssn1.Entities;
 
 import java.util.Date;
 import java.util.List;

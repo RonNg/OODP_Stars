@@ -1,4 +1,4 @@
-package com.OODPAssn1;
+package com.OODPAssn1.Entities;
 
 /**
  * Created by jonah on 15/3/2017.
