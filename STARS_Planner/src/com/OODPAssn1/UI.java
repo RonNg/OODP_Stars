@@ -1,6 +1,5 @@
 package com.OODPAssn1;
 
-import com.OODPAssn1.Entities.Student;
 import com.OODPAssn1.Managers.UserManager;
 
 public class UI
