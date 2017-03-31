@@ -18,7 +18,7 @@ public class UserManager extends DataManager
 {
     private static UserManager instance;
 
-    public final static String USER_PATH = "database/user.dat";
+    public final static String USER_PATH = "user.dat";
     private List<User> userList = null;
 
     private boolean isInitAlready = false;

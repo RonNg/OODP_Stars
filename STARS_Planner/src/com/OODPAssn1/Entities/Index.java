@@ -18,6 +18,6 @@ public class Index {
     private int maxNumberOfStudent;
     private List<String> studentsRegistered;
 
-    //TODO: Implement SET GET METHOD
+    //public Index(int indexNum, String )
 
 }

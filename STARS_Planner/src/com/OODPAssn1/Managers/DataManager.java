@@ -1,5 +1,7 @@
 package com.OODPAssn1.Managers;
 
+import sun.rmi.runtime.Log;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,8 @@ public class DataManager
 {
     private String IV;
     private String encryptionKey;
+
+    private static final String cFilePath = System.getProperty("user.dir") + "\\database\\"; // To specify location to store database files
 
     public DataManager ()
     {
@@ -25,56 +29,62 @@ public class DataManager
         this.encryptionKey = "GameOverGameOver";
     }
 
-    public List read(String filepath)
-    {
-        //Checks to see if the file is empty.
-        //if it is, return a null studentList.
-        File file = new File(filepath);
-        if (file.length() == 0)
-            return null;
+    protected List read(String filepath) {
+
+        File file = new File(cFilePath + filepath);
+        if((!file.exists())){ // Check if file exist
+            return null; // return null if file does not exist
+        }
 
         List pDetails = null;
         FileInputStream fis;
         ObjectInputStream in ;
-        try
-        {
+        try {
             fis = new FileInputStream(filepath);
             in = new ObjectInputStream(fis);
             pDetails = (ArrayList) in.readObject();
             in.close();
+            return pDetails; // return list if successful read
         }
-        catch (IOException ex)
-        {
+        catch (IOException ex) {
             ex.printStackTrace();
         }
-        catch (ClassNotFoundException ex)
-        {
+        catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         }
 
-        return pDetails;
+        return null; // return null by default if error occurred
     }
 
-    public void write(List list, String filepath)
-    {
-        if (list != null)
-        {
-            FileOutputStream fos = null;
-            ObjectOutputStream out = null;
-            try
-            {
-                fos = new FileOutputStream(filepath);
-                out = new ObjectOutputStream(fos);
+    protected boolean write(List list, String filepath) {
 
-                out.writeObject(list); //Write entire studentList into file
-
-                out.close();
-
-            } catch (IOException ex)
-            {
-                ex.printStackTrace();
+        File directory = new File(cFilePath);
+        File file = new File(cFilePath + filepath);
+        if(!directory.exists()){ // Checks if directory already exist
+            if(!directory.mkdir()) // Creates directory if not available
+                return false; // If fails return false
+        }
+        if(!file.exists()){ // Checks if file already exist
+            try {
+                file.createNewFile(); // Creates file if not available
+            } catch (IOException e) {
+                return false; // If fails return false
             }
         }
+        if (list != null){ // Checks if list is null
+            FileOutputStream fos = null;
+            ObjectOutputStream out = null;
+            try {
+                fos = new FileOutputStream(filepath);
+                out = new ObjectOutputStream(fos);
+                out.writeObject(list); // Write entire list into file
+                out.close();
+                return true; // return true if write operation succeed
+            } catch (IOException ex) {
+                return false; // return false if error occurred
+            }
+        }
+        return false; // return false by default
     }
 
 
