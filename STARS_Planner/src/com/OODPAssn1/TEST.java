@@ -1,6 +1,7 @@
 package com.OODPAssn1;
 
 import com.OODPAssn1.Entities.Course;
+import com.OODPAssn1.Entities.Index;
 import com.OODPAssn1.Managers.CourseManager;
 
 /**
@@ -17,5 +18,7 @@ public class TEST {
 
         CourseManager cM = CourseManager.getInstance();
         cM.saveAll();
+        Index in = new Index(20001,'F',12,00,14,00,"LT1A","LEC",50);
+        String temp = in.getStartTime();
     }
 }

@@ -1,23 +1,45 @@
 package com.OODPAssn1.Entities;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by jonah on 15/3/2017.
- */
 public class Index {
 
     private int indexNum;
-    private String day;
-    private Date startTime;
-    private Date endTime; // TBD: STORE AS DATE OR STRING
-    private String location;
-    private String type;
-    private int numberOfStudent;
     private int maxNumberOfStudent;
-    private List<String> studentsRegistered;
+    private int numberOfStudent;
+    private List<String> studentsRegisteredList; // Stores matrix number
+    private List<TimeSlot> tutLabTimeSlotList; // Stores class times
 
-    //public Index(int indexNum, String )
+    public Index(int indexNum, int maxNumberOfStudent){
+        this.indexNum = indexNum;
+        this.maxNumberOfStudent = maxNumberOfStudent;
+        numberOfStudent = 0;
+        studentsRegisteredList = new ArrayList<String>();
+        tutLabTimeSlotList = new ArrayList<TimeSlot>();
+    }
+
+    //-------Index number methods--------
+
+    public void setIndexNumber(int indexNum){
+        this.indexNum = indexNum;
+    }
+
+    public int getIndexNum(){
+        return indexNum;
+    }
+
+    //-------Max number of students methods--------
+
+    public void setMaxNumberOfStudent(int maxNumberOfStudent){
+        this.maxNumberOfStudent = maxNumberOfStudent;
+    }
+
+    public int getMaxNumberOfStudent(){
+        return maxNumberOfStudent;
+    }
+
+
+
 
 }
