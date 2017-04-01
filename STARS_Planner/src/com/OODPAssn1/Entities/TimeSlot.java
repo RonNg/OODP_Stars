@@ -12,7 +12,11 @@ public class TimeSlot {
     private String type;
 
     public TimeSlot(char day, int startH, int startM, int endH, int endM, String location, String type){
-
+        this.day = day;
+        startTime = LocalTime.of(startH,startM);
+        endTime = LocalTime.of(endH,endM);
+        this.location = location;
+        this.type = type;
     }
 
     //-------Day methods--------

@@ -74,9 +74,9 @@ public class Course {
         return lecTimeSlotList.add(new TimeSlot(day,startH,startM,endH,endM,location,"LECT"));
     }
 
-    /*public boolean deleteLectTimeSlot(){
-
-    }*/
+    public boolean deleteLectTimeSlot(TimeSlot dTimeSlot){
+        return lecTimeSlotList.remove(dTimeSlot);
+    }
 
     public List<TimeSlot> getlecTimeSlotList(){
         return lecTimeSlotList;

@@ -13,7 +13,6 @@ public class Student extends User
     protected GENDER gender;
     protected String nationality;
 
-    //Courses info
     private List<Integer> courseIndexList; //Stores the courses that this student is taking
 
     public Student(String name, String email, String matricNo,
