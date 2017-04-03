@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="68b97c87-49bc-4e65-b6fb-d190da5e37d9" name="Default" comment="" />
+    <list default="true" id="68b97c87-49bc-4e65-b6fb-d190da5e37d9" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/STARS_Planner.iml" afterPath="$PROJECT_DIR$/STARS_Planner.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/OODPAssn1/Notification.java" afterPath="$PROJECT_DIR$/src/com/OODPAssn1/Notification.java" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,8 +23,8 @@
       <file leaf-file-name="UI.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/UI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="44" lean-forward="false" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
+            <state relative-caret-position="595">
+              <caret line="35" column="5" lean-forward="true" selection-start-line="35" selection-start-column="5" selection-end-line="36" selection-end-column="59" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -28,11 +32,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CourseManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/Managers/CourseManager.java">
+      <file leaf-file-name="Notification.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/Notification.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1105">
-              <caret line="69" column="0" lean-forward="false" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
+            <state relative-caret-position="547">
+              <caret line="43" column="47" lean-forward="true" selection-start-line="43" selection-start-column="47" selection-end-line="43" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -114,6 +118,7 @@
         <option value="$PROJECT_DIR$/src/com/OODPAssn1/STARS.java" />
         <option value="$PROJECT_DIR$/src/com/OODPAssn1/Managers/CourseManager.java" />
         <option value="$PROJECT_DIR$/src/com/OODPAssn1/UI.java" />
+        <option value="$PROJECT_DIR$/src/com/OODPAssn1/Notification.java" />
       </list>
     </option>
   </component>
@@ -158,7 +163,6 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="PackagesPane">
         <subPane>
           <PATH>
@@ -205,6 +209,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -284,11 +289,11 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="project.structure.last.edited" value="Problems" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/JAR Dependency files/javax.mail.jar!/" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/Users/jonah/Documents/OODP_Stars/STARS_Planner/src/com/OODPAssn1/Entities/TimeSlot.java" />
   </component>
   <component name="RunManager" selected="Application.UI">
@@ -538,11 +543,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="816" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16837482" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -565,7 +571,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16837482" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="92" y="92" width="757" height="616" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17423134" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -576,7 +581,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="23" />
+      <option name="time" value="24" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -585,16 +590,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/UI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/Entities/Course.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -614,22 +609,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="578">
           <caret line="137" column="11" lean-forward="false" selection-start-line="137" selection-start-column="11" selection-end-line="137" selection-end-column="11" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="docComment;class#UserManager#0" expanded="false" />
-            <element signature="method#UserManager#0;class#UserManager#0" expanded="false" />
-            <element signature="method#getInstance#0;class#UserManager#0" expanded="false" />
-            <element signature="method#init#0;class#UserManager#0" expanded="false" />
-            <element signature="docComment;method#print#0;class#UserManager#0" expanded="false" />
-            <element signature="method#print#0;class#UserManager#0" expanded="false" />
-            <element signature="method#saveData#0;class#UserManager#0" expanded="false" />
-            <element signature="method#encryptPassword#0;class#UserManager#0" expanded="false" />
-            <element signature="method#decryptPassword#0;class#UserManager#0" expanded="false" />
-            <element signature="docComment;method#findStudent#0;class#UserManager#0" expanded="false" />
-            <element signature="method#findStudent#0;class#UserManager#0" expanded="false" />
-            <element signature="method#addStudent#0;class#UserManager#0" expanded="false" />
-            <element signature="method#addAdmin#0;class#UserManager#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -647,22 +626,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2329">
           <caret line="137" column="11" lean-forward="false" selection-start-line="137" selection-start-column="11" selection-end-line="137" selection-end-column="11" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="docComment;class#UserManager#0" expanded="false" />
-            <element signature="method#UserManager#0;class#UserManager#0" expanded="false" />
-            <element signature="method#getInstance#0;class#UserManager#0" expanded="false" />
-            <element signature="method#init#0;class#UserManager#0" expanded="false" />
-            <element signature="docComment;method#print#0;class#UserManager#0" expanded="false" />
-            <element signature="method#print#0;class#UserManager#0" expanded="false" />
-            <element signature="method#saveData#0;class#UserManager#0" expanded="false" />
-            <element signature="method#encryptPassword#0;class#UserManager#0" expanded="false" />
-            <element signature="method#decryptPassword#0;class#UserManager#0" expanded="false" />
-            <element signature="docComment;method#findStudent#0;class#UserManager#0" expanded="false" />
-            <element signature="method#findStudent#0;class#UserManager#0" expanded="false" />
-            <element signature="method#addStudent#0;class#UserManager#0" expanded="false" />
-            <element signature="method#addAdmin#0;class#UserManager#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -694,22 +657,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="1" lean-forward="true" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="docComment;class#UserManager#0" expanded="false" />
-            <element signature="method#UserManager#0;class#UserManager#0" expanded="false" />
-            <element signature="method#getInstance#0;class#UserManager#0" expanded="false" />
-            <element signature="method#init#0;class#UserManager#0" expanded="false" />
-            <element signature="docComment;method#print#0;class#UserManager#0" expanded="false" />
-            <element signature="method#print#0;class#UserManager#0" expanded="false" />
-            <element signature="method#saveData#0;class#UserManager#0" expanded="false" />
-            <element signature="method#encryptPassword#0;class#UserManager#0" expanded="false" />
-            <element signature="method#decryptPassword#0;class#UserManager#0" expanded="false" />
-            <element signature="docComment;method#findStudent#0;class#UserManager#0" expanded="false" />
-            <element signature="method#findStudent#0;class#UserManager#0" expanded="false" />
-            <element signature="method#addStudent#0;class#UserManager#0" expanded="false" />
-            <element signature="method#addAdmin#0;class#UserManager#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -859,9 +806,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="850">
           <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -869,22 +813,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="578">
           <caret line="137" column="11" lean-forward="false" selection-start-line="137" selection-start-column="11" selection-end-line="137" selection-end-column="11" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="docComment;class#UserManager#0" expanded="false" />
-            <element signature="method#UserManager#0;class#UserManager#0" expanded="false" />
-            <element signature="method#getInstance#0;class#UserManager#0" expanded="false" />
-            <element signature="method#init#0;class#UserManager#0" expanded="false" />
-            <element signature="docComment;method#print#0;class#UserManager#0" expanded="false" />
-            <element signature="method#print#0;class#UserManager#0" expanded="false" />
-            <element signature="method#saveData#0;class#UserManager#0" expanded="false" />
-            <element signature="method#encryptPassword#0;class#UserManager#0" expanded="false" />
-            <element signature="method#decryptPassword#0;class#UserManager#0" expanded="false" />
-            <element signature="docComment;method#findStudent#0;class#UserManager#0" expanded="false" />
-            <element signature="method#findStudent#0;class#UserManager#0" expanded="false" />
-            <element signature="method#addStudent#0;class#UserManager#0" expanded="false" />
-            <element signature="method#addAdmin#0;class#UserManager#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -899,7 +827,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -936,20 +863,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/UI.java">
+    <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/Managers/CourseManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="44" lean-forward="false" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
+        <state relative-caret-position="272">
+          <caret line="182" column="37" lean-forward="true" selection-start-line="182" selection-start-column="37" selection-end-line="182" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/Managers/CourseManager.java">
+    <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/Notification.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1105">
-          <caret line="69" column="0" lean-forward="false" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
+        <state relative-caret-position="547">
+          <caret line="43" column="47" lean-forward="true" selection-start-line="43" selection-start-column="47" selection-end-line="43" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/UI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="35" column="5" lean-forward="true" selection-start-line="35" selection-start-column="5" selection-end-line="36" selection-end-column="59" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1013,7 +950,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

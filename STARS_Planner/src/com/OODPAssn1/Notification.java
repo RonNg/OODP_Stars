@@ -7,7 +7,11 @@ import java.util.Properties;
 
 
 /**
- * Created by Tweakisher on 30/3/2017.
+ * The Notification class contains methods to send email blasts and SMSes to specified email addresses
+ * and numbers.
+ *
+ * @author Ron Ng Jian Ying
+ *
  */
 public class Notification
 {
@@ -81,22 +85,49 @@ public class Notification
             message.setFrom(new InternetAddress("ce2002fep2group6@gmail.com"));
 
             for (int i = 0; i < emailAddress.length; ++i)
-                message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(emailAddress[i]));
+                message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(emailAddress[i])); //Adds multiple recipients as specified from first arg emailAddress String []
 
             message.setSubject(subject);
             message.setText(text);
 
             Transport.send(message);
-        }
-
-        catch (MessagingException e)
+        } catch (MessagingException e)
         {
             throw new RuntimeException(e);
         }
     }
 
-    public void TestSend()
+    /**
+     * Sends an SMS to the specified handphone number.
+     *
+     * @param number Handphone number of recipient
+     * @param text Message to send to recipient
+     *
+     * @return -1 on failure to send <br>
+     *          1 on success
+     */
+    public int sendSMS (final int number, final String text)
     {
 
+        System.out.println ("SMS has been sent to notify HP No. " + number);
+        return 1;
+    }
+
+    /**
+     * Sends an SMS to the specified list of handphone numbers.
+     *
+     * @param number array of Handphone numbers of recipients
+     * @param text Message to send to recipient
+     * @return -1 on failure to send <br>
+     *          1 on success
+     */
+    public int sendSMS (final int [] number, final String text)
+    {
+        for( int i = 0; i < number.length; ++ i )
+        {
+            System.out.println("SMS has been sent to notify HP No. " + number);
+        }
+
+        return 1;
     }
 }
