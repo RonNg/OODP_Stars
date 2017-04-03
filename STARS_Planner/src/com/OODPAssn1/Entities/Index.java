@@ -10,7 +10,7 @@ public class Index {
     private int numberOfStudent;
     private List<String> studentsEnrolledList; // Stores matrix number
     private List<TimeSlot> tutLabTimeSlotList; // Stores class times
-    private List<String> studentWaitList;
+    private List<String> studentWaitList; // Stores wait list
 
     public Index(int indexNum, int maxNumberOfStudent){
         this.indexNum = indexNum;
@@ -31,7 +31,7 @@ public class Index {
         return indexNum;
     }
 
-    //-------Max number of students methods--------
+    //-------number of students methods--------
 
     public boolean setMaxNumberOfStudent(int maxNumberOfStudent){
         if(maxNumberOfStudent<numberOfStudent){
@@ -43,6 +43,10 @@ public class Index {
 
     public int getMaxNumberOfStudent(){
         return maxNumberOfStudent;
+    }
+
+    public int getNumberOfVacancy(){
+        return maxNumberOfStudent = numberOfStudent;
     }
 
     //-------Time slot methods--------

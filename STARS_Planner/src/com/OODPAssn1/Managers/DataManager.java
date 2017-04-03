@@ -40,7 +40,7 @@ public class DataManager
         FileInputStream fis;
         ObjectInputStream in ;
         try {
-            fis = new FileInputStream(filepath);
+            fis = new FileInputStream(cFilePath + filepath);
             in = new ObjectInputStream(fis);
             pDetails = (ArrayList) in.readObject();
             in.close();
@@ -75,7 +75,7 @@ public class DataManager
             FileOutputStream fos = null;
             ObjectOutputStream out = null;
             try {
-                fos = new FileOutputStream(filepath);
+                fos = new FileOutputStream(cFilePath + filepath);
                 out = new ObjectOutputStream(fos);
                 out.writeObject(list); // Write entire list into file
                 out.close();

@@ -82,8 +82,22 @@ public class CourseManager extends DataManager {
 
     //---------Index methods---------
 
-    public List<Index> getIndexList(){
+    public List<Index> getAllIndexList(){
         return indexList;
+    }
+
+    public List<Index> getIndexList(Course course){
+        List<Index> courseFiltered = new ArrayList<Index>();
+        List<Integer> indexListC = courseList.get(courseList.indexOf(course)).getIndexNumberList();
+        for(int n = 0; n < indexListC.size(); n++){
+            for(int m = 0; m < indexList.size(); m++){
+                if(indexList.get(m).getIndexNum()==indexListC.get(n)){
+                    courseFiltered.add(indexList.get(m));
+                    break;
+                }
+            }
+        }
+        return courseFiltered;
     }
 
     public boolean addIndex(Course course,int indexNum, int maxNumOfStudetns){
@@ -99,6 +113,8 @@ public class CourseManager extends DataManager {
         }
         return false;
     }
+
+
 
     public int enrolInIndex(String matricNo,Index index){ // 1 - Success 0 - something wrong -1 - index full
         switch (indexList.get(indexList.indexOf(index)).enrolStudent(matricNo)){
