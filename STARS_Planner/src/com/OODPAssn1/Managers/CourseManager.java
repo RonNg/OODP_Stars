@@ -1,8 +1,6 @@
 package com.OODPAssn1.Managers;
 
-import com.OODPAssn1.Entities.Course;
-import com.OODPAssn1.Entities.Index;
-import com.OODPAssn1.Entities.TimeSlot;
+import com.OODPAssn1.Entities.*;
 
 import java.sql.Time;
 import java.util.ArrayList;
