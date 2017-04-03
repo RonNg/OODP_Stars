@@ -37,9 +37,9 @@ public class CourseManager extends DataManager {
 
     private void init(){
         if(!isInitAlready){
-            dM = new DataManager();
-            courseList = (ArrayList<Course>)dM.read(COURSE_PATH);
-            indexList = (ArrayList<Index>)dM.read(INDEX_PATH);
+            //dM = new DataManager();
+            courseList = (ArrayList<Course>)this.read(COURSE_PATH);
+            indexList = (ArrayList<Index>)this.read(INDEX_PATH);
             if(courseList == null){
                 courseList = new ArrayList<Course>();
             }
@@ -52,7 +52,8 @@ public class CourseManager extends DataManager {
 
     public boolean saveAll(){
         boolean sCheck = false;
-        if(dM.write(courseList,COURSE_PATH) && dM.write(indexList,INDEX_PATH)){
+
+        if(this.write(courseList,COURSE_PATH) && this.write(indexList,INDEX_PATH)){
             return true;
         }
         return false;
@@ -65,6 +66,7 @@ public class CourseManager extends DataManager {
     }
 
     public boolean createCourse(String courseId, String courseName, String faculty){
+        //Note that writing of new data into DB is not done here!
         return courseList.add(new Course(courseId,courseName,faculty));
     }
 
@@ -80,14 +82,53 @@ public class CourseManager extends DataManager {
         return courseList.get(courseList.indexOf(course)).deleteLectTimeSlot(timeSlot);
     }
 
+    public Course findCourseById(String courseId){
+
+        if (courseList == null) {
+            System.out.println("printAll(): List is empty");
+            return null;
+        }
+        //System.out.println("indexList.size(): " + indexList.size());
+        Course temp = null;
+        for (int i = 0; i < courseList.size(); ++i) {
+
+            temp = courseList.get(i);
+            if(temp.getCourseId().equalsIgnoreCase(courseId))
+                return temp;
+
+        }
+        return null;
+
+    }
+
+
+
     //---------Index methods---------
+
+
+    public boolean printIndexOfCourse(Course c){
+
+        if(c==null)
+            return false;
+
+        List temp = c.getIndexNumberList();
+        int j = 0;
+        while(j != temp.size()){
+
+            System.out.print(temp.get(j) + "  ");
+            j++;
+
+        }
+        System.out.println();
+        return true;
+    }
 
     public List<Index> getIndexList(){
         return indexList;
     }
 
-    public boolean addIndex(Course course,int indexNum, int maxNumOfStudetns){
-        if(indexList.add(new Index(indexNum,maxNumOfStudetns))){
+    public boolean addIndex(Course course,int indexNum, int maxNumOfStudents){//Create new index and assign it to course
+        if(indexList.add(new Index(indexNum,maxNumOfStudents))){
             return courseList.get(courseList.indexOf(course)).addIndex(indexNum);
         }
         return false;
@@ -127,6 +168,60 @@ public class CourseManager extends DataManager {
         }
     }
 
+
+//----------------------------------Method for debugging purposes. Remove for production--------------------------------
+
+    public int printAllCourse(){
+
+        if (courseList == null) {
+            System.out.println("printAll(): List is empty");
+            return 0;
+        }
+        System.out.println("courseList.size(): " + courseList.size());
+        Course temp = null;
+        int j = 0;
+        for (int i = 0; i < courseList.size(); ++i) {
+
+            temp = courseList.get(i);
+            System.out.print("Name: " + temp.getCourseName() + "   ID: " + temp.getCourseId() + "   Index: " );
+
+            while(j < temp.getIndexNumberList().size()){
+                System.out.print(temp.getIndexNumberList().get(j) + ", ");
+                j++;
+            }
+            System.out.println();
+
+        }
+
+        return 1;
+
+    }
+
+    public int printAllIndex(){
+
+        if (indexList == null) {
+            System.out.println("printAll(): List is empty");
+            return 0;
+        }
+        System.out.println("indexList.size(): " + indexList.size());
+        Index temp = null;
+        for (int i = 0; i < indexList.size(); ++i) {
+
+            temp = indexList.get(i);
+            System.out.println("Index no.: " + temp.getIndexNum() + "   ID: " + temp.getNumberOfEnrolledStudent());
+
+        }
+
+        return 1;
+
+    }
+
+
+    public boolean createIndex(int indexNum, int maxNumStudent){
+
+        return indexList.add(new Index(indexNum, maxNumStudent));
+
+    }
 
 
 

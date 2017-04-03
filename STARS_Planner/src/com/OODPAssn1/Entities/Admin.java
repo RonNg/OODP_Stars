@@ -9,7 +9,16 @@ public class Admin extends User
 {
 
     private String name;
-    private char gender;
+
+
+    public Admin(String name, String email, String userName, String passWord){
+
+        this.name = name;
+        this.email = email;
+        this.username = userName;
+        this.password = passWord;
+        type = USER_TYPE.ADMIN;
+    }
 
     //TODO: Implement SET GET METHOD
 }

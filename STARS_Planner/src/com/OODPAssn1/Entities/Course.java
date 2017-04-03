@@ -1,12 +1,16 @@
 package com.OODPAssn1.Entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by jonah on 15/3/2017.
  */
-public class Course {
+public class Course implements Serializable {
+
+    //SerialVersionUID of this Class used to deconflict serialisation
+    static final long serialVersionUID = 1L;
 
     private String courseId;
     private String courseName;

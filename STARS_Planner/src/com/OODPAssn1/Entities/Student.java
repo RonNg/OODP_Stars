@@ -6,6 +6,7 @@ import java.util.List;
 public class Student extends User
 {
     public enum GENDER { MALE, FEMALE }
+    public enum PROGRAMME { CE, CS, BU  }
 
     private String matricNo;
     protected String name;

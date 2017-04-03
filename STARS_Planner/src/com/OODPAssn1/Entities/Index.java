@@ -1,9 +1,13 @@
 package com.OODPAssn1.Entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Index {
+public class Index implements Serializable {
+
+    //SerialVersionUID of this Class used to deconflict serialisation
+    static final long serialVersionUID = 1L;
 
     private int indexNum;
     private int maxNumberOfStudent;

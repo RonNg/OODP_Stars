@@ -14,7 +14,8 @@ public class DataManager
     private String IV;
     private String encryptionKey;
 
-    private static final String cFilePath = System.getProperty("user.dir") + "\\database\\"; // To specify location to store database files
+    private static final String cFilePath = System.getProperty("user.dir") + "\\STARS_Planner\\database\\"; // To specify location to store database files
+    //private static final String cFilePath = System.getProperty("user.dir") + "\\database\\"; // To specify location to store database files
 
     public DataManager ()
     {
@@ -33,6 +34,7 @@ public class DataManager
 
         File file = new File(cFilePath + filepath);
         if((!file.exists())){ // Check if file exist
+            System.out.println("File not exist in: " + cFilePath + filepath);
             return null; // return null if file does not exist
         }
 
@@ -40,7 +42,7 @@ public class DataManager
         FileInputStream fis;
         ObjectInputStream in ;
         try {
-            fis = new FileInputStream(filepath);
+            fis = new FileInputStream(cFilePath + filepath);
             in = new ObjectInputStream(fis);
             pDetails = (ArrayList) in.readObject();
             in.close();
@@ -48,15 +50,20 @@ public class DataManager
         }
         catch (IOException ex) {
             ex.printStackTrace();
+
         }
         catch (ClassNotFoundException ex) {
             ex.printStackTrace();
+
+
         }
+
 
         return null; // return null by default if error occurred
     }
 
     protected boolean write(List list, String filepath) {
+
 
         File directory = new File(cFilePath);
         File file = new File(cFilePath + filepath);
@@ -71,11 +78,13 @@ public class DataManager
                 return false; // If fails return false
             }
         }
+
         if (list != null){ // Checks if list is null
+
             FileOutputStream fos = null;
             ObjectOutputStream out = null;
             try {
-                fos = new FileOutputStream(filepath);
+                fos = new FileOutputStream(cFilePath + filepath);
                 out = new ObjectOutputStream(fos);
                 out.writeObject(list); // Write entire list into file
                 out.close();
