@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="68b97c87-49bc-4e65-b6fb-d190da5e37d9" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/user.dat" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/Admin.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/Admin.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/Course.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/Course.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/Index.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/Index.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/Student.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/Student.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/CourseManager.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/CourseManager.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/DataManager.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/DataManager.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/UserManager.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/UserManager.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/STARS.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/STARS.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/UI.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/UI.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/OODPAssn1/Managers/CourseManager.java" afterPath="$PROJECT_DIR$/src/com/OODPAssn1/Managers/CourseManager.java" />
-    </list>
+    <list default="true" id="68b97c87-49bc-4e65-b6fb-d190da5e37d9" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -33,7 +20,7 @@
         <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/UI.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="323">
-              <caret line="19" column="44" lean-forward="true" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
+              <caret line="19" column="44" lean-forward="false" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -125,8 +112,8 @@
         <option value="$PROJECT_DIR$/src/com/OODPAssn1/TEST.java" />
         <option value="$PROJECT_DIR$/src/com/OODPAssn1/Entities/Index.java" />
         <option value="$PROJECT_DIR$/src/com/OODPAssn1/STARS.java" />
-        <option value="$PROJECT_DIR$/src/com/OODPAssn1/UI.java" />
         <option value="$PROJECT_DIR$/src/com/OODPAssn1/Managers/CourseManager.java" />
+        <option value="$PROJECT_DIR$/src/com/OODPAssn1/UI.java" />
       </list>
     </option>
   </component>
@@ -551,7 +538,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="816" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -620,10 +607,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding>
-            <element signature="e#1196#1197#0" expanded="true" />
-            <element signature="e#1236#1237#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -909,10 +892,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="799">
           <caret line="64" column="8" lean-forward="false" selection-start-line="64" selection-start-column="8" selection-end-line="64" selection-end-column="8" />
-          <folding>
-            <element signature="e#1196#1197#0" expanded="true" />
-            <element signature="e#1236#1237#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -920,12 +899,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding>
-            <marker date="1491201382562" expanded="true" signature="580:849" ph="{...}" />
-            <marker date="1491201382562" expanded="true" signature="894:913" ph="{...}" />
-            <marker date="1491201382562" expanded="true" signature="945:968" ph="{...}" />
-            <marker date="1491201382562" expanded="true" signature="1032:1039" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -955,28 +929,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/Managers/CourseManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1105">
-          <caret line="69" column="0" lean-forward="false" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/TEST.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/UI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
-          <caret line="19" column="44" lean-forward="true" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
+          <caret line="19" column="44" lean-forward="false" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/OODPAssn1/Managers/CourseManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1105">
+          <caret line="69" column="0" lean-forward="false" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
