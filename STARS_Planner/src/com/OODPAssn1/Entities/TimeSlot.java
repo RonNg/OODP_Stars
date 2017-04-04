@@ -5,13 +5,15 @@ import java.time.LocalTime;
 
 public class TimeSlot {
 
-    private char day; //
+    public enum DAY {MON, TUE, WED, THU, FRI, SAT, SUN};
+
+    private DAY day; //
     private LocalTime startTime;
     private LocalTime endTime;
     private String location;
     private String type;
 
-    public TimeSlot(char day, int startH, int startM, int endH, int endM, String location, String type){
+    public TimeSlot(DAY day, int startH, int startM, int endH, int endM, String location, String type){
         this.day = day;
         startTime = LocalTime.of(startH,startM);
         endTime = LocalTime.of(endH,endM);
@@ -21,11 +23,11 @@ public class TimeSlot {
 
     //-------Day methods--------
 
-    public void setDay(char day){
+    public void setDay(DAY day){
         this.day = day;
     }
 
-    public char getDay(){
+    public DAY getDay(){
         return day;
     }
 

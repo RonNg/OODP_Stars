@@ -103,6 +103,7 @@ public class CourseManager extends DataManager {
 
     //---------Index methods---------
 
+<<<<<<< HEAD
 
     public boolean printIndexOfCourse(Course c){
 
@@ -127,6 +128,28 @@ public class CourseManager extends DataManager {
 
     public boolean addIndex(Course course,int indexNum, int maxNumOfStudents){//Create new index and assign it to course
         if(indexList.add(new Index(indexNum,maxNumOfStudents))){
+=======
+    public List<Index> getAllIndexList(){
+        return indexList;
+    }
+
+    public List<Index> getIndexList(Course course){
+        List<Index> courseFiltered = new ArrayList<Index>();
+        List<Integer> indexListC = courseList.get(courseList.indexOf(course)).getIndexNumberList();
+        for(int n = 0; n < indexListC.size(); n++){
+            for(int m = 0; m < indexList.size(); m++){
+                if(indexList.get(m).getIndexNum()==indexListC.get(n)){
+                    courseFiltered.add(indexList.get(m));
+                    break;
+                }
+            }
+        }
+        return courseFiltered;
+    }
+
+    public boolean addIndex(Course course,int indexNum, int maxNumOfStudetns){
+        if(indexList.add(new Index(indexNum,maxNumOfStudetns))){
+>>>>>>> CourseManager
             return courseList.get(courseList.indexOf(course)).addIndex(indexNum);
         }
         return false;

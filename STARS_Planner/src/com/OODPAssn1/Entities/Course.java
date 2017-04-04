@@ -74,7 +74,7 @@ public class Course implements Serializable {
 
     //-------Lecture time slot methods--------
 
-    public boolean addlecTimeSlot(char day, int startH, int startM, int endH, int endM, String location){
+    public boolean addlecTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location){
         return lecTimeSlotList.add(new TimeSlot(day,startH,startM,endH,endM,location,"LECT"));
     }
 
