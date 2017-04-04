@@ -67,7 +67,8 @@ public class Course implements Serializable {
         return indexList.add(new Index(indexNum,maxNumOfStudetns));
     }
 
-    public boolean deleteIndex(Index index){
+    public boolean deleteIndex(Index index)
+    {
         return indexList.remove(index);
     }
 

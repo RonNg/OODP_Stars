@@ -11,14 +11,15 @@ public class TEST {
 
     public static void Test(String[] args)
     {
-        Course cs = new Course("CE0001","NOIDEA","SCSE");
-        cs.addIndex(1000);
-        cs.addIndex(1001);
-        cs.deleteIndex(1001);
-        cs.deleteIndex(10003);
+        Course cs = new Course("CE0001", "NOIDEA", "SCSE");
+        cs.addIndex(1000, 20);
+        cs.addIndex(1001, 20);
+        //cs.deleteIndex(1001);
+        //cs.deleteIndex(10003);
+    }
 
     public static void TestMain(String[] args)
-        {
+    {
 
 
         CourseManager cM = CourseManager.getInstance();

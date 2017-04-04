@@ -1,50 +1,51 @@
 package com.OODPAssn1;
 
+import com.OODPAssn1.Entities.Course;
 import com.OODPAssn1.Entities.Student;
+import com.OODPAssn1.Entities.TimeSlot;
 import com.OODPAssn1.Entities.User;
-import com.OODPAssn1.Managers.CourseManager;
-import com.OODPAssn1.Managers.UserManager;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import com.sun.xml.internal.bind.v2.TODO;
 
 import java.io.Console;
 import java.util.Scanner;
 
 
-public class UI {
+public class UI
+{
 
     private static Scanner s = new Scanner(System.in);
     private static Console c = System.console();
     private static User.USER_TYPE loggedOnUserType = null;
 
-    public static void main(String[] args) {
-
-        while(true) {//Main UI loop
+    public static void main(String[] args)
+    {
+        while (true)
+        {//Main UI loop
 
             loggedOnUserType = loginScreen();
             if (loggedOnUserType == User.USER_TYPE.ADMIN)
                 adminMenu();
-            else if(loggedOnUserType == User.USER_TYPE.STUDENT)
+            else if (loggedOnUserType == User.USER_TYPE.STUDENT)
                 studentMenu();
 
-            if(loggedOnUserType == null)//Quit STARS Program
+            if (loggedOnUserType == null)//Quit STARS Program
                 return;
         }
-
         //TODO: Method to check if a password is encrypted
 
     }
 //----------------------------------------Method to display Login screen----------------------------------------------
 
-    public static User.USER_TYPE loginScreen(){
+    public static User.USER_TYPE loginScreen()
+    {
 
         String userName;
         String passWord;
         User.USER_TYPE userType = null;
 
         System.out.println("Welcome to STARS! Login to continue.\n" +
-                            "------------------------------------");
-        while (userType == null) {//Loop for login
+                "------------------------------------");
+        while (userType == null)
+        {//Loop for login
             System.out.print("Please enter Username: ");
             userName = s.next();
             System.out.print("Please enter Password: ");
@@ -63,10 +64,12 @@ public class UI {
 
 //------------------------------------Method to display Student's menu--------------------------------------------------
 
-    public static void studentMenu() {
+    public static void studentMenu()
+    {
 
         int choice;
-        while(true) {
+        while (true)
+        {
             System.out.println("\nWhat will you like to do? \n" +
                     "-------------------------\n" +
                     "1) Add Course\n" +
@@ -80,16 +83,17 @@ public class UI {
 
             choice = s.nextInt();
 
-            switch (choice) {
+            switch (choice)
+            {
 
                 case 1://Add course
                     System.out.println("Course available to enroll: \n" +
-                                       "--------------------------");
+                            "--------------------------");
                     STARS.getInstance().printCourseList();
                     System.out.print("Please input the course ID of the course you wished to enroll in: ");
                     String courseId = s.next();
                     System.out.println("Index available to enroll in according to course selected: \n" +
-                                       "---------------------------------------------------------");
+                            "---------------------------------------------------------");
                     STARS.getInstance().printIndexListOfCourse(courseId);
                     //TODO: Enroll into index with checking of vacancy and wait list
 
@@ -134,14 +138,15 @@ public class UI {
     }
 
 
-
 //------------------------------------Method to display Admin's menu--------------------------------------------------
 
-    public static void adminMenu() {
+    public static void adminMenu()
+    {
 
         int choice;
 
-        while(true) {//Loop to show the menu until 7 is choosen
+        while (true)
+        {//Loop to show the menu until 7 is choosen
 
             System.out.println("\nWhat will you like to do? \n" +
                     "-------------------------\n" +
@@ -158,7 +163,8 @@ public class UI {
 
             choice = s.nextInt();
 
-            switch (choice) {
+            switch (choice)
+            {
 
                 case 1://Edit student access period
 
@@ -197,14 +203,120 @@ public class UI {
                     //98245937, Student.GENDER.MALE, "SG", "dude123", "dude123");
                     break;
 
-                case 3://Add/Update a Course
+                //TODO: Update course
+                case 3://Add a Course
                     System.out.println("Please enter Course ID");
                     String courseID = s.next();
                     System.out.println("Please enter Course Name");
                     String courseName = s.next();
-                    System.out.println("Please enter faculty");
+                    System.out.println("Please enter Faculty");
                     String faculty = s.next();
-                    STARS.getInstance().addCourse(courseID, courseName, faculty);
+
+                    //Adds the course and returns the course object so that we can use it to add the lecture time
+                    Course tempCourse = STARS.getInstance().addCourse(courseID, courseName, faculty);
+
+                    System.out.println("");
+                    System.out.println("Please enter the number of lectures per week for Course " + tempCourse.getCourseId());
+                    int noOfLect = s.nextInt();
+
+                    //Add the lectures here
+                    for ( int i = 1; i <= noOfLect; ++ i )
+                    {
+                        String lectureNo = null;
+                       if(i == 1)
+                           lectureNo = i + "st";
+                       else if (i == 2)
+                           lectureNo = i + "nd";
+                       else if (i == 3)
+                           lectureNo = i + "rd";
+                       else
+                           lectureNo = i + "th";
+
+                        //lectureNo displays 1st, 2nd, 3rd, or 4th etc. etc. depending on the variable "i" in the loop
+                        System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
+                        TimeSlot.DAY timeSlotDay = null;
+                        boolean validDay = false;
+                        while(!validDay)
+                        {
+                            System.out.println("Enter the day for the " + lectureNo + " of the week: ");
+
+                            String day = s.next();
+
+                            switch (day)
+                            {
+                                //Monday
+                                case "m":
+                                case "M":
+                                    timeSlotDay = TimeSlot.DAY.MON;
+                                    validDay = true;
+                                    break;
+
+                                //Tuesday
+                                case "t":
+                                case "T":
+                                    timeSlotDay = TimeSlot.DAY.TUE;
+                                    validDay = true;
+                                    break;
+
+                                //Wednesday
+                                case "w":
+                                case "W":
+                                    timeSlotDay = TimeSlot.DAY.WED;
+                                    validDay = true;
+                                    break;
+
+                                //Thursday
+                                case "th":
+                                case "TH":
+                                case "Th":
+                                case "tH":
+                                    timeSlotDay = TimeSlot.DAY.THU;
+                                    validDay = true;
+                                    break;
+
+                                //Friday
+                                case "f":
+                                case "F":
+                                    timeSlotDay = TimeSlot.DAY.FRI;
+                                    validDay = true;
+                                    break;
+
+                                //Saturday
+                                case "s":
+                                case "S":
+                                    timeSlotDay = TimeSlot.DAY.SAT;
+                                    validDay = true;
+                                    break;
+
+                                //Sunday
+                                case "su":
+                                case "SU":
+                                case "Su":
+                                case "sU":
+                                    timeSlotDay = TimeSlot.DAY.SUN;
+                                    validDay = true;
+                                    break;
+
+                                default:
+                                    System.out.println("Invalid day is entered please try again.");
+                                    break;
+                            }
+
+                        } //while loop end for validDay
+
+
+                        System.out.println("Enter the lecture start time in 24hrs format for " + timeSlotDay.name());
+                        
+
+
+                    } //loop for entering Lecture
+
+
+                    //boolean addLecTimeSlot(Course course, TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
+                    //tempCourse.addlecTimeSlot()
+
+
+
                     break;
 
                 case 4://Check available slot for an index number (vacancy in a class)
@@ -229,7 +341,6 @@ public class UI {
                     return;
 
                 case 9://Use for debugging purposes
-                    //STARS.getInstance().populateDatabase();
                     STARS.getInstance().printAllList();
                     break;
                 default:

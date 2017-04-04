@@ -14,7 +14,8 @@ import java.util.List;
  *
  * @author Tweakisher
  */
-public class UserManager extends DataManager {
+public class UserManager extends DataManager
+{
     private static UserManager instance;
 
     public final static String USER_PATH = "user.dat";
@@ -22,43 +23,28 @@ public class UserManager extends DataManager {
 
     private boolean isInitAlready = false;
 
-    private UserManager() {
-        //Set Encryption Key
-        this.setEncryptionKey("StudentKStudentK"); //16 Bytes long
-        this.setIV("NotPokemonIVFour"); //16 Bytes long
-        init();
+    private UserManager()
+    {
+        super("StudentKStudentK", "NotPokemonIVFour", USER_PATH);
+
+        //Retrieves the user lists from the database
+        userList = (ArrayList)this.read(USER_PATH);
+        if(userList == null)
+            userList = new ArrayList();
+
+        //Decrypts the password to allow for login
+        decryptPassword();
     }
 
-    public static UserManager getInstance() {
-        if (instance == null) {
+    public static UserManager getInstance()
+    {
+        if (instance == null)
+        {
             instance = new UserManager();
 
             return instance;
         }
         return instance;
-    }
-
-    public void decryptPassForLogin(){//Accessor for STARS to decrypt for log-out then log-in operation
-
-        this.decryptPassword();
-    }
-
-    public int init() {
-        if (isInitAlready) {
-            System.out.println("UserManager is being reinitialised again!");
-            return -1;
-        }
-
-        userList = (ArrayList) this.read(USER_PATH);
-        if (userList == null) {
-            System.out.println("userList read in from file is null");
-            userList = new ArrayList();
-        }
-
-        this.decryptPassword(); //Decrypts all passwords retrieved from database
-
-
-        return 1;
     }
 
     /**
@@ -67,16 +53,20 @@ public class UserManager extends DataManager {
      * @return returns 0 if List is empty a
      * <p>returns 1 if print successful</p>
      */
-    public int print() {
-        if (userList == null) {
+    public int print()
+    {
+        if (userList == null)
+        {
             System.out.println("printAll(): List is empty");
             return 0;
         }
         System.out.println("userList.size(): " + userList.size());
         Student temp = null;
-        for (int i = 0; i < userList.size(); ++i) {
+        for (int i = 0; i < userList.size(); ++i)
+        {
 
-            if (userList.get(i).getType() == User.USER_TYPE.STUDENT) {
+            if (userList.get(i).getType() == User.USER_TYPE.STUDENT)
+            {
 
                 temp = (Student) userList.get(i);
                 System.out.println("Name: " + temp.getName() + "   Password: " + temp.getPassword());
@@ -86,56 +76,68 @@ public class UserManager extends DataManager {
         return 1;
     }
 
-
-    public boolean saveData() {//Return true if save succeed
+    public boolean saveData()
+    {//Return true if save succeed
         this.encryptPassword(); //Encrypt All Passwords before writing
         return this.write(userList, USER_PATH);
     }
 
-    private void encryptPassword() {
+    private void encryptPassword()
+    {
 
-        for (int i = 0; i < userList.size(); ++i) {
+        for (int i = 0; i < userList.size(); ++i)
+        {
             //Student's password is already encrypted
             if (userList.get(i).getIsPasswordEncrpyted())
                 continue;
 
             String tempPass = userList.get(i).getPassword();
 
-            try {
+            try
+            {
                 String encryptedPass = AESEncrypter.encrypt(tempPass, this.getEncryptionKey(), this.getIV());
 
                 userList.get(i).setPassword(encryptedPass);
                 userList.get(i).toggleEncrypted();
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 //System.out.println(e.getMessage());
                 //Works but throws an error. Dunno why.
             }
         }
     }
 
-    private void decryptPassword() {
-        for (int i = 0; i < userList.size(); ++i) {
+    public void decryptPassForLogin()
+    {//Accessor for STARS to decrypt for log-out then log-in operation
+
+        this.decryptPassword();
+    }
+
+    private void decryptPassword()
+    {
+        for (int i = 0; i < userList.size(); ++i)
+        {
             //Student's password is already decrypted
             if (!userList.get(i).getIsPasswordEncrpyted())
                 continue;
 
             String tempPass = userList.get(i).getPassword();
 
-            try {
+            try
+            {
                 String decryptedPass = AESEncrypter.decrypt(tempPass, this.getEncryptionKey(), this.getIV());
 
                 userList.get(i).setPassword(decryptedPass);
                 userList.get(i).toggleEncrypted();
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 //System.out.println(e.getMessage());
                 //Works but throws an error. Dunno why.
             }
         }
-
         //After everything is decrypted, save the password.
         //userList.
     }
-
 
     /**
      * Searches {@link List} for {@link Student} by name and returns the {@link List} index if matched
@@ -143,10 +145,13 @@ public class UserManager extends DataManager {
      * @return index of the student if found in List.
      * <p>returns -1 if student could not be found</p>
      */
-    public int findStudent(String name) {
+    public int findStudent(String name)
+    {
         Student temp = null;
-        for (int i = 0; i < userList.size(); ++i) {
-            if (userList.get(i) instanceof Student) {
+        for (int i = 0; i < userList.size(); ++i)
+        {
+            if (userList.get(i) instanceof Student)
+            {
                 temp = (Student) userList.get(i);
                 if (name == temp.getName())
                     return i;
@@ -160,12 +165,16 @@ public class UserManager extends DataManager {
 // - Return the logged-on user if authentication succeeds
 // - Return null if authentication fail or User not found in DB
 
-    public User authenticateUser(String userName, String passWord) {
+    public User authenticateUser(String userName, String password)
+    {
         User user;
-        for (int i = 0; i < userList.size(); ++i) {
+        for (int i = 0; i < userList.size(); ++i)
+        {
             user = userList.get(i);
-            if (userName.equals(user.getUsername())) {
-                if (!user.getPassword().equals(passWord)) {
+            if (userName.equals(user.getUsername()))
+            {
+                if (!user.getPassword().equals(password))
+                {
                     System.out.println("Password incorrect!");
                     return null;
                 } else
@@ -183,12 +192,16 @@ public class UserManager extends DataManager {
 
     public void addStudent(String name, String email, String matricNo,
                            int contact, Student.GENDER gender, String nationality,
-                           String username, String password) {
-        try {
+                           String username, String password)
+    {
+        try
+        {
             userList.add(new Student(name, email, matricNo,
                     contact, gender, nationality,
                     username, password));
-        } catch (Exception e) {
+
+        } catch (Exception e)
+        {
             System.out.println("addStudent() Exception caught: " + e.getMessage());
         }
 
@@ -200,16 +213,20 @@ public class UserManager extends DataManager {
         */
     }
 
-    public void addAdmin(final Admin admin) {
-        try {
-            userList.add(admin);
-        } catch (Exception e) {
+
+    public void addAdmin(final String name, final String email, final String username, final String password)
+    {
+        try
+        {
+            userList.add(new Admin(name, email, username, password));
+        } catch (Exception e)
+        {
             System.out.println("addAdmin() Exception caught: " + e.getMessage());
         }
     }
 
 
-    public void addCourseIndex (User student)
+    public void addCourseIndex(User student)
     {
 
     }
@@ -217,14 +234,17 @@ public class UserManager extends DataManager {
 
 //----------------------Methods for debugging purpose only. Remove for production--------------------------------------
 
-    public int printAllUser() {
-        if (userList == null) {
+    public int printAllUser()
+    {
+        if (userList == null)
+        {
             System.out.println("printAll(): List is empty");
             return 0;
         }
         System.out.println("userList.size(): " + userList.size());
         User temp = null;
-        for (int i = 0; i < userList.size(); ++i) {
+        for (int i = 0; i < userList.size(); ++i)
+        {
 
             temp = userList.get(i);
             System.out.println("Name: " + temp.getUsername() + "   Password: " + temp.getPassword());

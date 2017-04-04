@@ -1,5 +1,6 @@
 package com.OODPAssn1;
 
+import com.OODPAssn1.Entities.Course;
 import com.OODPAssn1.Entities.Student;
 import com.OODPAssn1.Entities.User;
 import com.OODPAssn1.Managers.CourseManager;
@@ -52,11 +53,9 @@ public class STARS
   - Receive and store the logged-on User object to keep track of logged-on user identity
 */
 
-    public User.USER_TYPE loginToStars(String userName, String passWord)
+    public User.USER_TYPE loginToStars(String userName, String password)
     {
-
-
-        User user = UserManager.getInstance().authenticateUser(userName, passWord);
+        User user = UserManager.getInstance().authenticateUser(userName, password);
         if (user != null) //Login successful
         {
             System.out.println(user.getType() + " " + user.getUsername() + " is now logged on to Stars!");
@@ -69,14 +68,10 @@ public class STARS
 
 //------------------------Method for adding/updating of Course----------------------------------------------
 
-    public void addCourse(String courseId, String courseName, String faculty)
+    public Course addCourse(String courseId, String courseName, String faculty)
     {
-
-        CourseManager.getInstance().createCourse(courseId, courseName, faculty);
-
-
+       return CourseManager.getInstance().addCourse(courseId, courseName, faculty);
     }
-
 
 //-------------------------------Method for enrolling of Student into STARS---------------------------------------------
 //This method will make use of UserManager to create student and write it into database.
@@ -99,6 +94,7 @@ public class STARS
     {
         if (UserManager.getInstance().saveData() && CourseManager.getInstance().saveAll())
         {
+            //When we save the data of UserManager, the password is encrypted again. We need to decrypt it for login to work again.
             UserManager.getInstance().decryptPassForLogin();
             return true;
         } else
@@ -108,9 +104,7 @@ public class STARS
 
     public void printCourseList()
     {
-
         CourseManager.getInstance().printAllCourse();
-
     }
 
 //------------------------------Method to print index available in a course---------------------------------------------
@@ -137,7 +131,6 @@ public class STARS
 
     public void printAllList()
     {
-
         UserManager.getInstance().printAllUser();
         CourseManager.getInstance().printAllCourse();
         CourseManager.getInstance().printAllIndex();
@@ -145,11 +138,10 @@ public class STARS
 
     public void populateDatabase()
     {
-
-        //UserManager.getInstance().addStudent( new Student("Ron", "c160144@e.ntu", "U1622393B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password"));
-        //UserManager.getInstance().addAdmin( new Admin("doug", "doug@e.ntu", "doug123",  "doug123"));
+        UserManager.getInstance().addStudent("Ron", "c160144@e.ntu", "U1622393B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
+        UserManager.getInstance().addAdmin("doug", "doug@e.ntu", "doug123",  "doug123");
         //CourseManager.getInstance().createIndex(10032, 50);
-        CourseManager.getInstance().createIndex(CourseManager.getInstance().findCourseById("CE2003"), 10042, 50);
+        //CourseManager.getInstance().createIndex(CourseManager.getInstance().findCourseById("CE2003"), 10042, 50);
     }
 
 

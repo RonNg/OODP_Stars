@@ -3,9 +3,13 @@ package com.OODPAssn1.Entities;
 
 import java.time.LocalTime;
 
-public class TimeSlot {
+public class TimeSlot
+{
 
-    public enum DAY {MON, TUE, WED, THU, FRI, SAT, SUN};
+    public enum DAY
+    {
+        MON, TUE, WED, THU, FRI, SAT, SUN
+    };
 
     private DAY day; //
     private LocalTime startTime;
@@ -13,61 +17,72 @@ public class TimeSlot {
     private String location;
     private String type;
 
-    public TimeSlot(DAY day, int startH, int startM, int endH, int endM, String location, String type){
+    public TimeSlot(DAY day, int startH, int startM, int endH, int endM, String location, String type)
+    {
         this.day = day;
-        startTime = LocalTime.of(startH,startM);
-        endTime = LocalTime.of(endH,endM);
+        startTime = LocalTime.of(startH, startM);
+        endTime = LocalTime.of(endH, endM);
         this.location = location;
         this.type = type;
     }
 
     //-------Day methods--------
 
-    public void setDay(DAY day){
+    public void setDay(DAY day)
+    {
         this.day = day;
     }
 
-    public DAY getDay(){
+    public DAY getDay()
+    {
         return day;
     }
 
     //-------Start Time methods--------
 
-    public void setStartTime(int startH, int startM){
-        startTime = LocalTime.of(startH,startM);
+    public void setStartTime(int startH, int startM)
+    {
+        startTime = LocalTime.of(startH, startM);
     }
 
-    public String getStartTime(){
+    public String getStartTime()
+    {
         return startTime.toString();
     }
 
     //-------End Time methods--------
 
-    public void setEndTIme(int endH, int endM){
+    public void setEndTIme(int endH, int endM)
+    {
         endTime = LocalTime.of(endH, endM);
     }
 
-    public String getEndTime(){
+    public String getEndTime()
+    {
         return endTime.toString();
     }
 
     //-------Location methods--------
 
-    public void setLocation(String location){
+    public void setLocation(String location)
+    {
         this.location = location;
     }
 
-    public String getLocation(){
+    public String getLocation()
+    {
         return location;
     }
 
     //-------Type methods--------
 
-    public void setType(String type){
+    public void setType(String type)
+    {
         this.type = type;
     }
 
-    public String getType(){
+    public String getType()
+    {
         return type;
     }
 
