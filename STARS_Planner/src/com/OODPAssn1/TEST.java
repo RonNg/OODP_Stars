@@ -9,7 +9,7 @@ import com.OODPAssn1.Managers.CourseManager;
  */
 public class TEST {
 
-    public static void main(String[] args) {
+    public static void Test(String[] args) {
         Course cs = new Course("CE0001","NOIDEA","SCSE");
         cs.addIndex(1000);
         cs.addIndex(1001);

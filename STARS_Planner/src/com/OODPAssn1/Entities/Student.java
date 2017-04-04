@@ -35,7 +35,14 @@ public class Student extends User
 
 
     //Mutator
-    public void addCourse(int courseIndex)
+    public void addCourseIndex(int courseIndex)
     {
     }
+
+
+    public void deenrollCourseIndex()
+    {
+    }
+
+
 }

@@ -1,10 +1,10 @@
 package com.OODPAssn1.Managers;
 
 import com.OODPAssn1.AESEncrypter;
-import com.OODPAssn1.Entities.*;
+import com.OODPAssn1.Entities.Admin;
+import com.OODPAssn1.Entities.Student;
+import com.OODPAssn1.Entities.User;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -206,6 +206,12 @@ public class UserManager extends DataManager {
         } catch (Exception e) {
             System.out.println("addAdmin() Exception caught: " + e.getMessage());
         }
+    }
+
+
+    public void addCourseIndex (User student)
+    {
+
     }
 
 

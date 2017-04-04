@@ -18,7 +18,8 @@ public class Course implements Serializable {
     private List<Integer> indexNumberList;
     private List<TimeSlot> lecTimeSlotList;
 
-    public Course(String courseId, String courseName, String faculty){
+    public Course(String courseId, String courseName, String faculty)
+    {
         this.courseId = courseId;
         this.courseName = courseName;
         this.faculty = faculty;
