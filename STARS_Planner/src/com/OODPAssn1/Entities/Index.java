@@ -65,13 +65,13 @@ public class Index implements Serializable {
 
     //-------Tutorial time slot methods--------
 
-    public boolean addTutTimeSlot(char day, int startH, int startM, int endH, int endM, String location){
+    public boolean addTutTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location){
         return tutLabTimeSlotList.add(new TimeSlot(day,startH,startM,endH,endM,location,"TUT"));
     }
 
     //-------Lab time slot methods--------
 
-    public boolean addLabTimeSlot(char day, int startH, int startM, int endH, int endM, String location){
+    public boolean addLabTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location){
         return tutLabTimeSlotList.add(new TimeSlot(day,startH,startM,endH,endM,location,"LAB"));
     }
 

@@ -19,8 +19,8 @@ public class TEST {
         CourseManager cM = CourseManager.getInstance();
         cM.saveAll();
         Index in = new Index(20001,50);
-        in.addLabTimeSlot('T',13,30,14,30,"LT1A");
-        in.addLabTimeSlot('W',3,30,4,30,"LT11");
+        //in.addLabTimeSlot('T',13,30,14,30,"LT1A");
+        //in.addLabTimeSlot('W',3,30,4,30,"LT11");
         in.deleteTutLabTimeSlot(in.getTutLabTimeSlotList().get(0));
     }
 }

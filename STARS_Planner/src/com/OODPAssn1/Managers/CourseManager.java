@@ -72,7 +72,7 @@ public class CourseManager extends DataManager {
         return courseList.remove(dCourse);
     }
 
-    public boolean addLecTimeSlot(Course course,char day, int startH, int startM, int endH, int endM, String location){
+    public boolean addLecTimeSlot(Course course, TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location){
         return courseList.get(courseList.indexOf(course)).addlecTimeSlot(day,startH,startM,endH,endM,location);
     }
 
@@ -103,8 +103,6 @@ public class CourseManager extends DataManager {
 
     //---------Index methods---------
 
-<<<<<<< HEAD
-
     public boolean printIndexOfCourse(Course c){
 
         if(c==null)
@@ -126,9 +124,6 @@ public class CourseManager extends DataManager {
         return indexList;
     }
 
-    public boolean addIndex(Course course,int indexNum, int maxNumOfStudents){//Create new index and assign it to course
-        if(indexList.add(new Index(indexNum,maxNumOfStudents))){
-=======
     public List<Index> getAllIndexList(){
         return indexList;
     }
@@ -149,7 +144,6 @@ public class CourseManager extends DataManager {
 
     public boolean addIndex(Course course,int indexNum, int maxNumOfStudetns){
         if(indexList.add(new Index(indexNum,maxNumOfStudetns))){
->>>>>>> CourseManager
             return courseList.get(courseList.indexOf(course)).addIndex(indexNum);
         }
         return false;
