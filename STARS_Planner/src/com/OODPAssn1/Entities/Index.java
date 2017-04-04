@@ -111,4 +111,13 @@ public class Index implements Serializable {
         return "ERROR";
     }
 
+    public boolean checkIfStudentEnrolled(String matricNo){
+        for(int n = 0; n < studentsEnrolledList.size(); n++){
+            if(studentsEnrolledList.get(n).equals(matricNo)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

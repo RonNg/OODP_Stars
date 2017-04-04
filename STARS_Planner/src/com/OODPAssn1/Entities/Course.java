@@ -15,15 +15,15 @@ public class Course implements Serializable {
     private String courseId;
     private String courseName;
     private String faculty;
-    private List<Integer> indexNumberList;
     private List<TimeSlot> lecTimeSlotList;
+    private List<Index> indexList = null;
 
     public Course(String courseId, String courseName, String faculty){
         this.courseId = courseId;
         this.courseName = courseName;
         this.faculty = faculty;
-        indexNumberList = new ArrayList<Integer>();
         lecTimeSlotList = new ArrayList<TimeSlot>();
+        indexList = new ArrayList<Index>();
     }
 
     //-------Course ID methods--------
@@ -58,16 +58,16 @@ public class Course implements Serializable {
 
     //-------Course Indexes methods--------
 
-    public boolean addIndex(Integer iNum){
-        return indexNumberList.add(iNum);
+    public List<Index> getIndexList(){
+        return indexList;
     }
 
-    public boolean deleteIndex(Integer iNum){
-        return indexNumberList.remove(iNum);
+    public boolean addIndex(int indexNum, int maxNumOfStudetns){
+        return indexList.add(new Index(indexNum,maxNumOfStudetns));
     }
 
-    public List<Integer> getIndexNumberList(){
-        return indexNumberList;
+    public boolean deleteIndex(Index index){
+        return indexList.remove(index);
     }
 
     //TODO = modify index
