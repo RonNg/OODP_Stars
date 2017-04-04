@@ -9,17 +9,17 @@ import com.OODPAssn1.Managers.CourseManager;
  */
 public class TEST {
 
-<<<<<<< HEAD
-    public static void Test(String[] args) {
+    public static void Test(String[] args)
+    {
         Course cs = new Course("CE0001","NOIDEA","SCSE");
         cs.addIndex(1000);
         cs.addIndex(1001);
         cs.deleteIndex(1001);
         cs.deleteIndex(10003);
-=======
-    public static void main(String[] args) {
 
->>>>>>> 5c5039cd6045e2cf3e06758c4a53c61188095186
+    public static void TestMain(String[] args)
+        {
+
 
         CourseManager cM = CourseManager.getInstance();
         cM.createCourse("CE0001","EnS", "SCSE");

@@ -1,8 +1,9 @@
 package com.OODPAssn1.Managers;
 
-import com.OODPAssn1.Entities.*;
+import com.OODPAssn1.Entities.Course;
+import com.OODPAssn1.Entities.Index;
+import com.OODPAssn1.Entities.TimeSlot;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +73,8 @@ public class CourseManager extends DataManager {
         return courseList.get(courseList.indexOf(course)).deleteLectTimeSlot(timeSlot);
     }
 
-    public Course findCourseById(String courseId){
+    public Course findCourseById(String courseId)
+    {
 
         if (courseList == null) {
             System.out.println("printAll(): List is empty");
@@ -132,9 +134,11 @@ public class CourseManager extends DataManager {
 
 //----------------------------------Method for debugging purposes. Remove for production--------------------------------
 
-    /*public int printAllCourse(){
+    public int printAllCourse()
+    {
 
-        if (courseList == null) {
+        if (courseList == null)
+        {
             System.out.println("printAll(): List is empty");
             return 0;
         }
@@ -144,10 +148,11 @@ public class CourseManager extends DataManager {
         for (int i = 0; i < courseList.size(); ++i) {
 
             temp = courseList.get(i);
+
             System.out.print("Name: " + temp.getCourseName() + "   ID: " + temp.getCourseId() + "   Index: " );
 
-            while(j < temp.getIndexNumberList().size()){
-                System.out.print(temp.getIndexNumberList().get(j) + ", ");
+            while(j < temp.getIndexList().size()){
+                System.out.print(temp.getIndexList().get(j) + ", ");
                 j++;
             }
             System.out.println();
@@ -158,24 +163,23 @@ public class CourseManager extends DataManager {
 
     }
 
-    public int printAllIndex(){
-
-        if (indexList == null) {
-            System.out.println("printAll(): List is empty");
-            return 0;
-        }
-        System.out.println("indexList.size(): " + indexList.size());
+    public int printAllIndex()
+    {
         Index temp = null;
-        for (int i = 0; i < indexList.size(); ++i) {
+        for (int i = 0; i < courseList.size(); ++i)
+        {
+            List<Index> currentIndexList = courseList.get(i).getIndexList();
 
-            temp = indexList.get(i);
-            System.out.println("Index no.: " + temp.getIndexNum() + "   ID: " + temp.getNumberOfEnrolledStudent());
-
+            for (int j = 0; j < currentIndexList.size();  ++ j)
+            {
+                //Prints index number of current course and enrolled list
+                System.out.println("Index No: " + currentIndexList.get(j).getIndexNum() + " No. of students: "
+                                    + currentIndexList.get(j).getNumberOfEnrolledStudent());
+            }
         }
 
         return 1;
-
     }
-    */
+
 
 }
