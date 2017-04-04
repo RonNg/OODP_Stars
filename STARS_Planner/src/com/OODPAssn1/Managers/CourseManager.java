@@ -15,9 +15,9 @@ public class CourseManager extends DataManager {
     private DataManager dM;
 
     public static final String COURSE_PATH = "course.dat";
-    public static final String INDEX_PATH = "index.dat";
+    //public static final String INDEX_PATH = "index.dat";
     private List<Course> courseList = null;
-    private List<Index> indexList = null;
+
 
     private boolean isInitAlready = false;
 
@@ -37,29 +37,21 @@ public class CourseManager extends DataManager {
         if(!isInitAlready){
             //dM = new DataManager();
             courseList = (ArrayList<Course>)this.read(COURSE_PATH);
-            indexList = (ArrayList<Index>)this.read(INDEX_PATH);
+
             if(courseList == null){
                 courseList = new ArrayList<Course>();
-            }
-            if(indexList == null){
-                indexList = new ArrayList<Index>();
             }
         }
         isInitAlready = true;
     }
 
     public boolean saveAll(){
-        boolean sCheck = false;
-
-        if(this.write(courseList,COURSE_PATH) && this.write(indexList,INDEX_PATH)){
-            return true;
-        }
-        return false;
+        return this.write(courseList,COURSE_PATH);
     }
 
     //---------Course methods---------
 
-    public List<Course> getCourseList(){
+    public List getCourseList(){
         return courseList;
     }
 
@@ -103,61 +95,24 @@ public class CourseManager extends DataManager {
 
     //---------Index methods---------
 
-    public boolean printIndexOfCourse(Course c){
-
-        if(c==null)
-            return false;
-
-        List temp = c.getIndexNumberList();
-        int j = 0;
-        while(j != temp.size()){
-
-            System.out.print(temp.get(j) + "  ");
-            j++;
-
-        }
-        System.out.println();
-        return true;
-    }
-
-    public List<Index> getIndexList(){
-        return indexList;
-    }
-
-    public List<Index> getAllIndexList(){
-        return indexList;
-    }
-
     public List<Index> getIndexList(Course course){
-        List<Index> courseFiltered = new ArrayList<Index>();
-        List<Integer> indexListC = courseList.get(courseList.indexOf(course)).getIndexNumberList();
-        for(int n = 0; n < indexListC.size(); n++){
-            for(int m = 0; m < indexList.size(); m++){
-                if(indexList.get(m).getIndexNum()==indexListC.get(n)){
-                    courseFiltered.add(indexList.get(m));
-                    break;
-                }
-            }
-        }
-        return courseFiltered;
+        return courseList.get(courseList.indexOf(course)).getIndexList();
     }
 
-    public boolean addIndex(Course course,int indexNum, int maxNumOfStudetns){
-        if(indexList.add(new Index(indexNum,maxNumOfStudetns))){
-            return courseList.get(courseList.indexOf(course)).addIndex(indexNum);
-        }
-        return false;
+    public boolean createIndex(Course course, int indexNum, int maxNumOfStudetns){
+        return courseList.get(courseList.indexOf(course)).addIndex(indexNum,maxNumOfStudetns);
     }
 
     public boolean deleteIndex(Course course, Index index){
-        if(indexList.remove(index)){
-            return courseList.get(courseList.indexOf(course)).deleteIndex(index.getIndexNum());
-        }
-        return false;
+        return courseList.get(courseList.indexOf(course)).deleteIndex(index);
     }
 
-    public int enrolInIndex(String matricNo,Index index){ // 1 - Success 0 - something wrong -1 - index full
-        switch (indexList.get(indexList.indexOf(index)).enrolStudent(matricNo)){
+    public int enrolInIndex(String matricNo,Course course, Index index){ // 1 - success 0 - something wrong -1 - index full // 2 - already in index
+        Course toChange = courseList.get(courseList.indexOf(course));
+        if(toChange.getIndexList().get(toChange.getIndexList().indexOf(index)).checkIfStudentEnrolled(matricNo)){
+            return 2;
+        }
+        switch (toChange.getIndexList().get(toChange.getIndexList().indexOf(index)).enrolStudent(matricNo)){
             case -1:
                 //TODO : Track the student is in the waitlist
                 return -1;
@@ -170,23 +125,14 @@ public class CourseManager extends DataManager {
         return 0;
     }
 
-    public boolean withdrawFromIndex(String matricNo, Index index){ // 1 - Success 0 - something wrong -1 - another student in waitlist enrolled
-        String response = indexList.get(indexList.indexOf(index)).withdrawStudent(matricNo);
-        switch (response){
-            case "ERROR":
-                return false;
-            case "SUCCESS":
-                return true;
-            default:
-                // Send email to student just enrolled
-                return true;
-        }
+    public String withdrawFromIndex(String matricNo, Course course, Index index){ // "SUCCESS" - Success "ERROR" - something wrong OTHERS - matric number of student to send email to
+        Course toChange = courseList.get(courseList.indexOf(course));
+        return toChange.getIndexList().get(toChange.getIndexList().indexOf(index)).withdrawStudent(matricNo);
     }
-
 
 //----------------------------------Method for debugging purposes. Remove for production--------------------------------
 
-    public int printAllCourse(){
+    /*public int printAllCourse(){
 
         if (courseList == null) {
             System.out.println("printAll(): List is empty");
@@ -230,15 +176,6 @@ public class CourseManager extends DataManager {
         return 1;
 
     }
-
-
-    public boolean createIndex(int indexNum, int maxNumStudent){
-
-        return indexList.add(new Index(indexNum, maxNumStudent));
-
-    }
-
-
-
+    */
 
 }

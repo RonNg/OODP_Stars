@@ -1,12 +1,9 @@
 package com.OODPAssn1;
 
-import com.OODPAssn1.Entities.Admin;
 import com.OODPAssn1.Entities.Student;
 import com.OODPAssn1.Entities.User;
 import com.OODPAssn1.Managers.CourseManager;
 import com.OODPAssn1.Managers.UserManager;
-import com.sun.org.apache.xpath.internal.SourceTree;
-import com.sun.xml.internal.bind.v2.TODO;
 
 /**
  * Created by jonah on 15/3/2017.
@@ -139,7 +136,7 @@ public class STARS {
         //UserManager.getInstance().addStudent( new Student("Ron", "c160144@e.ntu", "U1622393B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password"));
         //UserManager.getInstance().addAdmin( new Admin("doug", "doug@e.ntu", "doug123",  "doug123"));
         //CourseManager.getInstance().createIndex(10032, 50);
-        CourseManager.getInstance().addIndex(CourseManager.getInstance().findCourseById("CE2003"), 10042, 50);
+        CourseManager.getInstance().createIndex(CourseManager.getInstance().findCourseById("CE2003"), 10042, 50);
     }
 
 
