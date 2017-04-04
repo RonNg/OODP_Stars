@@ -114,8 +114,6 @@ public class CourseManager extends DataManager {
         return false;
     }
 
-
-
     public int enrolInIndex(String matricNo,Index index){ // 1 - Success 0 - something wrong -1 - index full
         switch (indexList.get(indexList.indexOf(index)).enrolStudent(matricNo)){
             case -1:
