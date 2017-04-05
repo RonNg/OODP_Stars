@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dee5bdef-2109-401b-b3eb-04a3f09e04a1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/STARS_Planner/database/course.dat" afterPath="$PROJECT_DIR$/STARS_Planner/database/course.dat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/Course.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/Course.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/Index.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/Index.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/Student.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/Student.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/TimeSlot.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Entities/TimeSlot.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/CourseManager.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/CourseManager.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/DataManager.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/DataManager.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/UserManager.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/UserManager.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Stars.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Stars.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/TEST.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/TEST.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/UI.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/UI.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Entities/TimeSlot.java" afterPath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Entities/TimeSlot.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/TEST.java" afterPath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/TEST.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/UI.java" afterPath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/UI.java" />
-    </list>
+    <list default="true" id="dee5bdef-2109-401b-b3eb-04a3f09e04a1" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -35,8 +19,8 @@
       <file leaf-file-name="UI.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/UI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="665">
-              <caret line="182" column="96" lean-forward="false" selection-start-line="182" selection-start-column="96" selection-end-line="182" selection-end-column="96" />
+            <state relative-caret-position="-236">
+              <caret line="163" column="33" lean-forward="true" selection-start-line="163" selection-start-column="33" selection-end-line="163" selection-end-column="33" />
               <folding>
                 <element signature="method#main#0;class#UI#0" expanded="false" />
                 <element signature="method#loginScreen#0;class#UI#0" expanded="false" />
@@ -843,8 +827,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/UI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="665">
-          <caret line="182" column="96" lean-forward="false" selection-start-line="182" selection-start-column="96" selection-end-line="182" selection-end-column="96" />
+        <state relative-caret-position="-236">
+          <caret line="163" column="33" lean-forward="true" selection-start-line="163" selection-start-column="33" selection-end-line="163" selection-end-column="33" />
           <folding>
             <element signature="method#main#0;class#UI#0" expanded="false" />
             <element signature="method#loginScreen#0;class#UI#0" expanded="false" />
