@@ -66,6 +66,105 @@ public class STARS
     }
 
 
+
+    public boolean doesCourseExist(String courseId)
+    {
+        List<Course> courseList = CourseManager.getInstance().getCourseList();
+        for(int i = 0; i < courseList.size(); ++ i)
+        {
+            if(courseList.get(i).getCourseId() == courseId)
+                return true;
+        }
+
+        return false;
+    }
+
+    public boolean doesIndexExist (int indexNo)
+    {
+        List<Course> courseList = CourseManager.getInstance().getCourseList();
+        for(int i = 0; i < courseList.size(); ++ i)
+        {
+            List<Index> indexList = courseList.get(i).getIndexList();
+            if(indexList == null) continue; //Go to next course
+
+            for(int j = 0;  j < indexList.size(); ++ j)
+            {
+                if(indexList.get(i).getIndexNum() == indexNo)
+                    return true; //index number is found in entire course list
+            }
+        }
+
+        return false;
+
+    }
+
+      /*==================================================
+
+
+                       STUDENT METHODS
+
+     ==================================================*/
+
+    /**
+     * @param matricNo Matric number of the student to find in the waitlist
+     * @param indexNo The waitlist's index
+     * @return returns an int array of size 2 <br>
+     *         The first value in the array is the Student's position in the waitlist
+     *         The second value in the array is the total number of Students in the waitlist
+     */
+    public int [] student_getPositionInWaitlist ( int indexNo )
+    {
+        if (doesIndexExist(indexNo) == false || currentLogOnUser.getType() != User.USER_TYPE.STUDENT)
+            return null;
+
+        int [] returnPos = new int[2];
+
+        List<String> tempWaitList = CourseManager.getInstance().findByIndex(indexNo).getWaitList();
+
+        for( int i = 0; i < tempWaitList.size(); ++ i )
+        {
+            if (((Student)currentLogOnUser).getMatricNo() == tempWaitList.get(i))
+            {
+                returnPos[0] = i + 1; //+1 since index starts at 0. If you're at index 0, you're in fact in position 1.
+                returnPos[1] = tempWaitList.size();
+                return returnPos;
+            }
+        }
+        return null; //Student is not in the wait list.
+    }
+
+    /**
+     *
+     * @param indexNo Index Number to enrol into
+     * @return Added into waitlist - -1 <br>
+     *         Successfully enrolled into index - 1 <br>
+     *         Error occured - 0
+     */
+    public int student_EnrolIndex(int indexNo)
+    {
+        if(currentLogOnUser.getType() != User.USER_TYPE.STUDENT) //only users can enroll into indexes
+            return 0;
+
+
+        Student tempStud = (Student)currentLogOnUser;
+        int result = CourseManager.getInstance().enrolInIndex(tempStud.getMatricNo(), indexNo);
+
+        if(result == 1)
+            tempStud.addCourseIndex(indexNo); //Student is enrolled in Index list. Update student's course index information
+
+
+        return result;
+    }
+
+
+    /*==================================================
+
+
+                       ADMIN METHODS
+
+
+     ==================================================*/
+
 //------------------------Method for adding/updating of Course----------------------------------------------
 
     public void admin_AddCourse(String courseId, String courseName, String faculty)
@@ -154,25 +253,19 @@ public class STARS
         return true;
     }
 
-    public boolean admin_DoesCourseExist (String courseId)
+    public boolean admin_DeleteCourse(String courseId)
     {
-        List<Course> courseList = CourseManager.getInstance().getCourseList();
-        for(int i = 0; i < courseList.size(); ++ i)
-        {
-            if(courseList.get(i).getCourseId() == courseId)
-                return true;
-        }
-
         return false;
     }
+
 
 //-------------------------------Method for enrolling of Student into STARS---------------------------------------------
 //This method will make use of UserManager to create student and write it into database.
 
 
-    public void enrollStudent(String name, String email, String matricNo,
-                              int contact, Student.GENDER gender, String nationality,
-                              String username, String password)
+    public void admin_addStudent(String name, String email, String matricNo,
+                                 int contact, Student.GENDER gender, String nationality,
+                                 String username, String password)
     {
 
         UserManager.getInstance().addStudent(name, email, matricNo, contact, gender,
@@ -200,7 +293,14 @@ public class STARS
         CourseManager.getInstance().printAllCourse();
     }
 
-//------------------------------Method to print index available in a course---------------------------------------------
+
+
+
+   /*==================================================
+
+                       PRINT METHODS
+
+     ==================================================*/
 
     /**
      * print entire index of a course
@@ -209,6 +309,7 @@ public class STARS
      */
     public void printIndexListOfCourse(String courseId)
     {
+
 
         // if(!(CourseManager.getInstance().printIndexOfCourse(CourseManager.getInstance().findCourseById(courseId))))
         // {

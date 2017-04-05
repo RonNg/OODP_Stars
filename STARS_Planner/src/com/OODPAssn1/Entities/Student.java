@@ -6,7 +6,6 @@ import java.util.List;
 public class Student extends User
 {
     public enum GENDER { MALE, FEMALE }
-    public enum PROGRAMME { CE, CS, BU  }
 
     private String matricNo;
     protected String name;
@@ -37,12 +36,12 @@ public class Student extends User
     //Mutator
     public void addCourseIndex(int courseIndex)
     {
+        courseIndexList.add(courseIndex);
     }
 
 
     public void deenrollCourseIndex()
     {
     }
-
 
 }

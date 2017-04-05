@@ -131,25 +131,32 @@ public class CourseManager extends DataManager
         return courseList.get(courseList.indexOf(course)).deleteIndex(index);
     }
 
-    public int enrolInIndex(String matricNo, Course course, Index index)
-    { // 1 - success 0 - something wrong -1 - index full // 2 - already in index
-        Course toChange = courseList.get(courseList.indexOf(course));
-        if (toChange.getIndexList().get(toChange.getIndexList().indexOf(index)).checkIfStudentEnrolled(matricNo))
+
+    /**
+     *
+     * @param matricNo Matriculation number of the student who is enrolling into this index
+     * @param indexNo Index Number of the index the student is attempting to enrol into
+     * @return Added into waitlist - -1 <br>
+     *         Successfully enrolled into index - 1 <br>
+     *         Error occured - 0
+     */
+    public int enrolInIndex(String matricNo, int indexNo)
+    {
+        // 1 - success
+        // 0 - something wrong
+        // -1 - index full
+        // 2 - already in index
+        Index tempIndex = findByIndex(indexNo);
+
+        if(tempIndex == null)
+            return 0;
+
+        if (tempIndex.checkIfStudentEnrolled(matricNo))
         {
             return 2;
         }
-        switch (toChange.getIndexList().get(toChange.getIndexList().indexOf(index)).enrolStudent(matricNo))
-        {
-            case -1:
-                //TODO : Track the student is in the waitlist
-                return -1;
-            case 0:
-                return 0;
-            case 1:
-                // add into student object registered course
-                return 1;
-        }
-        return 0;
+        return tempIndex.enrolStudent(matricNo); //enrols the student into the index by Matric No
+
     }
 
     public String withdrawFromIndex(String matricNo, Course course, Index index)

@@ -19,6 +19,7 @@ public class Index implements Serializable
 
     public Index(int indexNum, int maxNumberOfStudent)
     {
+
         this.indexNum = indexNum;
         this.maxNumberOfStudent = maxNumberOfStudent;
         numberOfStudent = 0;
@@ -35,10 +36,7 @@ public class Index implements Serializable
         this.indexNum = indexNum;
     }
 
-    public int getIndexNum()
-    {
-        return indexNum;
-    }
+
 
     //-------number of students methods--------
 
@@ -52,22 +50,11 @@ public class Index implements Serializable
         return true;
     }
 
-    public int getMaxNumberOfStudent()
-    {
-        return maxNumberOfStudent;
-    }
 
-    public int getNumberOfVacancy()
-    {
-        return maxNumberOfStudent = numberOfStudent;
-    }
 
     //-------Time slot methods--------
 
-    public List<TimeSlot> getTutLabTimeSlotList()
-    {
-        return tutLabTimeSlotList;
-    }
+
 
     public boolean deleteTutLabTimeSlot(TimeSlot dTimeSlot)
     {
@@ -90,26 +77,29 @@ public class Index implements Serializable
 
     //-------Student registered methods--------
 
-    public int getNumberOfEnrolledStudent()
-    {
-        return numberOfStudent;
-    }
 
+    /**
+     *
+     * @param matricNo Enrolling Student's matriculation number
+     * @return Added into waitlist - -1 <br>
+     *         Successfully enrolled into index - 1 <br>
+     *         Error occured - 0
+     */
     public int enrolStudent(String matricNo)
     {
         if (numberOfStudent >= maxNumberOfStudent)
         {
             if (studentWaitList.add(matricNo))
             {
+                //Added into waitlist
                 return -1;
             }
-            return 0;
-        } else if (studentsEnrolledList.add(matricNo))
+        }
+        else if (studentsEnrolledList.add(matricNo))
         {
             numberOfStudent++;
-            return 1;
+            return 1; //Successfully enrolled into index
         }
-
         return 0;
     }
 
@@ -144,5 +134,30 @@ public class Index implements Serializable
         }
         return false;
     }
+
+
+
+    //Accessors
+    public int getNumberOfEnrolledStudent()
+    {
+        return numberOfStudent;
+    }
+    public List<TimeSlot> getTutLabTimeSlotList()
+    {
+        return tutLabTimeSlotList;
+    }
+    public int getIndexNum()
+    {
+        return indexNum;
+    }
+    public int getMaxNumberOfStudent()
+    {
+        return maxNumberOfStudent;
+    }
+    public int getNumberOfVacancy()
+    {
+        return maxNumberOfStudent - numberOfStudent;
+    }
+    public List getWaitList(){return studentWaitList;}
 
 }

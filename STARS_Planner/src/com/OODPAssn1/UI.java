@@ -70,8 +70,8 @@ public class UI
         {
             System.out.println("\nWhat will you like to do? \n" +
                     "-------------------------\n" +
-                    "1) Add Course\n" +
-                    "2) Drop Course\n" +
+                    "1) Add Course Index\n" +
+                    "2) Drop Course Index\n" +
                     "3) Check/Print Courses Registered\n" +
                     "4) Check Vacancies Available\n" +
                     "5) Change Index Number of Course\n" +
@@ -85,16 +85,7 @@ public class UI
             {
 
                 case 1://Add course
-                    System.out.println("Course available to enroll: \n" +
-                            "--------------------------");
-                    STARS.getInstance().printCourseList();
-                    System.out.print("Please input the course ID of the course you wished to enroll in: ");
-                    String courseId = s.next();
-                    System.out.println("Index available to enroll in according to course selected: \n" +
-                            "---------------------------------------------------------");
-                    STARS.getInstance().printIndexListOfCourse(courseId);
-                    //TODO: Enroll into index with checking of vacancy and wait list
-
+                    student_AddCourse();
                     break;
 
                 case 2://Drop course
@@ -132,9 +123,68 @@ public class UI
             }//end of switch
 
         }//end of while
-
     }
 
+
+   public static void student_AddCourse()
+   {
+       boolean addFinish = false;
+       while(!addFinish)
+       {
+           System.out.println("Course available to enroll: \n" +
+                   "--------------------------");
+           STARS.getInstance().printCourseList();
+
+           System.out.print("\nPlease input the course ID of the course you wished to enroll in or type 'quit' to go back to main menu: ");
+           String courseId = s.next();
+
+           //Checks if quit and then checks if the course exists, else restart.
+           if (courseId.equals("quit"))
+           {
+               break;
+           }
+           else if (STARS.getInstance().doesCourseExist(courseId) == false)
+           {
+               System.out.println("\n\nThe course does not exist, please try again.\n\n");
+               continue;
+           }
+
+           System.out.println("Index available to enroll in according to course selected: \n" +
+                   "---------------------------------------------------------");
+           STARS.getInstance().printIndexListOfCourse(courseId);
+           int indexToEnroll = s.nextInt();
+
+           //Checks if index exists else restart
+           if ( STARS.getInstance().doesIndexExist(indexToEnroll) == false)
+           {
+               System.out.println("\n\nThe index does not exist, please try again.\n\n");
+               continue;
+           }
+
+           //Enrols student into index
+           int result = STARS.getInstance().student_EnrolIndex(indexToEnroll);
+
+           if ( result == 1 ) //Sucessfully enrolled into index
+           {
+               System.out.println("You have successfully enroled into the Index " + indexToEnroll);
+               addFinish = true;
+           }
+
+           else if(result == -1) //if student has been placed in wait list
+           {
+               System.out.println("You have been placed into the wait list of " + indexToEnroll);
+               int [] studentPosInWaitList = STARS.getInstance().student_getPositionInWaitlist(indexToEnroll);
+               if(studentPosInWaitList == null)
+               {
+                   System.out.println("Could not find you in the waitlist.");
+                   continue;//Reset
+               }
+               System.out.println("You are currently position " + studentPosInWaitList[0] + "out of " + studentPosInWaitList[1] + "in the waitlist");
+               addFinish = true;
+           }
+           addFinish = false;
+       }
+   }
 
 //------------------------------------Method to display Admin's menu--------------------------------------------------
 
@@ -192,13 +242,13 @@ public class UI
                       String password = new String(passString );
                     */
                     if (genderStr.equals("m"))
-                        STARS.getInstance().enrollStudent(name, email, matricNo,
+                        STARS.getInstance().admin_addStudent(name, email, matricNo,
                                 contact, Student.GENDER.MALE, nationality, username, password);
                     else
-                        STARS.getInstance().enrollStudent(name, email, matricNo,
+                        STARS.getInstance().admin_addStudent(name, email, matricNo,
                                 contact, Student.GENDER.FEMALE, nationality, username, password);
 
-                    //STARS.getInstance().enrollStudent("dude", "dude@e.ntu.edu.sg", "U1625639G",
+                    //STARS.getInstance().admin_addStudent("dude", "dude@e.ntu.edu.sg", "U1625639G",
                     //98245937, Student.GENDER.MALE, "SG", "dude123", "dude123");
                     break;
 
@@ -219,7 +269,7 @@ public class UI
                     System.out.println("\nEnter the Course ID for the course which you would you like to update: ");
                     String courseId = s.next();
 
-                    if (STARS.getInstance().admin_DoesCourseExist(courseId) == false);
+                    if (STARS.getInstance().doesCourseExist(courseId) == false);
                     {
 
                         System.out.println("What would you like to edit for " + courseId + "?");
@@ -409,16 +459,16 @@ public class UI
         return courseId;
     }
 
+    //TODO: When deleting course, must deregister students associated with indexes of the course
     public static void admin_DeleteCourse(String courseId)
     {
         //if course exists
-        if(STARS.getInstance().admin_DoesCourseExist(courseId))
+        if(STARS.getInstance().doesCourseExist(courseId))
         {
-            
+
         }
 
     }
-
 
 
     /**
