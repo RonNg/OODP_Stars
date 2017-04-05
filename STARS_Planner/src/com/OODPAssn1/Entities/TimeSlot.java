@@ -1,9 +1,10 @@
 package com.OODPAssn1.Entities;
 
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
-public class TimeSlot
+public class TimeSlot implements Serializable
 {
 
     public enum DAY

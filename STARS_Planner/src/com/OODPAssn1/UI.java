@@ -208,9 +208,12 @@ public class UI
                     System.out.println("Please enter Course ID");
                     String courseID = s.next();
                     System.out.println("Please enter Course Name");
-                    String courseName = s.next();
+
+                    s.nextLine();
+                    String courseName = s.nextLine();
                     System.out.println("Please enter Faculty");
                     String faculty = s.next();
+
 
                     //Adds the course and returns the course object so that we can use it to add the lecture time
                     Course tempCourse = STARS.getInstance().addCourse(courseID, courseName, faculty);
@@ -303,21 +306,29 @@ public class UI
                             }
 
                         } //while loop end for validDay
-
-
-                        System.out.println("Enter the lecture start time in 24hrs format for " + timeSlotDay.name());
                         
+                        System.out.println("Enter the lecture START time in 24hrs format for " + timeSlotDay.name());
+                        String time = s.next();
+                        int startTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
+                        int startTimeMM = Integer.parseInt(time.substring(time.length()/2));
 
 
+                        System.out.println("Enter the lecture END time in 24hrs format for " + timeSlotDay.name());
+                        time = s.next();
+                        int endTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
+                        int endTimeMM = Integer.parseInt(time.substring(time.length()/2));
+
+                        System.out.println("Please enter the LT number for the Lecture  " + timeSlotDay.name());
+                        String locationLT = s.next();
+
+                        boolean success = tempCourse.addlecTimeSlot(timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT);
+
+                        if(success)
+                            System.out.println("Lecture on " + timeSlotDay.name() + " succesfully added!");
                     } //loop for entering Lecture
 
 
-                    //boolean addLecTimeSlot(Course course, TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
-                    //tempCourse.addlecTimeSlot()
-
-
-
-                    break;
+                break;
 
                 case 4://Check available slot for an index number (vacancy in a class)
 
