@@ -70,7 +70,8 @@ public class STARS
 
     public void admin_AddCourse(String courseId, String courseName, String faculty)
     {
-       CourseManager.getInstance().addCourse(courseId, courseName, faculty);
+       if (CourseManager.getInstance().addCourse(courseId, courseName, faculty))
+           CourseManager.getInstance().save(); //Save after adding
     }
 
     public boolean admin_AddLecTimeSlot (String courseId, TimeSlot.DAY timeSlotDay, int startTimeHH, int startTimeMM, int endTimeHH, int endTimeMM, String locationLT )
@@ -79,7 +80,9 @@ public class STARS
 
         if(course != null)
         {
+            //Save after adding
             course.addlecTimeSlot(timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT);
+            CourseManager.getInstance().save();
             return true;
         }
         else
@@ -89,34 +92,79 @@ public class STARS
         }
     }
 
-    public boolean admin_AddIndex(String courseId, int indexNoToAdd)
+    public boolean admin_AddIndex(String courseId, int indexNoToAdd, int maxStudent)
     {
         boolean alreadyExists = false;
-
         Course tempCourse = CourseManager.getInstance().findCourseById(courseId);
-        List<Index> courseIndexList = tempCourse.getIndexList();
 
         //Check whether this index already exists
+        List<Index> courseIndexList = tempCourse.getIndexList();
         for(int z = 0; z < courseIndexList.size(); ++ z)
         {
             //Index number already exists
             if(courseIndexList.get(z).getIndexNum() == indexNoToAdd)
-                alreadyExists = true;
+                return false;
         }
 
-        if(alreadyExists)
+        boolean success = tempCourse.addIndex(indexNoToAdd, maxStudent);
+
+        if(success)
         {
-          return false;
+            //Save after adding
+            CourseManager.getInstance().save();
+            return true;
         }
 
-        //System.out.println("Please enter the maximum number of students in this index: ");
-        //int maxStudents = s.nextInt();
-
-        //course.addIndex(indexNoToAdd, maxStudents);
         return false;
     }
 
+    public boolean admin_AddIndexLabTimeSlot (int indexNo, TimeSlot.DAY day,  int startH, int startM, int endH, int endM, String labLocation)
+    {
+        Index tempIndex = CourseManager.getInstance().findByIndex(indexNo);
+        //Can't find the index
+        if(tempIndex == null)
+            return false;
 
+        boolean success = tempIndex.addLabTimeSlot(day, startH, startM, endH, endM, labLocation);
+
+        if(success)
+        {
+            CourseManager.getInstance().save();
+            return true;
+        }
+
+        return true;
+    }
+
+    public boolean admin_AddIndexTutTimeSlot (int indexNo, TimeSlot.DAY day,  int startH, int startM, int endH, int endM, String tutLocation)
+    {
+        Index tempIndex = CourseManager.getInstance().findByIndex(indexNo);
+        //Can't find the index
+        if(tempIndex == null)
+            return false;
+
+        boolean success = tempIndex.addTutTimeSlot(day, startH, startM, endH, endM, tutLocation);
+
+        if(success)
+        {
+            CourseManager.getInstance().save();
+            return true;
+        }
+
+        return true;
+    }
+
+    public boolean admin_DoesCourseExist (String courseId)
+    {
+        List<Course> courseList = CourseManager.getInstance().getCourseList();
+        for(int i = 0; i < courseList.size(); ++ i)
+        {
+            if(courseList.get(i).getCourseId() == courseId)
+                return true;
+        }
+
+        return false;
+    }
 
 //-------------------------------Method for enrolling of Student into STARS---------------------------------------------
 //This method will make use of UserManager to create student and write it into database.
@@ -176,9 +224,14 @@ public class STARS
 
     public void printAllList()
     {
+        System.out.println("===============================");
         UserManager.getInstance().printAllUser();
+
+        System.out.println("\n\n===============================");
         CourseManager.getInstance().printAllCourse();
-        CourseManager.getInstance().printAllIndex();
+
+        System.out.println("\n\n===============================");
+        CourseManager.getInstance().printAllIndexDetails();
     }
 
     public void populateDatabase()

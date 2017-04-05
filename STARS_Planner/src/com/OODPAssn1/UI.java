@@ -1,10 +1,10 @@
 package com.OODPAssn1;
 
-import com.OODPAssn1.Entities.*;
-import com.OODPAssn1.Managers.CourseManager;
+import com.OODPAssn1.Entities.Student;
+import com.OODPAssn1.Entities.TimeSlot;
+import com.OODPAssn1.Entities.User;
 
 import java.io.Console;
-import java.util.List;
 import java.util.Scanner;
 
 
@@ -150,13 +150,14 @@ public class UI
                     "-------------------------\n" +
                     "1) Edit student access period\n" +
                     "2) Add a student\n" +
-                    "3) Add/Update a course\n" +
-                    "4) Check available slot for an index number (vacancy in a class)\n" +
-                    "5) Print student list by index number.\n" +
-                    "6) Print student list by course (all students registered for the selected course).\n" +
-                    "7) Log out and save all changes\n" +
-                    "8) Quit STARS and save all changes\n" +
-                    "9) Debug");
+                    "3) Add a course\n" +
+                    "4) Update a course\n" +
+                    "5) Check available slot for an index number (vacancy in a class)\n" +
+                    "6) Print student list by index number.\n" +
+                    "7) Print student list by course (all students registered for the selected course).\n" +
+                    "8) Log out and save all changes\n" +
+                    "9) Quit STARS and save all changes\n" +
+                    "10) Debug");
 
 
             choice = s.nextInt();
@@ -204,32 +205,46 @@ public class UI
                 //TODO: Add Index after course creation
                 case 3://Add a Course and proceed to add index after if user chooses so
 
-
-                String courseIdAdded = admin_AddCourse(); //Goes to the UI menu for adding course.
-
-                CourseManager.getInstance().save(); //Saves the added course into the database
-
-                System.out.println("Do you want to add Course Index(s) to " + courseIdAdded + "?");
-                System.out.println("Y/N");
-                String addIndexChoice = s.next();
-
-                switch (addIndexChoice)
-                {
-                    case "y":
-                    case "Y":
-                        admin_AddIndex(courseIdAdded);
-                        break;
-
-                    case "n":
-                    case "N":
-                    default: //TODO: Add default case to restart the choice
-                        return;
-                }
-                break;
-
-                case 4://Check available slot for an index number (vacancy in a class)
-
+                    String courseIdAdded = admin_AddCourse(); //Goes to the UI menu for adding course.
                     break;
+
+                case 4://Update Course
+
+                    System.out.println("\n =============================================== " +
+                                       "\n                 Update a course             " +
+                                       "\n =============================================== ");
+
+
+                    STARS.getInstance().printCourseList(); //prints out all course for selection
+                    System.out.println("\nEnter the Course ID for the course which you would you like to update: ");
+                    String courseId = s.next();
+
+                    if (STARS.getInstance().admin_DoesCourseExist(courseId) == false);
+                    {
+
+                        System.out.println("What would you like to edit for " + courseId + "?");
+                        System.out.println("1) Add Index To Course"
+                                       + "\n2) Delete Course");
+
+                        int updateChoice = s.nextInt();
+
+                        switch(updateChoice)
+                        {
+                            //Add Index to Course
+                            case 1:
+                                admin_AddIndex(courseId);
+                                break;
+
+                            //Delete Course
+                            case 2:
+                                admin_DeleteCourse(courseId);
+                                break;
+                            default:
+                                System.out.println("Invalid choice. Returning to main menu");
+                                break;
+                        }
+                    }
+                break;
 
                 case 5://Print student list by index number
 
@@ -239,16 +254,20 @@ public class UI
 
                     break;
 
-                case 7://Save changes and return to login menu
+                case 7://Print student list by course (all students registered for the selected course)
+
+                    break;
+
+                case 8://Save changes and return to login menu
                     STARS.getInstance().writeToDB();
                     return;
 
-                case 8://Save changes and quit program
+                case 9://Save changes and quit program
                     STARS.getInstance().writeToDB();
                     loggedOnUserType = null;
                     return;
 
-                case 9://Use for debugging purposes
+                case 10://Use for debugging purposes
                     STARS.getInstance().printAllList();
                     break;
                 default:
@@ -260,7 +279,6 @@ public class UI
     }
 
     /**
-     *
      * @return courseId if Course is successfully added into the system
      */
     public static String admin_AddCourse()
@@ -284,10 +302,10 @@ public class UI
         int noOfLect = s.nextInt();
 
         //Add the lectures here
-        for ( int i = 1; i <= noOfLect; ++ i )
+        for (int i = 1; i <= noOfLect; ++i)
         {
             String lectureNo = null;
-            if(i == 1)
+            if (i == 1)
                 lectureNo = i + "st";
             else if (i == 2)
                 lectureNo = i + "nd";
@@ -297,11 +315,12 @@ public class UI
                 lectureNo = i + "th";
 
             //lectureNo displays 1st, 2nd, 3rd, or 4th etc. etc. depending on the variable "i" in the loop
-            System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
+
             TimeSlot.DAY timeSlotDay = null;
             boolean validDay = false;
-            while(!validDay)
+            while (!validDay)
             {
+                System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
                 System.out.println("Enter the day for the " + lectureNo + " of the week: ");
 
                 String day = s.next();
@@ -369,29 +388,42 @@ public class UI
 
             System.out.println("Enter the lecture START time in 24hrs format for " + timeSlotDay.name());
             String time = s.next();
-            int startTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
-            int startTimeMM = Integer.parseInt(time.substring(time.length()/2));
+            int startTimeHH = Integer.parseInt(time.substring(0, time.length() / 2));
+            int startTimeMM = Integer.parseInt(time.substring(time.length() / 2));
 
             System.out.println("Enter the lecture END time in 24hrs format for " + timeSlotDay.name());
             time = s.next();
-            int endTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
-            int endTimeMM = Integer.parseInt(time.substring(time.length()/2));
+            int endTimeHH = Integer.parseInt(time.substring(0, time.length() / 2));
+            int endTimeMM = Integer.parseInt(time.substring(time.length() / 2));
 
             System.out.println("Please enter the LT number for the Lecture  " + timeSlotDay.name());
             String locationLT = s.next();
 
-            boolean success = STARS.getInstance().admin_AddLecTimeSlot(courseId, timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM,locationLT);
+            boolean success = STARS.getInstance().admin_AddLecTimeSlot(courseId, timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT);
 
-            if(success)
+            if (success)
                 System.out.println("Lecture on " + timeSlotDay.name() + " succesfully added!");
+
         } //finish loop for entering Lecture
 
         return courseId;
     }
 
+    public static void admin_DeleteCourse(String courseId)
+    {
+        //if course exists
+        if(STARS.getInstance().admin_DoesCourseExist(courseId))
+        {
+            
+        }
+
+    }
+
+
+
     /**
      * This function adds index(s) to the course object arg
-     * @param course Adds index(s) to this course
+     * @param courseId Adds index(s) to this course
      */
     public static void admin_AddIndex(String courseId)
     {
@@ -401,21 +433,194 @@ public class UI
         //Loop to add as many indexes as specified by numberOfIndexToAdd
         for(int i = 0; i < numberOfIndexToAdd; ++ i)
         {
-
             System.out.println("Please enter the index number to add: " );
             int indexNoToAdd = s.nextInt();
 
-            if(STARS.getInstance().admin_AddIndex(courseId, indexNoToAdd) == false ) //Failed to add
+            System.out.println("Please enter the maximum number of students per class: " );
+            int maxStudent = s.nextInt();
+
+            if(STARS.getInstance().admin_AddIndex(courseId, indexNoToAdd, maxStudent) == false ) //Failed to add
             {
                 System.out.println("The index already exists, please try again");
                 -- i;  //Start the loop again while preserving the current iteration. since continue makes the loop go to the next iteration, --i cancels out ++i
                 continue;
             }
 
+            TimeSlot.DAY timeSlotDay = TimeSlot.DAY.SUN;
 
+            /*===================================
+                          ADD LAB
+            ====================================*/
+            boolean validDay = false;
+            while(!validDay)
+            {
+                System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
+                System.out.println("Enter the day for the LAB for Index " + indexNoToAdd + ":");
+                String day = s.next();
 
+                switch (day)
+                {
+                    //Monday
+                    case "m":
+                    case "M":
+                        timeSlotDay = TimeSlot.DAY.MON;
+                        validDay = true;
+                        break;
 
-        }
+                    //Tuesday
+                    case "t":
+                    case "T":
+                        timeSlotDay = TimeSlot.DAY.TUE;
+                        validDay = true;
+                        break;
+
+                    //Wednesday
+                    case "w":
+                    case "W":
+                        timeSlotDay = TimeSlot.DAY.WED;
+                        validDay = true;
+                        break;
+
+                    //Thursday
+                    case "th":
+                    case "TH":
+                    case "Th":
+                    case "tH":
+                        timeSlotDay = TimeSlot.DAY.THU;
+                        validDay = true;
+                        break;
+
+                    //Friday
+                    case "f":
+                    case "F":
+                        timeSlotDay = TimeSlot.DAY.FRI;
+                        validDay = true;
+                        break;
+
+                    //Saturday
+                    case "s":
+                    case "S":
+                        timeSlotDay = TimeSlot.DAY.SAT;
+                        validDay = true;
+                        break;
+
+                    //Sunday
+                    case "su":
+                    case "SU":
+                    case "Su":
+                    case "sU":
+                        timeSlotDay = TimeSlot.DAY.SUN;
+                        validDay = true;
+                        break;
+
+                    default:
+                        System.out.println("Invalid day is entered please try again.");
+                        break;
+                }
+            } //while loop end for validDay
+
+            System.out.println("Enter the LAB location for Index " + indexNoToAdd + ":");
+            String labLocation = s.next();
+
+            System.out.println("Enter the LAB START time in 24hrs format: ");
+            String time = s.next();
+            int startTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
+            int startTimeMM = Integer.parseInt(time.substring(time.length()/2));
+
+            System.out.println("Enter the LAB END time in 24hrs format: " );
+            time = s.next();
+            int endTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
+            int endTimeMM = Integer.parseInt(time.substring(time.length()/2));
+
+            STARS.getInstance().admin_AddIndexLabTimeSlot(indexNoToAdd, timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, labLocation );
+
+            /*===================================
+                          ADD TUT
+            ====================================*/
+            validDay = false;
+            while(!validDay)
+            {
+                System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
+                System.out.println("Enter the day for the TUT for Index " + indexNoToAdd + ":");
+                String day = s.next();
+
+                switch (day)
+                {
+                    //Monday
+                    case "m":
+                    case "M":
+                        timeSlotDay = TimeSlot.DAY.MON;
+                        validDay = true;
+                        break;
+
+                    //Tuesday
+                    case "t":
+                    case "T":
+                        timeSlotDay = TimeSlot.DAY.TUE;
+                        validDay = true;
+                        break;
+
+                    //Wednesday
+                    case "w":
+                    case "W":
+                        timeSlotDay = TimeSlot.DAY.WED;
+                        validDay = true;
+                        break;
+
+                    //Thursday
+                    case "th":
+                    case "TH":
+                    case "Th":
+                    case "tH":
+                        timeSlotDay = TimeSlot.DAY.THU;
+                        validDay = true;
+                        break;
+
+                    //Friday
+                    case "f":
+                    case "F":
+                        timeSlotDay = TimeSlot.DAY.FRI;
+                        validDay = true;
+                        break;
+
+                    //Saturday
+                    case "s":
+                    case "S":
+                        timeSlotDay = TimeSlot.DAY.SAT;
+                        validDay = true;
+                        break;
+
+                    //Sunday
+                    case "su":
+                    case "SU":
+                    case "Su":
+                    case "sU":
+                        timeSlotDay = TimeSlot.DAY.SUN;
+                        validDay = true;
+                        break;
+
+                    default:
+                        System.out.println("Invalid day is entered please try again.");
+                        break;
+                }
+            } //while loop end for validDay
+
+            System.out.println("Enter the TUT location for Index " + indexNoToAdd + ":");
+            String tutLocation = s.next();
+
+            System.out.println("Enter the TUT START time in 24hrs format: ");
+            time = s.next();
+            startTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
+            startTimeMM = Integer.parseInt(time.substring(time.length()/2));
+
+            System.out.println("Enter the TUT END time in 24hrs format: " );
+            time = s.next();
+            endTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
+            endTimeMM = Integer.parseInt(time.substring(time.length()/2));
+
+            STARS.getInstance().admin_AddIndexTutTimeSlot(indexNoToAdd, timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, tutLocation);
+
+        }//end of index list add
     }
 
 

@@ -98,12 +98,28 @@ public class CourseManager extends DataManager
     }
 
 
+
     //---------Index methods---------
 
     public List<Index> getIndexList(Course course)
     {
         return courseList.get(courseList.indexOf(course)).getIndexList();
     }
+
+    public Index findByIndex (int indexNo)
+    {
+        for(int i = 0; i < courseList.size(); ++ i)
+        {
+            List<Index> tempIndexList = courseList.get(i).getIndexList();
+            for(int j = 0; j < tempIndexList.size(); ++ j)
+            {
+                if(indexNo == tempIndexList.get(i).getIndexNum())
+                    return tempIndexList.get(i); //found
+            }
+        }
+        return null; //can't find
+    }
+
 
     public boolean createIndex(Course course, int indexNum, int maxNumOfStudetns)
     {
@@ -146,48 +162,71 @@ public class CourseManager extends DataManager
 
     public int printAllCourse()
     {
-
         if (courseList == null)
         {
             System.out.println("printAll(): List is empty");
             return 0;
         }
-        System.out.println("courseList.size(): " + courseList.size());
+
         Course temp = null;
-        int j = 0;
         for (int i = 0; i < courseList.size(); ++i)
         {
-
             temp = courseList.get(i);
 
-            System.out.print("Name: " + temp.getCourseName() + "   ID: " + temp.getCourseId() + "   Index: ");
-
-            while (j < temp.getIndexList().size())
+            String indexString = "No Index(s)";
+            List<Index> indexList = temp.getIndexList();
+            for(int j = 0; indexList != null && j < indexList.size(); ++ j)
             {
-                System.out.print(temp.getIndexList().get(j) + ", ");
-                j++;
+                if(j < 1)
+                    indexString = Integer.toString(indexList.get(j).getIndexNum());
+                else
+                    indexString  = indexString + ", " + Integer.toString(indexList.get(j).getIndexNum());
             }
-            System.out.println();
 
+            System.out.print("ID: " + temp.getCourseId() + " | Name: " + temp.getCourseName() + " | Index(s): " + indexString);
         }
-
         return 1;
-
     }
 
-    public int printAllIndex()
+    public int printAllIndexDetails()
     {
         Index temp = null;
         for (int i = 0; i < courseList.size(); ++i)
         {
-            List<Index> currentIndexList = courseList.get(i).getIndexList();
+            printIndexDetails(courseList.get(i).getCourseId());
+        }
+        return 1;
+    }
 
-            for (int j = 0; j < currentIndexList.size(); ++j)
+    /**
+     * Prints all index details of a specific course Id
+     * @return
+     */
+    public int printIndexDetails ( String courseId )
+    {
+        Course tempCourse = findCourseById(courseId);
+        if(tempCourse == null)
+            return -1;
+
+        List<Index> currentIndexList = tempCourse.getIndexList();
+        for (int j = 0; j < currentIndexList.size(); ++j)
+        {
+            Index tempIndex = currentIndexList.get(j);
+
+            //Prints index number of current course and enrolled list
+            System.out.println("Index No: " + tempIndex.getIndexNum() + " | No. of students: " + tempIndex.getNumberOfEnrolledStudent()) ;
+
+            //Print Lab and Tut Details of the current Index
+            List<TimeSlot> timeSlotList = tempIndex.getTutLabTimeSlotList();
+            for(int x = 0; timeSlotList != null && x < timeSlotList.size(); ++x )
             {
-                //Prints index number of current course and enrolled list
-                System.out.println("Index No: " + currentIndexList.get(j).getIndexNum() + " No. of students: "
-                        + currentIndexList.get(j).getNumberOfEnrolledStudent());
-            }
+                //LAB: 1400-1500hrs LOCATION
+                System.out.println(timeSlotList.get(x).getType() + ": "
+                        + timeSlotList.get(x).getStartTime() + " - " +  timeSlotList.get(x).getEndTime() + "hrs "
+                        + timeSlotList.get(x).getLocation());
+            }//print fin
+
+            System.out.println("");
         }
 
         return 1;
