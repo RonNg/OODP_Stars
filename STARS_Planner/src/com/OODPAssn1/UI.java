@@ -1,11 +1,10 @@
 package com.OODPAssn1;
 
-import com.OODPAssn1.Entities.Course;
-import com.OODPAssn1.Entities.Student;
-import com.OODPAssn1.Entities.TimeSlot;
-import com.OODPAssn1.Entities.User;
+import com.OODPAssn1.Entities.*;
+import com.OODPAssn1.Managers.CourseManager;
 
 import java.io.Console;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -66,7 +65,6 @@ public class UI
 
     public static void studentMenu()
     {
-
         int choice;
         while (true)
         {
@@ -203,131 +201,30 @@ public class UI
                     //98245937, Student.GENDER.MALE, "SG", "dude123", "dude123");
                     break;
 
-                //TODO: Update course
-                case 3://Add a Course
-                    System.out.println("Please enter Course ID");
-                    String courseID = s.next();
-                    System.out.println("Please enter Course Name");
-
-                    s.nextLine();
-                    String courseName = s.nextLine();
-                    System.out.println("Please enter Faculty");
-                    String faculty = s.next();
+                //TODO: Add Index after course creation
+                case 3://Add a Course and proceed to add index after if user chooses so
 
 
-                    //Adds the course and returns the course object so that we can use it to add the lecture time
-                    Course tempCourse = STARS.getInstance().addCourse(courseID, courseName, faculty);
+                String courseIdAdded = admin_AddCourse(); //Goes to the UI menu for adding course.
 
-                    System.out.println("");
-                    System.out.println("Please enter the number of lectures per week for Course " + tempCourse.getCourseId());
-                    int noOfLect = s.nextInt();
+                CourseManager.getInstance().save(); //Saves the added course into the database
 
-                    //Add the lectures here
-                    for ( int i = 1; i <= noOfLect; ++ i )
-                    {
-                        String lectureNo = null;
-                       if(i == 1)
-                           lectureNo = i + "st";
-                       else if (i == 2)
-                           lectureNo = i + "nd";
-                       else if (i == 3)
-                           lectureNo = i + "rd";
-                       else
-                           lectureNo = i + "th";
+                System.out.println("Do you want to add Course Index(s) to " + courseIdAdded + "?");
+                System.out.println("Y/N");
+                String addIndexChoice = s.next();
 
-                        //lectureNo displays 1st, 2nd, 3rd, or 4th etc. etc. depending on the variable "i" in the loop
-                        System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
-                        TimeSlot.DAY timeSlotDay = null;
-                        boolean validDay = false;
-                        while(!validDay)
-                        {
-                            System.out.println("Enter the day for the " + lectureNo + " of the week: ");
+                switch (addIndexChoice)
+                {
+                    case "y":
+                    case "Y":
+                        admin_AddIndex(courseIdAdded);
+                        break;
 
-                            String day = s.next();
-
-                            switch (day)
-                            {
-                                //Monday
-                                case "m":
-                                case "M":
-                                    timeSlotDay = TimeSlot.DAY.MON;
-                                    validDay = true;
-                                    break;
-
-                                //Tuesday
-                                case "t":
-                                case "T":
-                                    timeSlotDay = TimeSlot.DAY.TUE;
-                                    validDay = true;
-                                    break;
-
-                                //Wednesday
-                                case "w":
-                                case "W":
-                                    timeSlotDay = TimeSlot.DAY.WED;
-                                    validDay = true;
-                                    break;
-
-                                //Thursday
-                                case "th":
-                                case "TH":
-                                case "Th":
-                                case "tH":
-                                    timeSlotDay = TimeSlot.DAY.THU;
-                                    validDay = true;
-                                    break;
-
-                                //Friday
-                                case "f":
-                                case "F":
-                                    timeSlotDay = TimeSlot.DAY.FRI;
-                                    validDay = true;
-                                    break;
-
-                                //Saturday
-                                case "s":
-                                case "S":
-                                    timeSlotDay = TimeSlot.DAY.SAT;
-                                    validDay = true;
-                                    break;
-
-                                //Sunday
-                                case "su":
-                                case "SU":
-                                case "Su":
-                                case "sU":
-                                    timeSlotDay = TimeSlot.DAY.SUN;
-                                    validDay = true;
-                                    break;
-
-                                default:
-                                    System.out.println("Invalid day is entered please try again.");
-                                    break;
-                            }
-
-                        } //while loop end for validDay
-                        
-                        System.out.println("Enter the lecture START time in 24hrs format for " + timeSlotDay.name());
-                        String time = s.next();
-                        int startTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
-                        int startTimeMM = Integer.parseInt(time.substring(time.length()/2));
-
-
-                        System.out.println("Enter the lecture END time in 24hrs format for " + timeSlotDay.name());
-                        time = s.next();
-                        int endTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
-                        int endTimeMM = Integer.parseInt(time.substring(time.length()/2));
-
-                        System.out.println("Please enter the LT number for the Lecture  " + timeSlotDay.name());
-                        String locationLT = s.next();
-
-                        boolean success = tempCourse.addlecTimeSlot(timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT);
-
-                        if(success)
-                            System.out.println("Lecture on " + timeSlotDay.name() + " succesfully added!");
-                    } //loop for entering Lecture
-
-
+                    case "n":
+                    case "N":
+                    default: //TODO: Add default case to restart the choice
+                        return;
+                }
                 break;
 
                 case 4://Check available slot for an index number (vacancy in a class)
@@ -361,6 +258,166 @@ public class UI
 
         }//end of while loop
     }
+
+    /**
+     *
+     * @return courseId if Course is successfully added into the system
+     */
+    public static String admin_AddCourse()
+    {
+        //TODO: Check whether course already exists
+
+        System.out.println("Please enter Course ID");
+        String courseId = s.next();
+        System.out.println("Please enter Course Name");
+
+        s.nextLine();
+        String courseName = s.nextLine();
+        System.out.println("Please enter Faculty");
+        String faculty = s.next();
+
+        //Adds the course and returns the course object so that we can use it to add the lecture time
+        STARS.getInstance().admin_AddCourse(courseId, courseName, faculty);
+
+        System.out.println("");
+        System.out.println("Please enter the number of lectures per week for Course " + courseId);
+        int noOfLect = s.nextInt();
+
+        //Add the lectures here
+        for ( int i = 1; i <= noOfLect; ++ i )
+        {
+            String lectureNo = null;
+            if(i == 1)
+                lectureNo = i + "st";
+            else if (i == 2)
+                lectureNo = i + "nd";
+            else if (i == 3)
+                lectureNo = i + "rd";
+            else
+                lectureNo = i + "th";
+
+            //lectureNo displays 1st, 2nd, 3rd, or 4th etc. etc. depending on the variable "i" in the loop
+            System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
+            TimeSlot.DAY timeSlotDay = null;
+            boolean validDay = false;
+            while(!validDay)
+            {
+                System.out.println("Enter the day for the " + lectureNo + " of the week: ");
+
+                String day = s.next();
+
+                switch (day)
+                {
+                    //Monday
+                    case "m":
+                    case "M":
+                        timeSlotDay = TimeSlot.DAY.MON;
+                        validDay = true;
+                        break;
+
+                    //Tuesday
+                    case "t":
+                    case "T":
+                        timeSlotDay = TimeSlot.DAY.TUE;
+                        validDay = true;
+                        break;
+
+                    //Wednesday
+                    case "w":
+                    case "W":
+                        timeSlotDay = TimeSlot.DAY.WED;
+                        validDay = true;
+                        break;
+
+                    //Thursday
+                    case "th":
+                    case "TH":
+                    case "Th":
+                    case "tH":
+                        timeSlotDay = TimeSlot.DAY.THU;
+                        validDay = true;
+                        break;
+
+                    //Friday
+                    case "f":
+                    case "F":
+                        timeSlotDay = TimeSlot.DAY.FRI;
+                        validDay = true;
+                        break;
+
+                    //Saturday
+                    case "s":
+                    case "S":
+                        timeSlotDay = TimeSlot.DAY.SAT;
+                        validDay = true;
+                        break;
+
+                    //Sunday
+                    case "su":
+                    case "SU":
+                    case "Su":
+                    case "sU":
+                        timeSlotDay = TimeSlot.DAY.SUN;
+                        validDay = true;
+                        break;
+
+                    default:
+                        System.out.println("Invalid day is entered please try again.");
+                        break;
+                }
+            } //while loop end for validDay
+
+            System.out.println("Enter the lecture START time in 24hrs format for " + timeSlotDay.name());
+            String time = s.next();
+            int startTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
+            int startTimeMM = Integer.parseInt(time.substring(time.length()/2));
+
+            System.out.println("Enter the lecture END time in 24hrs format for " + timeSlotDay.name());
+            time = s.next();
+            int endTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
+            int endTimeMM = Integer.parseInt(time.substring(time.length()/2));
+
+            System.out.println("Please enter the LT number for the Lecture  " + timeSlotDay.name());
+            String locationLT = s.next();
+
+            boolean success = STARS.getInstance().admin_AddLecTimeSlot(courseId, timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM,locationLT);
+
+            if(success)
+                System.out.println("Lecture on " + timeSlotDay.name() + " succesfully added!");
+        } //finish loop for entering Lecture
+
+        return courseId;
+    }
+
+    /**
+     * This function adds index(s) to the course object arg
+     * @param course Adds index(s) to this course
+     */
+    public static void admin_AddIndex(String courseId)
+    {
+        System.out.println("How many index(s) do you want to add for " + courseId + "?");
+        int numberOfIndexToAdd = s.nextInt();
+
+        //Loop to add as many indexes as specified by numberOfIndexToAdd
+        for(int i = 0; i < numberOfIndexToAdd; ++ i)
+        {
+
+            System.out.println("Please enter the index number to add: " );
+            int indexNoToAdd = s.nextInt();
+
+            if(STARS.getInstance().admin_AddIndex(courseId, indexNoToAdd) == false ) //Failed to add
+            {
+                System.out.println("The index already exists, please try again");
+                -- i;  //Start the loop again while preserving the current iteration. since continue makes the loop go to the next iteration, --i cancels out ++i
+                continue;
+            }
+
+
+
+
+        }
+    }
+
 
 
 }

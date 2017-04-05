@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Index implements Serializable {
+public class Index implements Serializable
+{
 
     //SerialVersionUID of this Class used to deconflict serialisation
     static final long serialVersionUID = 1L;
@@ -16,10 +17,12 @@ public class Index implements Serializable {
     private List<TimeSlot> tutLabTimeSlotList; // Stores class times
     private List<String> studentWaitList; // Stores wait list
 
-    public Index(int indexNum, int maxNumberOfStudent){
+    public Index(int indexNum, int maxNumberOfStudent)
+    {
         this.indexNum = indexNum;
         this.maxNumberOfStudent = maxNumberOfStudent;
         numberOfStudent = 0;
+
         studentsEnrolledList = new ArrayList<String>();
         tutLabTimeSlotList = new ArrayList<TimeSlot>();
         studentWaitList = new ArrayList<String>();
@@ -27,67 +30,82 @@ public class Index implements Serializable {
 
     //-------Index number methods--------
 
-    public void setIndexNumber(int indexNum){
+    public void setIndexNumber(int indexNum)
+    {
         this.indexNum = indexNum;
     }
 
-    public int getIndexNum(){
+    public int getIndexNum()
+    {
         return indexNum;
     }
 
     //-------number of students methods--------
 
-    public boolean setMaxNumberOfStudent(int maxNumberOfStudent){
-        if(maxNumberOfStudent<numberOfStudent){
+    public boolean setMaxNumberOfStudent(int maxNumberOfStudent)
+    {
+        if (maxNumberOfStudent < numberOfStudent)
+        {
             return false;
         }
         this.maxNumberOfStudent = maxNumberOfStudent;
         return true;
     }
 
-    public int getMaxNumberOfStudent(){
+    public int getMaxNumberOfStudent()
+    {
         return maxNumberOfStudent;
     }
 
-    public int getNumberOfVacancy(){
+    public int getNumberOfVacancy()
+    {
         return maxNumberOfStudent = numberOfStudent;
     }
 
     //-------Time slot methods--------
 
-    public List<TimeSlot> getTutLabTimeSlotList(){
+    public List<TimeSlot> getTutLabTimeSlotList()
+    {
         return tutLabTimeSlotList;
     }
 
-    public boolean deleteTutLabTimeSlot(TimeSlot dTimeSlot){
+    public boolean deleteTutLabTimeSlot(TimeSlot dTimeSlot)
+    {
         return tutLabTimeSlotList.remove(dTimeSlot);
     }
 
     //-------Tutorial time slot methods--------
 
-    public boolean addTutTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location){
-        return tutLabTimeSlotList.add(new TimeSlot(day,startH,startM,endH,endM,location,"TUT"));
+    public boolean addTutTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
+    {
+        return tutLabTimeSlotList.add(new TimeSlot(day, startH, startM, endH, endM, location, "TUT"));
     }
 
     //-------Lab time slot methods--------
 
-    public boolean addLabTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location){
-        return tutLabTimeSlotList.add(new TimeSlot(day,startH,startM,endH,endM,location,"LAB"));
+    public boolean addLabTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
+    {
+        return tutLabTimeSlotList.add(new TimeSlot(day, startH, startM, endH, endM, location, "LAB"));
     }
 
     //-------Student registered methods--------
 
-    public int getNumberOfEnrolledStudent(){
+    public int getNumberOfEnrolledStudent()
+    {
         return numberOfStudent;
     }
 
-    public int enrolStudent(String matricNo){
-        if(numberOfStudent>=maxNumberOfStudent){
-            if(studentWaitList.add(matricNo)){
+    public int enrolStudent(String matricNo)
+    {
+        if (numberOfStudent >= maxNumberOfStudent)
+        {
+            if (studentWaitList.add(matricNo))
+            {
                 return -1;
             }
-                return 0;
-        }else if(studentsEnrolledList.add(matricNo)){
+            return 0;
+        } else if (studentsEnrolledList.add(matricNo))
+        {
             numberOfStudent++;
             return 1;
         }
@@ -95,12 +113,16 @@ public class Index implements Serializable {
         return 0;
     }
 
-    public String withdrawStudent(String matricNo){
-        if(studentsEnrolledList.remove(matricNo)){
+    public String withdrawStudent(String matricNo)
+    {
+        if (studentsEnrolledList.remove(matricNo))
+        {
             numberOfStudent--;
-            if((numberOfStudent + 1) == maxNumberOfStudent){
+            if ((numberOfStudent + 1) == maxNumberOfStudent)
+            {
                 String toEnroll = studentWaitList.get(0);
-                if(enrolStudent(toEnroll)==1){
+                if (enrolStudent(toEnroll) == 1)
+                {
                     studentWaitList.remove(0);
                     return toEnroll;
                 }
@@ -111,9 +133,12 @@ public class Index implements Serializable {
         return "ERROR";
     }
 
-    public boolean checkIfStudentEnrolled(String matricNo){
-        for(int n = 0; n < studentsEnrolledList.size(); n++){
-            if(studentsEnrolledList.get(n).equals(matricNo)){
+    public boolean checkIfStudentEnrolled(String matricNo)
+    {
+        for (int n = 0; n < studentsEnrolledList.size(); n++)
+        {
+            if (studentsEnrolledList.get(n).equals(matricNo))
+            {
                 return true;
             }
         }

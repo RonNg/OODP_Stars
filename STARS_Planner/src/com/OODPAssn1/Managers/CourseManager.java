@@ -27,7 +27,6 @@ public class CourseManager extends DataManager
     {
        super("StudentKStudentK", "NotPokemonIVFour", COURSE_PATH);
 
-
         courseList = (ArrayList<Course>) this.read(COURSE_PATH);
 
         if (courseList == null)
@@ -44,7 +43,7 @@ public class CourseManager extends DataManager
         return cMInstance;
     }
 
-    public boolean saveAll()
+    public boolean save()
     {
         return this.write(courseList, COURSE_PATH);
     }
@@ -56,13 +55,10 @@ public class CourseManager extends DataManager
         return courseList;
     }
 
-    public Course addCourse (String courseId, String courseName, String faculty)
+    public boolean addCourse (String courseId, String courseName, String faculty)
     {
         //Note that writing of new data into DB is not done here!
-        courseList.add(new Course(courseId, courseName, faculty));
-
-        return courseList.get(courseList.size()-1); //Returns the course added so you can add the lecture time slot
-
+        return courseList.add(new Course(courseId, courseName, faculty));
     }
 
     public boolean deleteCourse(Course dCourse)

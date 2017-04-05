@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dee5bdef-2109-401b-b3eb-04a3f09e04a1" name="Default" comment="" />
+    <list default="true" id="dee5bdef-2109-401b-b3eb-04a3f09e04a1" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/STARS_Planner/database/course.dat" afterPath="$PROJECT_DIR$/STARS_Planner/database/course.dat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/CourseManager.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/CourseManager.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/DataManager.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/Managers/DataManager.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/UI.class" afterPath="$PROJECT_DIR$/out/production/STARS_Planner/com/OODPAssn1/UI.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Entities/Index.java" afterPath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Entities/Index.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Managers/CourseManager.java" afterPath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Managers/CourseManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Managers/DataManager.java" afterPath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Managers/DataManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/STARS.java" afterPath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/STARS.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/TEST.java" afterPath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/TEST.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/UI.java" afterPath="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/UI.java" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,118 +27,76 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="UI.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/UI.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-236">
-              <caret line="163" column="33" lean-forward="true" selection-start-line="163" selection-start-column="33" selection-end-line="163" selection-end-column="33" />
-              <folding>
-                <element signature="method#main#0;class#UI#0" expanded="false" />
-                <element signature="method#loginScreen#0;class#UI#0" expanded="false" />
-                <element signature="e#7189#7266#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TEST.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/TEST.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="356">
-              <caret line="23" column="46" lean-forward="true" selection-start-line="23" selection-start-column="46" selection-end-line="23" selection-end-column="46" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CourseManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Managers/CourseManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="254">
-              <caret line="46" column="19" lean-forward="false" selection-start-line="46" selection-start-column="19" selection-end-line="46" selection-end-column="19" />
-              <folding>
-                <element signature="docComment;class#CourseManager#0" expanded="false" />
-                <element signature="e#1054#1055#0" expanded="true" />
-                <element signature="e#1112#1113#0" expanded="true" />
-                <element signature="method#addCourse#0;class#CourseManager#0" expanded="false" />
-                <element signature="method#addLecTimeSlot#0;class#CourseManager#0" expanded="false" />
-                <element signature="method#deleteLecTimeSlot#0;class#CourseManager#0" expanded="false" />
-                <element signature="method#findCourseById#0;class#CourseManager#0" expanded="false" />
-                <element signature="method#deleteIndex#0;class#CourseManager#0" expanded="false" />
-                <element signature="method#enrolInIndex#0;class#CourseManager#0" expanded="false" />
-                <element signature="method#withdrawFromIndex#0;class#CourseManager#0" expanded="false" />
-                <element signature="method#printAllCourse#0;class#CourseManager#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DataManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Managers/DataManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="118">
-              <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Course.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Entities/Course.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="18" column="20" lean-forward="false" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Index.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Entities/Index.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-              <folding>
-                <element signature="method#Index#0;class#Index#0" expanded="false" />
-                <element signature="method#setMaxNumberOfStudent#0;class#Index#0" expanded="false" />
-                <element signature="method#addTutTimeSlot#0;class#Index#0" expanded="false" />
-                <element signature="method#addLabTimeSlot#0;class#Index#0" expanded="false" />
-                <element signature="method#enrolStudent#0;class#Index#0" expanded="false" />
-                <element signature="method#withdrawStudent#0;class#Index#0" expanded="false" />
-                <element signature="method#checkIfStudentEnrolled#0;class#Index#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TimeSlot.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Entities/TimeSlot.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-85">
-              <caret line="10" column="5" lean-forward="true" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="STARS.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/STARS.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="94" column="83" lean-forward="true" selection-start-line="94" selection-start-column="83" selection-end-line="94" selection-end-column="83" />
-              <folding>
-                <element signature="docComment;class#STARS#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="UI.java" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/UI.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="360">
+                  <caret line="408" column="13" lean-forward="true" selection-start-line="408" selection-start-column="13" selection-end-line="408" selection-end-column="13" />
+                  <folding>
+                    <element signature="method#main#0;class#UI#0" expanded="false" />
+                    <element signature="method#loginScreen#0;class#UI#0" expanded="false" />
+                    <element signature="method#studentMenu#0;class#UI#0" expanded="false" />
+                    <element signature="e#7136#7213#0" expanded="false" />
+                    <element signature="docComment;method#admin_AddIndex#0;class#UI#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="CourseManager.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Managers/CourseManager.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="286">
+                  <caret line="61" column="5" lean-forward="true" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
+                  <folding>
+                    <element signature="docComment;class#CourseManager#0" expanded="false" />
+                    <element signature="method#addLecTimeSlot#0;class#CourseManager#0" expanded="false" />
+                    <element signature="method#deleteLecTimeSlot#0;class#CourseManager#0" expanded="false" />
+                    <element signature="method#deleteIndex#0;class#CourseManager#0" expanded="false" />
+                    <element signature="method#enrolInIndex#0;class#CourseManager#0" expanded="false" />
+                    <element signature="method#withdrawFromIndex#0;class#CourseManager#0" expanded="false" />
+                    <element signature="method#printAllCourse#0;class#CourseManager#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="STARS.java" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/STARS.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="357">
+                  <caret line="110" column="0" lean-forward="true" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                    <element signature="docComment;class#STARS#0" expanded="false" />
+                    <element signature="method#getInstance#0;class#STARS#0" expanded="false" />
+                    <element signature="method#init#0;class#STARS#0" expanded="false" />
+                    <element signature="method#loginToStars#0;class#STARS#0" expanded="false" />
+                    <element signature="e#3436#3556#0" expanded="false" />
+                    <element signature="method#enrollStudent#0;class#STARS#0" expanded="false" />
+                    <element signature="method#writeToDB#0;class#STARS#0" expanded="false" />
+                    <element signature="docComment;method#printIndexListOfCourse#0;class#STARS#0" expanded="false" />
+                    <element signature="method#printIndexListOfCourse#0;class#STARS#0" expanded="false" />
+                    <element signature="e#5069#5179#0" expanded="false" />
+                    <element signature="e#5393#5512#0" expanded="false" />
+                    <element signature="method#printAllList#0;class#STARS#0" expanded="false" />
+                    <element signature="method#populateDatabase#0;class#STARS#0" expanded="false" />
+                    <element signature="e#6092#6145#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -143,7 +113,6 @@
       <find>encr</find>
       <find>addcour</find>
       <find>debug</find>
-      <find>addcourse</find>
       <find>addCourse</find>
       <find>addinex</find>
       <find>addcours</find>
@@ -151,6 +120,7 @@
       <find>index</find>
       <find>p</find>
       <find>print</find>
+      <find>addcourse</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -165,21 +135,21 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Entities/Course.java" />
-        <option value="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Managers/DataManager.java" />
         <option value="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Managers/UserManager.java" />
-        <option value="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Managers/CourseManager.java" />
         <option value="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/TEST.java" />
-        <option value="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/STARS.java" />
-        <option value="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/UI.java" />
         <option value="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Entities/TimeSlot.java" />
+        <option value="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Managers/DataManager.java" />
+        <option value="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Entities/Index.java" />
+        <option value="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Managers/CourseManager.java" />
+        <option value="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/UI.java" />
+        <option value="$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/STARS.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1296" />
-    <option name="height" value="816" />
+    <option name="x" value="-7" />
+    <option name="width" value="1292" />
+    <option name="height" value="807" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -280,6 +250,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/Users/Tweakisher/Documents/NTU/CE2002/OODP Assignment/OODP_Stars/STARS_Planner/src/com/OODPAssn1/Entities/Course.java" />
   </component>
   <component name="RunManager" selected="Application.UI">
     <configuration default="false" name="UI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -529,83 +500,45 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1296" height="816" extended-state="6" />
+    <frame x="-7" y="0" width="1292" height="807" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33235726" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33235726" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14967638" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39970717" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
-    <layout-to-restore>
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33235726" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329429" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2540453" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/STARS.java</url>
-          <line>134</line>
-          <properties />
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="15" />
+      <option name="time" value="16" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -619,7 +552,21 @@
         <state relative-caret-position="357">
           <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
           <folding>
+            <element signature="imports" expanded="true" />
             <element signature="docComment;class#STARS#0" expanded="false" />
+            <element signature="method#getInstance#0;class#STARS#0" expanded="false" />
+            <element signature="method#init#0;class#STARS#0" expanded="false" />
+            <element signature="method#loginToStars#0;class#STARS#0" expanded="false" />
+            <element signature="e#3436#3556#0" expanded="false" />
+            <element signature="method#enrollStudent#0;class#STARS#0" expanded="false" />
+            <element signature="method#writeToDB#0;class#STARS#0" expanded="false" />
+            <element signature="docComment;method#printIndexListOfCourse#0;class#STARS#0" expanded="false" />
+            <element signature="method#printIndexListOfCourse#0;class#STARS#0" expanded="false" />
+            <element signature="e#5069#5179#0" expanded="false" />
+            <element signature="e#5393#5512#0" expanded="false" />
+            <element signature="method#printAllList#0;class#STARS#0" expanded="false" />
+            <element signature="method#populateDatabase#0;class#STARS#0" expanded="false" />
+            <element signature="e#6092#6145#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -631,7 +578,9 @@
           <folding>
             <element signature="method#main#0;class#UI#0" expanded="false" />
             <element signature="method#loginScreen#0;class#UI#0" expanded="false" />
-            <element signature="e#7189#7266#0" expanded="false" />
+            <element signature="method#studentMenu#0;class#UI#0" expanded="false" />
+            <element signature="e#7136#7213#0" expanded="false" />
+            <element signature="docComment;method#admin_AddIndex#0;class#UI#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -652,12 +601,8 @@
           <caret line="135" column="0" lean-forward="false" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
           <folding>
             <element signature="docComment;class#CourseManager#0" expanded="false" />
-            <element signature="e#1054#1055#0" expanded="true" />
-            <element signature="e#1112#1113#0" expanded="true" />
-            <element signature="method#addCourse#0;class#CourseManager#0" expanded="false" />
             <element signature="method#addLecTimeSlot#0;class#CourseManager#0" expanded="false" />
             <element signature="method#deleteLecTimeSlot#0;class#CourseManager#0" expanded="false" />
-            <element signature="method#findCourseById#0;class#CourseManager#0" expanded="false" />
             <element signature="method#deleteIndex#0;class#CourseManager#0" expanded="false" />
             <element signature="method#enrolInIndex#0;class#CourseManager#0" expanded="false" />
             <element signature="method#withdrawFromIndex#0;class#CourseManager#0" expanded="false" />
@@ -745,72 +690,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Managers/DataManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+        <state relative-caret-position="549">
+          <caret line="60" column="9" lean-forward="false" selection-start-line="60" selection-start-column="9" selection-end-line="60" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/TEST.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="356">
+        <state relative-caret-position="357">
           <caret line="23" column="46" lean-forward="true" selection-start-line="23" selection-start-column="46" selection-end-line="23" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/STARS.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="94" column="83" lean-forward="true" selection-start-line="94" selection-start-column="83" selection-end-line="94" selection-end-column="83" />
-          <folding>
-            <element signature="docComment;class#STARS#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Managers/CourseManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="46" column="19" lean-forward="false" selection-start-line="46" selection-start-column="19" selection-end-line="46" selection-end-column="19" />
-          <folding>
-            <element signature="docComment;class#CourseManager#0" expanded="false" />
-            <element signature="e#1054#1055#0" expanded="true" />
-            <element signature="e#1112#1113#0" expanded="true" />
-            <element signature="method#addCourse#0;class#CourseManager#0" expanded="false" />
-            <element signature="method#addLecTimeSlot#0;class#CourseManager#0" expanded="false" />
-            <element signature="method#deleteLecTimeSlot#0;class#CourseManager#0" expanded="false" />
-            <element signature="method#findCourseById#0;class#CourseManager#0" expanded="false" />
-            <element signature="method#deleteIndex#0;class#CourseManager#0" expanded="false" />
-            <element signature="method#enrolInIndex#0;class#CourseManager#0" expanded="false" />
-            <element signature="method#withdrawFromIndex#0;class#CourseManager#0" expanded="false" />
-            <element signature="method#printAllCourse#0;class#CourseManager#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Entities/Course.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="18" column="20" lean-forward="false" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Entities/Index.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="6" column="13" lean-forward="false" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-          <folding>
-            <element signature="method#Index#0;class#Index#0" expanded="false" />
-            <element signature="method#setMaxNumberOfStudent#0;class#Index#0" expanded="false" />
-            <element signature="method#addTutTimeSlot#0;class#Index#0" expanded="false" />
-            <element signature="method#addLabTimeSlot#0;class#Index#0" expanded="false" />
-            <element signature="method#enrolStudent#0;class#Index#0" expanded="false" />
-            <element signature="method#withdrawStudent#0;class#Index#0" expanded="false" />
-            <element signature="method#checkIfStudentEnrolled#0;class#Index#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -825,14 +716,85 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Entities/Course.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-225">
+          <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Entities/Index.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="71" column="34" lean-forward="false" selection-start-line="71" selection-start-column="34" selection-end-line="71" selection-end-column="34" />
+          <folding>
+            <element signature="e#1015#1016#0" expanded="true" />
+            <element signature="e#1091#1092#0" expanded="true" />
+            <element signature="method#setMaxNumberOfStudent#0;class#Index#0" expanded="false" />
+            <element signature="e#1466#1467#0" expanded="true" />
+            <element signature="e#1550#1551#0" expanded="true" />
+            <element signature="e#1706#1707#0" expanded="true" />
+            <element signature="e#1814#1815#0" expanded="true" />
+            <element signature="method#addLabTimeSlot#0;class#Index#0" expanded="false" />
+            <element signature="e#2524#2525#0" expanded="true" />
+            <element signature="method#enrolStudent#0;class#Index#0" expanded="false" />
+            <element signature="method#withdrawStudent#0;class#Index#0" expanded="false" />
+            <element signature="method#checkIfStudentEnrolled#0;class#Index#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/Managers/CourseManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="61" column="5" lean-forward="true" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
+          <folding>
+            <element signature="docComment;class#CourseManager#0" expanded="false" />
+            <element signature="method#addLecTimeSlot#0;class#CourseManager#0" expanded="false" />
+            <element signature="method#deleteLecTimeSlot#0;class#CourseManager#0" expanded="false" />
+            <element signature="method#deleteIndex#0;class#CourseManager#0" expanded="false" />
+            <element signature="method#enrolInIndex#0;class#CourseManager#0" expanded="false" />
+            <element signature="method#withdrawFromIndex#0;class#CourseManager#0" expanded="false" />
+            <element signature="method#printAllCourse#0;class#CourseManager#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/UI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-236">
-          <caret line="163" column="33" lean-forward="true" selection-start-line="163" selection-start-column="33" selection-end-line="163" selection-end-column="33" />
+        <state relative-caret-position="360">
+          <caret line="408" column="13" lean-forward="true" selection-start-line="408" selection-start-column="13" selection-end-line="408" selection-end-column="13" />
           <folding>
             <element signature="method#main#0;class#UI#0" expanded="false" />
             <element signature="method#loginScreen#0;class#UI#0" expanded="false" />
-            <element signature="e#7189#7266#0" expanded="false" />
+            <element signature="method#studentMenu#0;class#UI#0" expanded="false" />
+            <element signature="e#7136#7213#0" expanded="false" />
+            <element signature="docComment;method#admin_AddIndex#0;class#UI#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/STARS_Planner/src/com/OODPAssn1/STARS.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="110" column="0" lean-forward="true" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="docComment;class#STARS#0" expanded="false" />
+            <element signature="method#getInstance#0;class#STARS#0" expanded="false" />
+            <element signature="method#init#0;class#STARS#0" expanded="false" />
+            <element signature="method#loginToStars#0;class#STARS#0" expanded="false" />
+            <element signature="e#3436#3556#0" expanded="false" />
+            <element signature="method#enrollStudent#0;class#STARS#0" expanded="false" />
+            <element signature="method#writeToDB#0;class#STARS#0" expanded="false" />
+            <element signature="docComment;method#printIndexListOfCourse#0;class#STARS#0" expanded="false" />
+            <element signature="method#printIndexListOfCourse#0;class#STARS#0" expanded="false" />
+            <element signature="e#5069#5179#0" expanded="false" />
+            <element signature="e#5393#5512#0" expanded="false" />
+            <element signature="method#printAllList#0;class#STARS#0" expanded="false" />
+            <element signature="method#populateDatabase#0;class#STARS#0" expanded="false" />
+            <element signature="e#6092#6145#0" expanded="false" />
           </folding>
         </state>
       </provider>

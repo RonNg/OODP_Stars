@@ -1,10 +1,10 @@
 package com.OODPAssn1;
 
-import com.OODPAssn1.Entities.Course;
-import com.OODPAssn1.Entities.Student;
-import com.OODPAssn1.Entities.User;
+import com.OODPAssn1.Entities.*;
 import com.OODPAssn1.Managers.CourseManager;
 import com.OODPAssn1.Managers.UserManager;
+
+import java.util.List;
 
 /**
  * Created by jonah on 15/3/2017.
@@ -68,10 +68,55 @@ public class STARS
 
 //------------------------Method for adding/updating of Course----------------------------------------------
 
-    public Course addCourse(String courseId, String courseName, String faculty)
+    public void admin_AddCourse(String courseId, String courseName, String faculty)
     {
-       return CourseManager.getInstance().addCourse(courseId, courseName, faculty);
+       CourseManager.getInstance().addCourse(courseId, courseName, faculty);
     }
+
+    public boolean admin_AddLecTimeSlot (String courseId, TimeSlot.DAY timeSlotDay, int startTimeHH, int startTimeMM, int endTimeHH, int endTimeMM, String locationLT )
+    {
+        Course course = CourseManager.getInstance().findCourseById(courseId);
+
+        if(course != null)
+        {
+            course.addlecTimeSlot(timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT);
+            return true;
+        }
+        else
+        {
+            System.out.println("STARS: admin_AddLecTimeSlot CourseID not found");
+            return false;
+        }
+    }
+
+    public boolean admin_AddIndex(String courseId, int indexNoToAdd)
+    {
+        boolean alreadyExists = false;
+
+        Course tempCourse = CourseManager.getInstance().findCourseById(courseId);
+        List<Index> courseIndexList = tempCourse.getIndexList();
+
+        //Check whether this index already exists
+        for(int z = 0; z < courseIndexList.size(); ++ z)
+        {
+            //Index number already exists
+            if(courseIndexList.get(z).getIndexNum() == indexNoToAdd)
+                alreadyExists = true;
+        }
+
+        if(alreadyExists)
+        {
+          return false;
+        }
+
+        //System.out.println("Please enter the maximum number of students in this index: ");
+        //int maxStudents = s.nextInt();
+
+        //course.addIndex(indexNoToAdd, maxStudents);
+        return false;
+    }
+
+
 
 //-------------------------------Method for enrolling of Student into STARS---------------------------------------------
 //This method will make use of UserManager to create student and write it into database.
@@ -92,7 +137,7 @@ public class STARS
 
     public boolean writeToDB()
     {
-        if (UserManager.getInstance().saveData() && CourseManager.getInstance().saveAll())
+        if (UserManager.getInstance().saveData() && CourseManager.getInstance().save())
         {
             //When we save the data of UserManager, the password is encrypted again. We need to decrypt it for login to work again.
             UserManager.getInstance().decryptPassForLogin();

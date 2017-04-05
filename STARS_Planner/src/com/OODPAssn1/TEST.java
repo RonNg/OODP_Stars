@@ -24,7 +24,7 @@ public class TEST {
         CourseManager cM = CourseManager.getInstance();
         //cM.createCourse("CE0001","EnS", "SCSE");
         //cM.getCourseList();
-        //cM.saveAll();
+        //cM.save();
         Index in = new Index(20001,50);
         //in.addLabTimeSlot('T',13,30,14,30,"LT1A");
         //in.addLabTimeSlot('W',3,30,4,30,"LT11");

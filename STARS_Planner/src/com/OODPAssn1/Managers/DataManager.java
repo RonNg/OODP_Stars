@@ -59,8 +59,6 @@ public class DataManager
                 System.out.println(e.getMessage());
             }
         }
-
-
     }
 
     protected List read(String filepath)
