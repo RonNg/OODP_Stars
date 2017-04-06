@@ -137,6 +137,7 @@ public class Index implements Serializable
 
     public boolean checkIfStudentInWaitList ( String matricNo )
     {
+        //TODO: Check if student in waitlist
         return false;
     }
 

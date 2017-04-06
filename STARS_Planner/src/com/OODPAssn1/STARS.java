@@ -302,7 +302,7 @@ public class STARS
         CourseManager.getInstance().printAllCourse();
     }
 
-    
+
    /*==================================================
 
                        PRINT METHODS
