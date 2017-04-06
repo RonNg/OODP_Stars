@@ -199,23 +199,25 @@ public class UI
            //Enrols student into index
            int result = STARS.getInstance().student_EnrolIndex(indexToEnroll);
 
-           if ( result == 1 ) //Sucessfully enrolled into index
+           switch(result)
            {
-               System.out.println("You have successfully enroled into the Index " + indexToEnroll);
-               addFinish = true;
-           }
-
-           else if(result == -1) //if student has been placed in wait list
-           {
-               System.out.println("You have been placed into the wait list of " + indexToEnroll);
-               int [] studentPosInWaitList = STARS.getInstance().student_getPositionInWaitlist(indexToEnroll);
-               if(studentPosInWaitList == null)
-               {
-                   System.out.println("Could not find you in the waitlist.");
-                   continue;//Reset
-               }
-               System.out.println("You are currently position " + studentPosInWaitList[0] + "out of " + studentPosInWaitList[1] + "in the waitlist");
-               addFinish = true;
+               case 1: //Succesfull enrolled into index
+                   System.out.println("You have successfully enroled into the Index " + indexToEnroll);
+                   addFinish = true;
+                   break;
+               case 2:
+                   break;
+               case -1: //Added into waitlist
+                   System.out.println("You have been placed into the wait list of " + indexToEnroll);
+                   int[] studentPosInWaitList = STARS.getInstance().student_getPositionInWaitlist(indexToEnroll);
+                   if (studentPosInWaitList == null)
+                   {
+                       System.out.println("Could not find you in the waitlist.");
+                       continue;//Reset
+                   }
+                   System.out.println("You are currently position " + studentPosInWaitList[0] + "out of " + studentPosInWaitList[1] + "in the waitlist");
+                   addFinish = true;
+                   break;
            }
            addFinish = true;
        }

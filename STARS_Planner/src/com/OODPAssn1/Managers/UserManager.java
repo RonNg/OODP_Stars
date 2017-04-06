@@ -1,9 +1,9 @@
 package com.OODPAssn1.Managers;
 
-import com.OODPAssn1.AESEncrypter;
 import com.OODPAssn1.Entities.Admin;
 import com.OODPAssn1.Entities.Student;
 import com.OODPAssn1.Entities.User;
+import com.OODPAssn1.MD5Hasher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +25,12 @@ public class UserManager extends DataManager
 
     private UserManager()
     {
-        super("StudentKStudentK", "NotPokemonIVFour", USER_PATH);
+        super(USER_PATH);
 
         //Retrieves the user lists from the database
         userList = (ArrayList)this.read(USER_PATH);
         if(userList == null)
             userList = new ArrayList();
-
-        //Decrypts the password to allow for login
-        decryptPassword();
     }
 
     public static UserManager getInstance()
@@ -78,66 +75,9 @@ public class UserManager extends DataManager
 
     public boolean save()
     {//Return true if save succeed
-        this.encryptPassword(); //Encrypt All Passwords before writing
         return this.write(userList, USER_PATH);
     }
 
-    private void encryptPassword()
-    {
-
-        for (int i = 0; i < userList.size(); ++i)
-        {
-            //Student's password is already encrypted
-            if (userList.get(i).getIsPasswordEncrpyted())
-                continue;
-
-            String tempPass = userList.get(i).getPassword();
-
-            try
-            {
-                String encryptedPass = AESEncrypter.encrypt(tempPass, this.getEncryptionKey(), this.getIV());
-
-                userList.get(i).setPassword(encryptedPass);
-                userList.get(i).toggleEncrypted();
-            } catch (Exception e)
-            {
-                //System.out.println(e.getMessage());
-                //Works but throws an error. Dunno why.
-            }
-        }
-    }
-
-    public void decryptPassForLogin()
-    {//Accessor for STARS to decrypt for log-out then log-in operation
-
-        this.decryptPassword();
-    }
-
-    private void decryptPassword()
-    {
-        for (int i = 0; i < userList.size(); ++i)
-        {
-            //Student's password is already decrypted
-            if (!userList.get(i).getIsPasswordEncrpyted())
-                continue;
-
-            String tempPass = userList.get(i).getPassword();
-
-            try
-            {
-                String decryptedPass = AESEncrypter.decrypt(tempPass, this.getEncryptionKey(), this.getIV());
-
-                userList.get(i).setPassword(decryptedPass);
-                userList.get(i).toggleEncrypted();
-            } catch (Exception e)
-            {
-                //System.out.println(e.getMessage());
-                //Works but throws an error. Dunno why.
-            }
-        }
-        //After everything is decrypted, save the password.
-        //userList.
-    }
 
     /**
      * Searches {@link List} for {@link Student} by name and returns the {@link List} index if matched
@@ -184,6 +124,7 @@ public class UserManager extends DataManager
 
     public User authenticateUser(String userName, String password)
     {
+        password = MD5Hasher.hash(password); //Need to hash the user input password as we are comparing hashes and not plaintext password
         User user;
         for (int i = 0; i < userList.size(); ++i)
         {
@@ -213,21 +154,15 @@ public class UserManager extends DataManager
     {
         try
         {
+            String hashedPass = MD5Hasher.hash(password);
             userList.add(new Student(name, email, matricNo,
                     contact, gender, nationality,
-                    username, password));
-
+                    username, hashedPass));
         } catch (Exception e)
         {
             System.out.println("addStudent() Exception caught: " + e.getMessage());
         }
 
-        /*
-        if(this.save())
-            System.out.println(name + " successfully added to STARS!");
-        else
-            System.out.println("writing failed");
-        */
     }
 
 
@@ -235,7 +170,8 @@ public class UserManager extends DataManager
     {
         try
         {
-            userList.add(new Admin(name, email, username, password));
+            String hashedPass = MD5Hasher.hash(password); //We need to hash this as we can't store password as plaintext
+            userList.add(new Admin(name, email, username, hashedPass));
         } catch (Exception e)
         {
             System.out.println("addAdmin() Exception caught: " + e.getMessage());
