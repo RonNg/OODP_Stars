@@ -163,5 +163,6 @@ public class Index implements Serializable
         return maxNumberOfStudent - numberOfStudent;
     }
     public List getWaitList(){return studentWaitList;}
+    public List<String> getEnrolledStudentList(){return studentsEnrolledList;}
 
 }
