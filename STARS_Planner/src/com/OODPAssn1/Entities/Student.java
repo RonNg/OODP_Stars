@@ -1,10 +1,14 @@
 package com.OODPAssn1.Entities;
 
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Student extends User
+public class Student extends User implements Serializable
 {
+    //SerialVersionUID of this Class used to deconflict serialisation
+    static final long serialVersionUID = 1L;
+
     public enum GENDER { MALE, FEMALE }
 
     private String matricNo;
@@ -31,6 +35,10 @@ public class Student extends User
     //Accessors
     public String getName(){return this.name;}
     public String getMatricNo(){return this.matricNo;}
+    public String getGender(){return this.gender.toString();}
+    public String getNationality(){return this.nationality;}
+
+
 
 
     //Mutator

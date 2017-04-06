@@ -4,6 +4,9 @@ import com.OODPAssn1.Entities.*;
 import com.OODPAssn1.Managers.CourseManager;
 import com.OODPAssn1.Managers.UserManager;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -14,6 +17,8 @@ public class STARS
     private static STARS instance;
     private boolean isInitAlready = false;
     private User currentLogOnUser;
+    private Calendar startDate;
+    private Calendar endDate;
 
 
     private STARS(int i)
@@ -38,6 +43,13 @@ public class STARS
             System.out.println("STARS is being reinitialised again!");
             return -1;
         }
+        //Set default access period for student to current month and year
+        Calendar startDate = Calendar.getInstance();
+        startDate.set(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), 1);
+        Calendar endDate = Calendar.getInstance();
+        endDate.set(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), 30);
+        this.setAccessPeriod(startDate, endDate);
+
 
         return 1;
 
@@ -66,13 +78,53 @@ public class STARS
     }
 
 
+    //------------------------Method to get access period-------------------------------------------------------
+
+    public Calendar[] getAccessPeriod(){
+
+        Calendar[] accessPeriod = new Calendar[2];
+        accessPeriod[0] = this.startDate;
+        accessPeriod[1] = this.endDate;
+
+
+        return accessPeriod;
+
+    }
+
+//------------------------Method to set start date and end date of STARS availability-----------------------
+
+    public void setAccessPeriod(Calendar startDate, Calendar endDate){
+
+
+        this.startDate = startDate;
+        this.endDate = endDate;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
+
+    }
+
+//------------------------Method to check current date is within access period-----------------------------
+
+    public boolean checkAccessPeriod(){
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
+        Calendar currentDate = Calendar.getInstance();
+        //System.out.println("Current date:" + dateFormat.format(currentDate.getTime()));
+        //System.out.println("Start date: " + dateFormat.format(startDate.getTime()) + "   " + "End date: " + dateFormat.format(endDate.getTime()));
+        return currentDate.after(startDate) && currentDate.before(endDate);
+
+
+    }
+
+
+
 
     public boolean doesCourseExist(String courseId)
     {
         List<Course> courseList = CourseManager.getInstance().getCourseList();
         for(int i = 0; i < courseList.size(); ++ i)
         {
-            if(courseList.get(i).getCourseId() == courseId)
+            System.out.println(courseList.get(i).getCourseId());
+            if(courseList.get(i).getCourseId().equalsIgnoreCase(courseId))
                 return true;
         }
 
@@ -165,7 +217,55 @@ public class STARS
 
      ==================================================*/
 
-//------------------------Method for adding/updating of Course----------------------------------------------
+//------------------------Method to print list of students enrolled in course-------------------------------------------
+
+    public String printStudentsInCourse(String courseId){
+
+        String courseNotFoundStr = "Error! Course not found in system!";
+        String CourseisEmptyStr = "No student has enrolled to course yet.";
+        String retStr ="";
+        Course course = CourseManager.getInstance().findCourseById(courseId);
+        List<Index> indexList = null;
+        List<String> studentMatric = null;
+        List<Student> studentList = null;
+        int indexListCount = 0;
+        int matricListCount = 0;
+        int sizeOfIndex = 0;
+
+        if(course == null)
+            retStr = courseNotFoundStr;
+        else
+        {
+            indexList = course.getIndexList();
+            while(indexListCount < indexList.size()){
+
+                sizeOfIndex = indexList.get(indexListCount).getEnrolledStudentList().size();//Get size of students enrolled in the index
+                while(matricListCount < sizeOfIndex){//Get matric number of students enrolled in the various index
+                    studentMatric.add(indexList.get(indexListCount).getEnrolledStudentList().get(matricListCount));
+                    matricListCount++;
+                }
+                matricListCount = 0;
+                indexListCount++;
+            }
+        }
+
+        if(studentMatric != null) {
+            for (int i = 0; i < studentMatric.size(); i++) {
+
+                studentList.add(UserManager.getInstance().getStudentObj(studentMatric.get(i)));
+                retStr = retStr + "Name: " + studentList.get(i).getName() + "  Gender: " + studentList.get(i).getGender() +
+                        "  Nationality: " + studentList.get(i).getNationality() + "\n";
+
+            }
+        }else retStr = CourseisEmptyStr;
+
+        return retStr;
+    }
+
+
+
+//------------------------Method for adding/updating of Course----------------------------------------------------------
+
 
     public void admin_AddCourse(String courseId, String courseName, String faculty)
     {
@@ -337,7 +437,9 @@ public class STARS
 
     public void populateDatabase()
     {
-        UserManager.getInstance().addStudent("Ron", "c160144@e.ntu", "U1622393B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
+        //UserManager.getInstance().addStudent("qinghui", "c160144@e.ntu", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
+        //UserManager.getInstance().addStudent("bob", "c160144@e.ntu", "U222222B", 93874270, Student.GENDER.MALE, "Singaporean", "bob", "password");
+        //UserManager.getInstance().addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "ron", "password");
         UserManager.getInstance().addAdmin("doug", "doug@e.ntu", "doug123",  "doug123");
         //CourseManager.getInstance().createIndex(10032, 50);
         //CourseManager.getInstance().createIndex(CourseManager.getInstance().findCourseById("CE2003"), 10042, 50);

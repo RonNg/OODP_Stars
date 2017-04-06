@@ -55,7 +55,7 @@ public class CourseManager extends DataManager
         return courseList;
     }
 
-    public boolean addCourse (String courseId, String courseName, String faculty)
+    public boolean addCourse (String courseId, String courseName, String faculty)//for admin
     {
         //Note that writing of new data into DB is not done here!
         return courseList.add(new Course(courseId, courseName, faculty));
@@ -123,7 +123,9 @@ public class CourseManager extends DataManager
 
     public boolean createIndex(Course course, int indexNum, int maxNumOfStudetns)
     {
-        return courseList.get(courseList.indexOf(course)).addIndex(indexNum, maxNumOfStudetns);
+        Course tempCourse = courseList.get(courseList.indexOf(course));
+        return tempCourse.addIndex(indexNum, maxNumOfStudetns);
+        //return courseList.get(courseList.indexOf(course)).addIndex(indexNum, maxNumOfStudetns);
     }
 
     public boolean deleteIndex(Course course, Index index)

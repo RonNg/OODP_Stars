@@ -161,6 +161,23 @@ public class UserManager extends DataManager
         return -1;
     }
 
+//------------------------------Method to get Student Object for printing of details------------------------------------
+
+    public Student getStudentObj(String matricNumber){
+
+        Student s = null;
+
+        for(int i = 0; i<userList.size(); i++){
+
+            if(userList.get(i) instanceof Student && s.getMatricNo().equals(matricNumber)){
+                s = (Student) userList.get(i);
+
+            }
+
+        }
+        return s;
+}
+
 //---------------------------------Method for authentication into STARS-------------------------------------------------
 // - Return the logged-on user if authentication succeeds
 // - Return null if authentication fail or User not found in DB
@@ -223,6 +240,13 @@ public class UserManager extends DataManager
         {
             System.out.println("addAdmin() Exception caught: " + e.getMessage());
         }
+
+
+        if(this.saveData())
+            System.out.println(name + " successfully added to STARS!");
+        else
+            System.out.println("writing failed");
+
     }
 
 
