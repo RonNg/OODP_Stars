@@ -28,8 +28,8 @@ public class UserManager extends DataManager
         super(USER_PATH);
 
         //Retrieves the user lists from the database
-        userList = (ArrayList)this.read(USER_PATH);
-        if(userList == null)
+        userList = (ArrayList) this.read(USER_PATH);
+        if (userList == null)
             userList = new ArrayList();
     }
 
@@ -103,20 +103,19 @@ public class UserManager extends DataManager
 
 //------------------------------Method to get Student Object for printing of details------------------------------------
 
-    public Student getStudentObj(String matricNumber){
+    public Student getStudentByMatricNo(String matricNumber)
+    {
 
-        Student s = null;
-
-        for(int i = 0; i<userList.size(); i++){
-
-            if(userList.get(i) instanceof Student && s.getMatricNo().equals(matricNumber)){
-                s = (Student) userList.get(i);
-
-            }
+        for (int i = 0; i < userList.size(); i++)
+        {
+            User user = userList.get(i);
+            //Downcasting will work for second half of the statement as it got through the first half
+            if (userList.get(i).getType() == User.USER_TYPE.STUDENT && ((Student) user).getMatricNo().equals(matricNumber))
+                return (Student) user;
 
         }
-        return s;
-}
+        return null;
+    }
 
 //---------------------------------Method for authentication into STARS-------------------------------------------------
 // - Return the logged-on user if authentication succeeds
@@ -178,7 +177,7 @@ public class UserManager extends DataManager
         }
 
 
-        if(this.save())
+        if (this.save())
             System.out.println(name + " successfully added to STARS!");
         else
             System.out.println("writing failed");

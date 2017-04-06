@@ -240,33 +240,44 @@ public class STARS
         String retStr ="";
         Course course = CourseManager.getInstance().findCourseById(courseId);
         List<Index> indexList = null;
-        List<String> studentMatric = null;
-        List<Student> studentList = null;
-        int indexListCount = 0;
-        int matricListCount = 0;
+        List<String> studentMatric = new ArrayList<String>();
+        List<Student> studentList = new ArrayList<Student>();
+
         int sizeOfIndex = 0;
 
         if(course == null)
             retStr = courseNotFoundStr;
         else
         {
-            indexList = course.getIndexList();
-            while(indexListCount < indexList.size()){
+            // indexList = course.getIndexList();
+            // while(indexListCount < indexList.size()){
+            //
+            //     sizeOfIndex = indexList.get(indexListCount).getEnrolledStudentList().size();//Get size of students enrolled in the index
+            //     for(int i = 0; i < sizeOfIndex; ++ i)
+            //     {//Get matric number of students enrolled in the various index
+            //         studentMatric.add(indexList.get(indexListCount).getEnrolledStudentList().get(matricListCount));
+            //         matricListCount++;
+            //     }
+            //     matricListCount = 0;
+            //     indexListCount++;
+            // }
 
-                sizeOfIndex = indexList.get(indexListCount).getEnrolledStudentList().size();//Get size of students enrolled in the index
-                while(matricListCount < sizeOfIndex){//Get matric number of students enrolled in the various index
-                    studentMatric.add(indexList.get(indexListCount).getEnrolledStudentList().get(matricListCount));
-                    matricListCount++;
+            indexList = course.getIndexList();
+            for(int i = 0; i < indexList.size(); ++ i)
+            {
+                List<String> currIndexMatricList = indexList.get(i).getEnrolledStudentList();
+                for(int j = 0; j < currIndexMatricList.size(); ++ j)
+                {
+                    studentMatric.add(currIndexMatricList.get(j));
                 }
-                matricListCount = 0;
-                indexListCount++;
             }
         }
 
-        if(studentMatric != null) {
-            for (int i = 0; i < studentMatric.size(); i++) {
-
-                studentList.add(UserManager.getInstance().getStudentObj(studentMatric.get(i)));
+        if(studentMatric.size() > 0)
+        {
+            for (int i = 0; i < studentMatric.size(); i++)
+            {
+                studentList.add(UserManager.getInstance().getStudentByMatricNo(studentMatric.get(i)));
                 retStr = retStr + "Name: " + studentList.get(i).getName() + "  Gender: " + studentList.get(i).getGender() +
                         "  Nationality: " + studentList.get(i).getNationality() + "\n";
 
@@ -447,9 +458,10 @@ public class STARS
 
     public void populateDatabase()
     {
-        //UserManager.getInstance().addStudent("qinghui", "c160144@e.ntu", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
-        //UserManager.getInstance().addStudent("bob", "c160144@e.ntu", "U222222B", 93874270, Student.GENDER.MALE, "Singaporean", "bob", "password");
-        //UserManager.getInstance().addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "ron", "password");
+
+        UserManager.getInstance().addStudent("qingru", "c160144@e.ntu", "U222222B", 92298224, Student.GENDER.MALE, "Singaporean", "qingru", "password");
+        UserManager.getInstance().addStudent("qinghui", "c160144@e.ntu", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
+        UserManager.getInstance().addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
         UserManager.getInstance().addAdmin("doug", "doug@e.ntu", "doug123",  "doug123");
         CourseManager.getInstance().addCourse("CE2003", "DSD", "SCE");
         CourseManager.getInstance().createIndex(CourseManager.getInstance().findCourseById("CE2003"), 10042, 50);
