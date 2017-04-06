@@ -29,6 +29,8 @@ public class UI
             if (loggedOnUserType == null)//Quit STARS Program
                 return;
         }
+
+        //Test MD5 Hasher here
         //TODO: Method to check if a password is encrypted
 
     }
