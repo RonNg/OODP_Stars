@@ -1,7 +1,11 @@
 package com.OODPAssn1.Entities;
 
 
+
 import java.io.Serializable;
+
+import java.util.ArrayList;
+
 import java.util.List;
 
 public class Student extends User implements Serializable
@@ -30,6 +34,8 @@ public class Student extends User implements Serializable
         this.password = password;
 
         type = USER_TYPE.STUDENT;
+
+        courseIndexList = new ArrayList<Integer>();
     }
 
     //Accessors

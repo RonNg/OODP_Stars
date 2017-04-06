@@ -10,7 +10,7 @@ import java.util.List;
 public class DataManager
 {
     private String IV;
-    private String encryptionKey;
+    private String    encryptionKey;
 
     private static final String cFilePath = System.getProperty("user.dir") + "\\STARS_Planner\\database\\"; // To specify location to store database files
     //private static final String cFilePath = System.getProperty("user.dir") + "\\database\\"; // To specify location to store database files

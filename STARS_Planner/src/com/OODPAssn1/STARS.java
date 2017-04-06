@@ -123,8 +123,10 @@ public class STARS
         List<Course> courseList = CourseManager.getInstance().getCourseList();
         for(int i = 0; i < courseList.size(); ++ i)
         {
+
             System.out.println(courseList.get(i).getCourseId());
             if(courseList.get(i).getCourseId().equalsIgnoreCase(courseId))
+
                 return true;
         }
 
@@ -194,15 +196,29 @@ public class STARS
      */
     public int student_EnrolIndex(int indexNo)
     {
-        if(currentLogOnUser.getType() != User.USER_TYPE.STUDENT) //only users can enroll into indexes
+        if(currentLogOnUser.getType() != User.USER_TYPE.STUDENT) //only students can enroll into indexes
             return 0;
 
 
         Student tempStud = (Student)currentLogOnUser;
         int result = CourseManager.getInstance().enrolInIndex(tempStud.getMatricNo(), indexNo);
 
+
         if(result == 1)
+        {
             tempStud.addCourseIndex(indexNo); //Student is enrolled in Index list. Update student's course index information
+
+            //Save only if succesfully enrolled into wait list
+            CourseManager.getInstance().save();
+
+            UserManager.getInstance().save();
+            UserManager.getInstance().decryptPassForLogin();
+        }
+        else if (result == -1) //Added into waitlist
+        {
+            CourseManager.getInstance().save(); //Save since student added into waitlist. Do not need to save UserManager as nothing in student is added
+
+        }
 
 
         return result;
@@ -358,10 +374,8 @@ public class STARS
         return false;
     }
 
-
 //-------------------------------Method for enrolling of Student into STARS---------------------------------------------
 //This method will make use of UserManager to create student and write it into database.
-
 
     public void admin_addStudent(String name, String email, String matricNo,
                                  int contact, Student.GENDER gender, String nationality,
@@ -378,7 +392,7 @@ public class STARS
 
     public boolean writeToDB()
     {
-        if (UserManager.getInstance().saveData() && CourseManager.getInstance().save())
+        if (UserManager.getInstance().save() && CourseManager.getInstance().save())
         {
             //When we save the data of UserManager, the password is encrypted again. We need to decrypt it for login to work again.
             UserManager.getInstance().decryptPassForLogin();
@@ -410,12 +424,14 @@ public class STARS
     public void printIndexListOfCourse(String courseId)
     {
 
+        List<Index> indexList = CourseManager.getInstance().getIndexList( CourseManager.getInstance().findCourseById(courseId));
 
-        // if(!(CourseManager.getInstance().printIndexOfCourse(CourseManager.getInstance().findCourseById(courseId))))
-        // {
-        //     System.out.println("N/A");
-        //     System.out.println("Please enter valid course id!");
-        // }
+        for ( int i = 0; i < indexList.size(); ++ i )
+        {
+            Index currIndex = indexList.get(i);
+            System.out.println("Index " + currIndex.getIndexNum() + " -> " + "Vacancies: " + currIndex.getNumberOfVacancy() +  " Student(s) in waitlist: " + currIndex.getWaitList().size());
+        }
+
         //TODO: Print out details of index e.g Time slot info etc...
     }
 
@@ -441,8 +457,8 @@ public class STARS
         //UserManager.getInstance().addStudent("bob", "c160144@e.ntu", "U222222B", 93874270, Student.GENDER.MALE, "Singaporean", "bob", "password");
         //UserManager.getInstance().addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "ron", "password");
         UserManager.getInstance().addAdmin("doug", "doug@e.ntu", "doug123",  "doug123");
-        //CourseManager.getInstance().createIndex(10032, 50);
-        //CourseManager.getInstance().createIndex(CourseManager.getInstance().findCourseById("CE2003"), 10042, 50);
+        CourseManager.getInstance().addCourse("CE2003", "DSD", "SCE");
+        CourseManager.getInstance().createIndex(CourseManager.getInstance().findCourseById("CE2003"), 10042, 50);
     }
 
 
