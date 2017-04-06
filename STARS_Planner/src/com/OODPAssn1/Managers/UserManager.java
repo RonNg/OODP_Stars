@@ -76,7 +76,7 @@ public class UserManager extends DataManager
         return 1;
     }
 
-    public boolean saveData()
+    public boolean save()
     {//Return true if save succeed
         this.encryptPassword(); //Encrypt All Passwords before writing
         return this.write(userList, USER_PATH);
@@ -206,7 +206,7 @@ public class UserManager extends DataManager
         }
 
         /*
-        if(this.saveData())
+        if(this.save())
             System.out.println(name + " successfully added to STARS!");
         else
             System.out.println("writing failed");

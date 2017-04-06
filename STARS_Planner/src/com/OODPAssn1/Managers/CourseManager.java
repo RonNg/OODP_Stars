@@ -153,7 +153,7 @@ public class CourseManager extends DataManager
 
         if (tempIndex.checkIfStudentEnrolled(matricNo))
         {
-            return 2;
+            return 0;
         }
         return tempIndex.enrolStudent(matricNo); //enrols the student into the index by Matric No
 

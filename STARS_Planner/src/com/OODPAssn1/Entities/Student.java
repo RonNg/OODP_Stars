@@ -1,6 +1,7 @@
 package com.OODPAssn1.Entities;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Student extends User
@@ -26,6 +27,8 @@ public class Student extends User
         this.password = password;
 
         type = USER_TYPE.STUDENT;
+
+        courseIndexList = new ArrayList<Integer>();
     }
 
     //Accessors

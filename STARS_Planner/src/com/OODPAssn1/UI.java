@@ -53,6 +53,14 @@ public class UI
             //char[] passString = c.readPassword();
             //passWord = new String(passString );
             */
+
+            if(passWord.equals("debug"))
+            {
+                STARS.getInstance().populateDatabase();
+                System.out.println("Database populated with following: \n");
+                STARS.getInstance().printAllList();
+                continue;
+            }
             userType = STARS.getInstance().loginToStars(userName, passWord);
         }
 
@@ -182,7 +190,7 @@ public class UI
                System.out.println("You are currently position " + studentPosInWaitList[0] + "out of " + studentPosInWaitList[1] + "in the waitlist");
                addFinish = true;
            }
-           addFinish = false;
+           addFinish = true;
        }
    }
 
