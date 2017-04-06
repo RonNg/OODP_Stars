@@ -135,7 +135,10 @@ public class Index implements Serializable
         return false;
     }
 
-
+    public boolean checkIfStudentInWaitList ( String matricNo )
+    {
+        return false;
+    }
 
     //Accessors
     public int getNumberOfEnrolledStudent()

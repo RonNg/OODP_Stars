@@ -9,25 +9,12 @@ import java.util.List;
  */
 public class DataManager
 {
-    private String IV;
-    private String    encryptionKey;
-
     private static final String cFilePath = System.getProperty("user.dir") + "\\STARS_Planner\\database\\"; // To specify location to store database files
     //private static final String cFilePath = System.getProperty("user.dir") + "\\database\\"; // To specify location to store database files
 
 
-    public DataManager(final String IV, final String encryptionKey, final String filepath)
+    public DataManager(final String filepath)
     {
-        //IMPORTANT
-        //AES only supports keys that are 16, 24 or 32 bytes.
-        //However, Java default only supports 128-bit which is 16 bytes. This is the max without installing JCE
-        //1 char is 1 byte
-
-        //IV must be 16 bytes
-        this.IV = IV;
-        //encryptionKey must be 16 bytes
-        this.encryptionKey = encryptionKey;
-
         File directory = new File(cFilePath);
 
         //Creates the directory
@@ -133,26 +120,4 @@ public class DataManager
         }
         return false; // return false by default
     }
-
-
-    public void setIV(String IV)
-    {
-        this.IV = IV;
-    }
-
-    public void setEncryptionKey(String encryptionKey)
-    {
-        this.encryptionKey = encryptionKey;
-    }
-
-    protected String getIV()
-    {
-        return IV;
-    }
-
-    protected String getEncryptionKey()
-    {
-        return encryptionKey;
-    }
-
 }

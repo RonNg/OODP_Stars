@@ -25,7 +25,7 @@ public class CourseManager extends DataManager
 
     private CourseManager()
     {
-       super("StudentKStudentK", "NotPokemonIVFour", COURSE_PATH);
+       super(COURSE_PATH);
 
         courseList = (ArrayList<Course>) this.read(COURSE_PATH);
 
@@ -138,7 +138,9 @@ public class CourseManager extends DataManager
      * @param indexNo Index Number of the index the student is attempting to enrol into
      * @return Added into waitlist - -1 <br>
      *         Successfully enrolled into index - 1 <br>
+     *         Already enrolled in index - 2 <br>
      *         Error occured - 0
+     *
      */
     public int enrolInIndex(String matricNo, int indexNo)
     {
@@ -151,10 +153,15 @@ public class CourseManager extends DataManager
         if(tempIndex == null)
             return 0;
 
+        //Student already enrolled in this index
         if (tempIndex.checkIfStudentEnrolled(matricNo))
         {
-            return 0;
+            return 2;
         }
+        // else if () //Check if student is in waitlist
+        // {
+        //
+        // }
         return tempIndex.enrolStudent(matricNo); //enrols the student into the index by Matric No
 
     }

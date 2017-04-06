@@ -55,6 +55,7 @@ public class STARS
 
     public User.USER_TYPE loginToStars(String userName, String password)
     {
+
         User user = UserManager.getInstance().authenticateUser(userName, password);
         if (user != null) //Login successful
         {
@@ -78,6 +79,7 @@ public class STARS
 
         return false;
     }
+
 
     public boolean doesIndexExist (int indexNo)
     {
@@ -106,7 +108,6 @@ public class STARS
      ==================================================*/
 
     /**
-     * @param matricNo Matric number of the student to find in the waitlist
      * @param indexNo The waitlist's index
      * @return returns an int array of size 2 <br>
      *         The first value in the array is the Student's position in the waitlist
@@ -138,6 +139,7 @@ public class STARS
      * @param indexNo Index Number to enrol into
      * @return Added into waitlist - -1 <br>
      *         Successfully enrolled into index - 1 <br>
+     *         Already enrolled in index - 2 <br>
      *         Error occured - 0
      */
     public int student_EnrolIndex(int indexNo)
@@ -145,28 +147,24 @@ public class STARS
         if(currentLogOnUser.getType() != User.USER_TYPE.STUDENT) //only students can enroll into indexes
             return 0;
 
-
         Student tempStud = (Student)currentLogOnUser;
         int result = CourseManager.getInstance().enrolInIndex(tempStud.getMatricNo(), indexNo);
 
-
-        if(result == 1)
+        switch(result)
         {
-            tempStud.addCourseIndex(indexNo); //Student is enrolled in Index list. Update student's course index information
+            case 1:
+                tempStud.addCourseIndex(indexNo); //Student is enrolled in Index list. Update student's course index information
 
-            //Save only if succesfully enrolled into wait list
-            CourseManager.getInstance().save();
+                //Save only if succesfully enrolled into wait list
+                CourseManager.getInstance().save();
 
-            UserManager.getInstance().save();
-            UserManager.getInstance().decryptPassForLogin();
+                UserManager.getInstance().save();
+                break;
+            case -1:
+                CourseManager.getInstance().save(); //Save since student added into waitlist. Do not need to save UserManager as nothing in student is added
+                break;
+
         }
-        else if (result == -1) //Added into waitlist
-        {
-            CourseManager.getInstance().save(); //Save since student added into waitlist. Do not need to save UserManager as nothing in student is added
-
-        }
-
-
         return result;
     }
 
@@ -293,7 +291,6 @@ public class STARS
         if (UserManager.getInstance().save() && CourseManager.getInstance().save())
         {
             //When we save the data of UserManager, the password is encrypted again. We need to decrypt it for login to work again.
-            UserManager.getInstance().decryptPassForLogin();
             return true;
         } else
             return false;
@@ -305,9 +302,7 @@ public class STARS
         CourseManager.getInstance().printAllCourse();
     }
 
-
-
-
+    
    /*==================================================
 
                        PRINT METHODS
@@ -321,13 +316,12 @@ public class STARS
      */
     public void printIndexListOfCourse(String courseId)
     {
-
         List<Index> indexList = CourseManager.getInstance().getIndexList( CourseManager.getInstance().findCourseById(courseId));
 
         for ( int i = 0; i < indexList.size(); ++ i )
         {
             Index currIndex = indexList.get(i);
-            System.out.println("Index " + currIndex.getIndexNum() + " -> " + "Vacancies: " + currIndex.getNumberOfVacancy() +  " Student(s) in waitlist: " + currIndex.getWaitList().size());
+            System.out.println("Index " + currIndex.getIndexNum() + " -> " + "Vacancies: " + currIndex.getNumberOfVacancy() +  "|| Student(s) in waitlist: " + currIndex.getWaitList().size());
         }
 
         //TODO: Print out details of index e.g Time slot info etc...
