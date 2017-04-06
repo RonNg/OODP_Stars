@@ -1,10 +1,17 @@
 package com.OODPAssn1;
 
+
 import com.OODPAssn1.Entities.Course;
 import com.OODPAssn1.Entities.Student;
+import com.OODPAssn1.Entities.TimeSlot;
 import com.OODPAssn1.Entities.User;
 import com.OODPAssn1.Managers.CourseManager;
 import com.OODPAssn1.Managers.UserManager;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 
 /**
  * Created by jonah on 15/3/2017.
@@ -14,6 +21,9 @@ public class STARS
     private static STARS instance;
     private boolean isInitAlready = false;
     private User currentLogOnUser;
+    private Calendar startDate;
+    private Calendar endDate;
+
 
 
     private STARS(int i)
@@ -38,6 +48,12 @@ public class STARS
             System.out.println("STARS is being reinitialised again!");
             return -1;
         }
+        //Set default access period for student to current month and year
+        Calendar startDate = Calendar.getInstance();
+        startDate.set(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), 1);
+        Calendar endDate = Calendar.getInstance();
+        endDate.set(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), 30);
+        this.setAccessPeriod(startDate, endDate);
 
         return 1;
 
@@ -58,13 +74,49 @@ public class STARS
         User user = UserManager.getInstance().authenticateUser(userName, password);
         if (user != null) //Login successful
         {
-            System.out.println(user.getType() + " " + user.getUsername() + " is now logged on to Stars!");
+            //System.out.println(user.getType() + " " + user.getUsername() + " is now logged on to Stars!");
             currentLogOnUser = user;
             return user.getType();
         }
         return null;
     }
 
+//------------------------Method to get access period-------------------------------------------------------
+
+    public Calendar[] getAccessPeriod(){
+
+        Calendar[] accessPeriod = new Calendar[2];
+        accessPeriod[0] = this.startDate;
+        accessPeriod[1] = this.endDate;
+
+
+        return accessPeriod;
+
+    }
+
+//------------------------Method to set start date and end date of STARS availability-----------------------
+
+    public void setAccessPeriod(Calendar startDate, Calendar endDate){
+
+
+        this.startDate = startDate;
+        this.endDate = endDate;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
+
+    }
+
+//------------------------Method to check current date is within access period-----------------------------
+
+    public boolean checkAccessPeriod(){
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
+        Calendar currentDate = Calendar.getInstance();
+        //System.out.println("Current date:" + dateFormat.format(currentDate.getTime()));
+        //System.out.println("Start date: " + dateFormat.format(startDate.getTime()) + "   " + "End date: " + dateFormat.format(endDate.getTime()));
+        return currentDate.after(startDate) && currentDate.before(endDate);
+
+
+    }
 
 //------------------------Method for adding/updating of Course----------------------------------------------
 

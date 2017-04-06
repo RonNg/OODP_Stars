@@ -4,8 +4,13 @@ import com.OODPAssn1.Entities.Course;
 import com.OODPAssn1.Entities.Student;
 import com.OODPAssn1.Entities.TimeSlot;
 import com.OODPAssn1.Entities.User;
+import com.sun.org.apache.xpath.internal.SourceTree;
 
 import java.io.Console;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 
 
@@ -68,6 +73,16 @@ public class UI
     {
 
         int choice;
+        if(!STARS.getInstance().checkAccessPeriod()){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
+            Calendar[] accessPeriod;
+            accessPeriod = STARS.getInstance().getAccessPeriod();
+            System.out.println("You can only access STARS from " + dateFormat.format(accessPeriod[0].getTime()) +
+                               " to " + dateFormat.format(accessPeriod[1].getTime()));
+            System.out.println("Logging you out now...\n");
+            return;
+        }
+
         while (true)
         {
             System.out.println("\nWhat will you like to do? \n" +
@@ -167,6 +182,48 @@ public class UI
             {
 
                 case 1://Edit student access period
+
+                    Date startDateobj, endDateobj;
+                    Calendar startDateCal = Calendar.getInstance(); Calendar endDateCal = Calendar.getInstance();
+                    String startDate, endDate;
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
+
+                    while(true){
+                        try{
+                            System.out.print("Please input starting date(dd/mm/yyyy): ");
+                            startDate = s.next();
+                            startDateobj = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
+                            System.out.println(startDateobj);
+                            startDateCal.setTime(startDateobj);
+                            break;
+                        }catch(ParseException e){
+                            System.out.println("Please enter format as shown!");
+                        }
+
+                    }
+
+
+                    while(true){
+                        try{
+                            System.out.print("Please input ending date(dd/mm/yyyy): ");
+                            endDate = s.next();
+                            endDateobj = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
+                            System.out.println(endDateobj);
+                            endDateCal.setTime(endDateobj);
+                            break;
+
+                        }catch(ParseException e){
+                            System.out.println("Please enter format as shown!");
+                        }
+
+                    }
+
+                    STARS.getInstance().setAccessPeriod(startDateCal, endDateCal);
+                    Calendar[] c = STARS.getInstance().getAccessPeriod();
+                    System.out.println("Updated access period: ");
+                    System.out.println("--------------------------");
+                    System.out.println("Start date: " + sdf.format(startDateCal.getTime()) + "   " + "End date: " + sdf.format(endDateCal.getTime()));
+
 
                     break;
 
@@ -363,4 +420,12 @@ public class UI
     }
 
 
-}
+
+
+    }
+
+
+
+
+
+
