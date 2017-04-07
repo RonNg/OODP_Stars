@@ -43,7 +43,7 @@ public class Student extends User implements Serializable
     public String getMatricNo(){return this.matricNo;}
     public String getGender(){return this.gender.toString();}
     public String getNationality(){return this.nationality;}
-
+    public List<Integer> getCourseIndexList(){return courseIndexList;}
 
 
 
@@ -52,6 +52,7 @@ public class Student extends User implements Serializable
     {
         courseIndexList.add(courseIndex);
     }
+
 
 
     public void deEnrollCourseIndex(int indexNo)

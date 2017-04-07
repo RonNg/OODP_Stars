@@ -567,6 +567,16 @@ public class STARS
 
         System.out.println("\n\n===============================");
         CourseManager.getInstance().printAllIndexDetails();
+
+        System.out.println("\n\n===============================");
+        List<Integer> indexList = UserManager.getInstance().getStudentByMatricNo("U1111111B").getCourseIndexList();
+        if(indexList.size()>0){
+            System.out.println("Index registered by Qinghui: ");
+            for(int i = 0; i < indexList.size(); i++){
+                System.out.println(indexList.get(i));
+            }
+        }else System.out.println("No Index registered by Qinghui.");
+
     }
 
     public void populateDatabase()
@@ -576,7 +586,7 @@ public class STARS
         //UserManager.getInstance().addStudent("qinghui", "c160144@e.ntu", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
         //UserManager.getInstance().addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
         //UserManager.getInstance().addAdmin("doug", "doug@e.ntu", "doug123",  "doug123");
-        //CourseManager.getInstance().addCourse("CE2003", "DSD", "SCE");
+        CourseManager.getInstance().addCourse("CE2003", "DSD", "SCE");
         CourseManager.getInstance().createIndex(CourseManager.getInstance().findCourseById("CE2003"), 10042, 20);
         CourseManager.getInstance().createIndex(CourseManager.getInstance().findCourseById("CE2003"), 10043, 20);
     }
