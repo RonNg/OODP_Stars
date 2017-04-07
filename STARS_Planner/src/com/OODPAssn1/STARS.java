@@ -6,14 +6,11 @@ import com.OODPAssn1.Managers.UserManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-<<<<<<< HEAD
 import java.util.*;
-=======
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
->>>>>>> 7fe2d120b9ab5e5cb5f8490e6914c307c21bbcce
 
 /**
  * Created by jonah on 15/3/2017.
