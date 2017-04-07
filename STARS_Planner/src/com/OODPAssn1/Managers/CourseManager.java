@@ -76,7 +76,7 @@ public class CourseManager extends DataManager
         return courseList.get(courseList.indexOf(course)).deleteLectTimeSlot(timeSlot);
     }
 
-    public Course findCourseById(String courseId)
+    public Course getCourseByCourseId(String courseId)
     {
         if (courseList == null)
         {
@@ -97,6 +97,23 @@ public class CourseManager extends DataManager
 
     }
 
+    public Course getCourseByIndexNo (int indexNo)
+    {
+        for(int i = 0; i < courseList.size(); ++ i)
+        {
+            List<Index> tempIndexList = courseList.get(i).getIndexList();
+            for(int j = 0; j < tempIndexList.size(); ++ j)
+            {
+               if(tempIndexList.get(j).getIndexNum() == indexNo)
+               {
+                   return courseList.get(i);
+               }
+            }
+        }
+
+        return null; //Course not found
+    }
+
 
 
     //---------Index methods---------
@@ -106,19 +123,20 @@ public class CourseManager extends DataManager
         return courseList.get(courseList.indexOf(course)).getIndexList();
     }
 
-    public Index findByIndex (int indexNo)
+    public Index getIndexByIndexNo(int indexNo)
     {
         for(int i = 0; i < courseList.size(); ++ i)
         {
             List<Index> tempIndexList = courseList.get(i).getIndexList();
             for(int j = 0; j < tempIndexList.size(); ++ j)
             {
-                if(indexNo == tempIndexList.get(i).getIndexNum())
-                    return tempIndexList.get(i); //found
+                if(indexNo == tempIndexList.get(j).getIndexNum())
+                    return tempIndexList.get(j); //found
             }
         }
         return null; //can't find
     }
+
 
 
     public boolean createIndex(Course course, int indexNum, int maxNumOfStudetns)
@@ -138,19 +156,20 @@ public class CourseManager extends DataManager
      *
      * @param matricNo Matriculation number of the student who is enrolling into this index
      * @param indexNo Index Number of the index the student is attempting to enrol into
-     * @return Added into waitlist - -1 <br>
-     *         Successfully enrolled into index - 1 <br>
-     *         Already enrolled in index - 2 <br>
-     *         Error occured - 0
-     *
+     * @return Error occured -> 0 <br>
+     *         Added into waitlist -> -1 <br>
+     *         Successfully enrolled into index -> 1 <br>
+     *         Already enrolled in index -> 2 <br>
+     *         Already in waitlist of the index -> 3
      */
     public int enrolInIndex(String matricNo, int indexNo)
     {
-        // 1 - success
+        //-1 - index full
         // 0 - something wrong
-        // -1 - index full
+        // 1 - success
         // 2 - already in index
-        Index tempIndex = findByIndex(indexNo);
+        // 3 - already in waitlist
+        Index tempIndex = getIndexByIndexNo(indexNo);
 
         if(tempIndex == null)
             return 0;
@@ -161,26 +180,78 @@ public class CourseManager extends DataManager
 
             return 2;
         }
-        // else if () //Check if student is in waitlist
-        // {
-        //      //TODO: Check if student is already in waitlist
-        // }
+        else if (tempIndex.checkIfStudentInWaitList(matricNo)) //Check if student is in waitlist
+        {
+            return 3;
+             //TODO: Check if student is already in waitlist
+        }
 
         return tempIndex.enrolStudent(matricNo); //enrols the student into the index by Matric No
 
     }
 
-    public String withdrawFromIndex(String matricNo, Course course, Index index)
-    { // "SUCCESS" - Success "ERROR" - something wrong OTHERS - matric number of student to send email to
-        Course toChange = courseList.get(courseList.indexOf(course));
-        return toChange.getIndexList().get(toChange.getIndexList().indexOf(index)).withdrawStudent(matricNo);
+    /**
+     *
+     * @param matricNo
+     * @param indexNo
+     * @return a string array of size 3. <br><br>
+     *         first index - SUCCESS, ERROR or HANDLE. HANDLE is an indication to handle the waitlist in UserManager <br><br>
+     *         second index - contains student's matriculation number to add into index <br><br>
+     *         third index - contains the index number to add the student matriculation number (specified in second index) to.
+     */
+    public String [] dropFromIndex (String matricNo , int indexNo)
+    {
+        Index tempIndex = getIndexByIndexNo(indexNo);
+
+        String [] retStrArr = new String[3];
+
+        //Index wasn't found
+        if (tempIndex == null)
+        {
+            retStrArr[0] = "ERROR";
+            return retStrArr;
+        }
+
+        //If the student MatricNo was found and succesfully removed from the index
+        if (tempIndex.withdrawStudent(matricNo) == true)
+        {
+            //CHECK IF NEED TO HANDLE WAITLIST
+            if (tempIndex.checkIfHandleWaitlist() == true)
+            {
+                List<String> studentWaitList = tempIndex.getWaitList();
+
+                //Enrol student at the front of the waitlist. enrolInIndex returns 1 if successful
+                if (enrolInIndex(studentWaitList.get(0), indexNo) == 1)
+                {
+                    String studentMatricNoFromWaitlist = studentWaitList.get(0);
+                    studentWaitList.remove(0); //Remove front waitlist.
+
+                    retStrArr[0] = "HANDLE";
+                    retStrArr[1] = studentMatricNoFromWaitlist;
+                    retStrArr[2] = Integer.toString(indexNo);
+
+                    return retStrArr; //Notify STARS to make UserManager add IndexNo to Student and send email!
+                }
+            }
+
+            retStrArr[0] = "SUCCESS";
+            return retStrArr;
+        }
+        retStrArr[0] = "ERROR"; //Returns success if no need to handle waitlist
+        return retStrArr;
     }
+
+    // public String withdrawFromIndex(String matricNo, Course course, Index index)
+    // { // "SUCCESS" - Success "ERROR" - something wrong OTHERS - matric number of student to send email to
+    //     Course toChange = courseList.get(courseList.indexOf(course));
+    //     return toChange.getIndexList().get(toChange.getIndexList().indexOf(index)).withdrawStudent(matricNo);
+    // }
 
 //----------------------------------Method for debugging purposes. Remove for production--------------------------------
 
     public int printAllCourse()
     {
-        if (courseList == null)
+        if (courseList == null || courseList.size() <= 0)
         {
             System.out.println("printAll(): List is empty");
             return 0;
@@ -222,7 +293,7 @@ public class CourseManager extends DataManager
      */
     public int printIndexDetails ( String courseId )
     {
-        Course tempCourse = findCourseById(courseId);
+        Course tempCourse = getCourseByCourseId(courseId);
         if(tempCourse == null)
             return -1;
 

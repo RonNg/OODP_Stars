@@ -13,9 +13,12 @@ public class Index implements Serializable
     private int indexNum;
     private int maxNumberOfStudent;
     private int numberOfStudent;
-    private List<String> studentsEnrolledList; // Stores matrix number
+    private boolean handleWaitList; //To notify the CourseManager to add first index of waitlist into the index
+
+    private List<String> studentsEnrolledList; // Stores matric number
     private List<TimeSlot> tutLabTimeSlotList; // Stores class times
     private List<String> studentWaitList; // Stores wait list
+
 
     public Index(int indexNum, int maxNumberOfStudent)
     {
@@ -24,9 +27,12 @@ public class Index implements Serializable
         this.maxNumberOfStudent = maxNumberOfStudent;
         numberOfStudent = 0;
 
+        handleWaitList = false;
+
         studentsEnrolledList = new ArrayList<String>();
         tutLabTimeSlotList = new ArrayList<TimeSlot>();
         studentWaitList = new ArrayList<String>();
+
     }
 
     //-------Index number methods--------
@@ -100,34 +106,52 @@ public class Index implements Serializable
             numberOfStudent++;
             return 1; //Successfully enrolled into index
         }
-        return 0;
+        return 0; //error occured
     }
 
-    public String withdrawStudent(String matricNo)
+    public boolean withdrawStudent (String matricNo)
     {
-        if (studentsEnrolledList.remove(matricNo))
+        boolean success = studentsEnrolledList.remove(matricNo);
+
+        if(success)
         {
-            numberOfStudent--;
-            if ((numberOfStudent + 1) == maxNumberOfStudent)
+            -- numberOfStudent;
+            if(getNumberOfVacancy() == 1) //if when withdrawing from this index, the number of vacancies is exactly 1, it means it was previously full. Handle waitlist
             {
-                String toEnroll = studentWaitList.get(0);
-                if (enrolStudent(toEnroll) == 1)
-                {
-                    studentWaitList.remove(0);
-                    return toEnroll;
-                }
-                return "ERROR";
+                //TODO: Handle waitlist here
+                //Flag for handling waitlist. For Coursemanager use
+                handleWaitList = true;
             }
-            return "SUCCESS";
         }
-        return "ERROR";
+        return success;
     }
+
+
+    // public String withdrawStudent(String matricNo)
+    // {
+    //     if (studentsEnrolledList.remove(matricNo))
+    //     {
+    //         numberOfStudent--;
+    //         if ((numberOfStudent + 1) == maxNumberOfStudent)
+    //         {
+    //             String toEnroll = studentWaitList.get(0);
+    //             if (enrolStudent(toEnroll) == 1)
+    //             {
+    //                 studentWaitList.remove(0);
+    //                 return toEnroll;
+    //             }
+    //             return "ERROR";
+    //         }
+    //         return "SUCCESS";
+    //     }
+    //     return "ERROR";
+    // }
 
     public boolean checkIfStudentEnrolled(String matricNo)
     {
         for (int n = 0; n < studentsEnrolledList.size(); n++)
         {
-            if (studentsEnrolledList.get(n).equals(matricNo))
+            if (studentsEnrolledList.get(n).equalsIgnoreCase(matricNo))
             {
                 return true;
             }
@@ -135,9 +159,22 @@ public class Index implements Serializable
         return false;
     }
 
+    /**
+     *
+     * @param matricNo Matriculation number to check
+     * @return true if student is in the list <br>
+     *         false if student is not in the list
+     */
     public boolean checkIfStudentInWaitList ( String matricNo )
     {
         //TODO: Check if student in waitlist
+        for(int i = 0; i < studentWaitList.size(); ++ i)
+        {
+            if(studentWaitList.get(i).equalsIgnoreCase(matricNo))
+            {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -162,6 +199,8 @@ public class Index implements Serializable
     {
         return maxNumberOfStudent - numberOfStudent;
     }
+    public boolean checkIfHandleWaitlist () { return handleWaitList; }
+
     public List getWaitList(){return studentWaitList;}
     public List<String> getEnrolledStudentList(){return studentsEnrolledList;}
 

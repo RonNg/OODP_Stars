@@ -85,7 +85,7 @@ public class UserManager extends DataManager
      * @return index of the student if found in List.
      * <p>returns -1 if student could not be found</p>
      */
-    public int findStudent(String name)
+    public int getStudentByName(String name)
     {
         Student temp = null;
         for (int i = 0; i < userList.size(); ++i)
@@ -181,12 +181,6 @@ public class UserManager extends DataManager
             System.out.println(name + " successfully added to STARS!");
         else
             System.out.println("writing failed");
-
-    }
-
-
-    public void addCourseIndex(User student)
-    {
 
     }
 

@@ -10,16 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
-import com.OODPAssn1.Entities.Student;
-import com.OODPAssn1.Entities.TimeSlot;
-import com.OODPAssn1.Entities.User;
-
-import java.io.Console;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Scanner;
 
 
 public class UI
@@ -71,7 +61,7 @@ public class UI
             //passWord = new String(passString );
             */
 
-            if(passWord.equals("debug"))
+            if (passWord.equals("debug"))
             {
                 STARS.getInstance().populateDatabase();
                 System.out.println("Database populated with following: \n");
@@ -91,7 +81,8 @@ public class UI
     public static void studentMenu()
     {
         int choice;
-        if(!STARS.getInstance().checkAccessPeriod()){
+        if (!STARS.getInstance().checkAccessPeriod())
+        {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
             Calendar[] accessPeriod;
             accessPeriod = STARS.getInstance().getAccessPeriod();
@@ -124,11 +115,13 @@ public class UI
                     break;
 
                 case 2://Drop course
-
+                    student_DropIndex();
+                    //TODO: Implement
                     break;
 
                 case 3://Check/Print Courses Registered
-
+                    String toPrint = STARS.getInstance().getStudentRegisteredIndex("");
+                    System.out.println(toPrint);
                     break;
 
                 case 4://Check Vacancies Available
@@ -144,11 +137,11 @@ public class UI
                     break;
 
                 case 7://Save changes and return to login menu
-                    STARS.getInstance().writeToDB();
+                    STARS.getInstance().saveData();
                     return;
 
                 case 8://Save changes and quit program
-                    STARS.getInstance().writeToDB();
+                    STARS.getInstance().saveData();
                     loggedOnUserType = null;
                     return;
 
@@ -161,67 +154,125 @@ public class UI
     }
 
 
-   public static void student_AddCourse()
-   {
-       boolean addFinish = false;
-       while(!addFinish)
-       {
-           System.out.println("Course available to enroll: \n" +
-                   "--------------------------");
-           STARS.getInstance().printCourseList();
+    public static void student_AddCourse()
+    {
+        boolean addFinish = false;
+        while (!addFinish)
+        {
+            System.out.println("Course available to enroll: \n" +
+                    "--------------------------");
+            STARS.getInstance().printCourseList();
 
-           System.out.print("\nPlease input the course ID of the course you wished to enroll in or type 'quit' to go back to main menu: ");
-           String courseId = s.next();
+            System.out.print("\n\nPlease input the course ID of the course you wished to enroll in or type 'quit' to go back to main menu: ");
+            String courseId = s.next();
 
-           //Checks if quit and then checks if the course exists, else restart.
-           if (courseId.equals("quit"))
-           {
-               break;
-           }
-           else if (STARS.getInstance().doesCourseExist(courseId) == false)
-           {
-               System.out.println("\n\nThe course does not exist, please try again.\n\n");
-               continue;
-           }
+            //Checks if quit and then checks if the course exists, else restart.
+            if (courseId.equals("quit"))
+            {
+                break;
+            }
+            else if (STARS.getInstance().doesCourseExist(courseId) == false)
+            {
+                System.out.println("\n\nThe course does not exist, please try again.\n\n");
+                continue;
+            }
 
-           System.out.println("Index available to enroll in according to course selected: \n" +
-                   "---------------------------------------------------------");
-           STARS.getInstance().printIndexListOfCourse(courseId);
-           int indexToEnroll = s.nextInt();
+            System.out.println("\n\nPlease enter the index to enroll in according to course selected (or enter -1 to quit): \n" +
+                    "---------------------------------------------------------");
 
-           //Checks if index exists else restart
-           if ( STARS.getInstance().doesIndexExist(indexToEnroll) == false)
-           {
-               System.out.println("\n\nThe index does not exist, please try again.\n\n");
-               continue;
-           }
+            String indexInCourse = STARS.getInstance().getIndexListOfCourse(courseId);
+            System.out.println(indexInCourse);
+            int indexToEnroll = s.nextInt();
 
-           //Enrols student into index
-           int result = STARS.getInstance().student_EnrolIndex(indexToEnroll);
+            if(indexToEnroll == -1)
+            {
+                break;
+            }
 
-           switch(result)
-           {
-               case 1: //Succesfull enrolled into index
-                   System.out.println("You have successfully enroled into the Index " + indexToEnroll);
-                   addFinish = true;
-                   break;
-               case 2:
-                   break;
-               case -1: //Added into waitlist
-                   System.out.println("You have been placed into the wait list of " + indexToEnroll);
-                   int[] studentPosInWaitList = STARS.getInstance().student_getPositionInWaitlist(indexToEnroll);
-                   if (studentPosInWaitList == null)
-                   {
-                       System.out.println("Could not find you in the waitlist.");
-                       continue;//Reset
-                   }
-                   System.out.println("You are currently position " + studentPosInWaitList[0] + "out of " + studentPosInWaitList[1] + "in the waitlist");
-                   addFinish = true;
-                   break;
-           }
-           addFinish = true;
-       }
-   }
+            //Checks if index exists else restart
+            if (STARS.getInstance().doesIndexExist(indexToEnroll) == false)
+            {
+                System.out.println("\n\nThe index does not exist, please try again.\n\n");
+                continue;
+            }
+
+
+            //Enrols student into index
+            int result = STARS.getInstance().student_EnrolIndex(indexToEnroll);
+            int[] studentPosInWaitList;
+            switch (result)
+            {
+               /*======================================
+                   SUCCESSFULLY ADDED INTO INDEX/WAITLIST
+               =======================================*/
+                case 1: //Succesfull enrolled into index
+                    System.out.println("\n\n\nYou have successfully enrolled into the Index " + indexToEnroll);
+                    break;
+                case -1: //Added into waitlist
+                    studentPosInWaitList = STARS.getInstance().student_getPositionInWaitlist(indexToEnroll); //Gets the student's position in the waitlist
+                    System.out.println("\n\n\nYou have been placed into the wait list of " + indexToEnroll);
+                    System.out.println("You are currently position " + studentPosInWaitList[0] + "out of " + studentPosInWaitList[1] + "in the waitlist");
+                    break;
+
+               /*======================================
+                   FAIL TO BE ADDED INTO INDEX/WAITLIST
+               =======================================*/
+                //Already enrolled in Index
+                case 2:
+                    System.out.println("\n\n\nYou are already enrolled in Index " + indexToEnroll + "\n");
+                    break;
+
+                //Already in the index of the waitlist
+                case 3:
+                    System.out.println("\n\n\nYou are already in the waitlist of Index " + indexToEnroll + "\n");
+                    studentPosInWaitList = STARS.getInstance().student_getPositionInWaitlist(indexToEnroll); //Gets the student's position in the waitlist
+                    System.out.println("You are currently position " + studentPosInWaitList[0] + "out of " + studentPosInWaitList[1] + "in the waitlist");
+                    break;
+            }
+            addFinish = true;
+        }
+    }
+
+    public static void student_DropIndex()
+    {
+        boolean dropFinish = false;
+        while(!dropFinish)
+        {
+            System.out.println("List of Index(s) registered: \n" +
+                                "--------------------------");
+            String toPrint = STARS.getInstance().getStudentRegisteredIndex("");
+            System.out.println(toPrint);
+
+            System.out.print("\n\nPlease input the index you wish to drop or type 'quit' to go back to main menu: ");
+            String indexNoToDrop = s.next();
+
+            //Checks if quit and then checks if the course exists, else restart.
+            if (indexNoToDrop.equals("quit"))
+            {
+                break;
+            }
+            else if (STARS.getInstance().doesIndexExist(Integer.parseInt(indexNoToDrop)) == false)
+            {
+                System.out.println("\n\nIncorrect index entered. Please try again.\n\n");
+                continue;
+            }
+            //STARS will handle removing index from student and removing student from index
+            int result = STARS.getInstance().student_DropIndex(Integer.parseInt(indexNoToDrop));
+
+            if(result == 1)
+            {
+                System.out.println("You have succesfully dropped Index " + indexNoToDrop);
+            }
+            else
+            {
+                System.out.println("An error occured. You did not drop your index");
+            }
+
+            dropFinish = true;
+        }
+    }
+
+
 
 //------------------------------------Method to display Admin's menu--------------------------------------------------
 
@@ -378,7 +429,7 @@ public class UI
                 break;
 
                 case 5://Print student list by index number
-
+                    //TODO:
                     break;
 
                 case 6://Print student list by course (all students registered for the selected course)
@@ -390,15 +441,15 @@ public class UI
                     String cId = s.next();
                     System.out.println("Student registered in course " + cId + ":");
                     System.out.println("-----------------------------------------");
-                    System.out.println(STARS.getInstance().printStudentsInCourse(cId));
+                    System.out.println(STARS.getInstance().getStudentsInCourse(cId));
                     break;
 
                 case 8://Save changes and return to login menu
-                    STARS.getInstance().writeToDB();
+                    STARS.getInstance().saveData();
                     return;
 
                 case 9://Save changes and quit program
-                    STARS.getInstance().writeToDB();
+                    STARS.getInstance().saveData();
                     loggedOnUserType = null;
                     return;
 
