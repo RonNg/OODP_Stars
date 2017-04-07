@@ -88,13 +88,13 @@ public class UI
     public static void studentMenu()
     {
         int choice;
+
         if (!STARS.getInstance().checkAccessPeriod())
         {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
-            Calendar[] accessPeriod;
-            accessPeriod = STARS.getInstance().getAccessPeriod();
-            System.out.println("You can only access STARS from " + dateFormat.format(accessPeriod[0].getTime()) +
-                    " to " + dateFormat.format(accessPeriod[1].getTime()));
+
+            System.out.println("\nSTARS can only be access within this period: ");
+            System.out.println("--------------------------------------------");
+            System.out.println(STARS.getInstance().getAccessPeriod() + "\n");
             System.out.println("Logging you out now...\n");
             return;
         }
@@ -340,48 +340,37 @@ public class UI
             {
 
                 case 1://Edit student access period
-                    Date startDateobj, endDateobj;
-                    Calendar startDateCal = Calendar.getInstance(); Calendar endDateCal = Calendar.getInstance();
-                    String startDate, endDate;
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
+                    System.out.println("\n =============================================== " +
+                                       "\n            Changing Access Period            " +
+                                       "\n =============================================== ");
+                    System.out.println("\nCurrent Access period: ");
+                    System.out.println("------------------------");
+                    System.out.println(STARS.getInstance().getAccessPeriod() + "\n");
+
+                    String startDate;
+                    String endDate;
 
                     while(true){
-                        try{
-                            System.out.print("Please input starting date(dd/mm/yyyy): ");
-                            startDate = s.next();
-
-                            startDateobj = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
-                            System.out.println(startDateobj);
-                            startDateCal.setTime(startDateobj);
+                        System.out.print("Please input new start date(dd/mm/yyyy): ");
+                        startDate = s.next();
+                        if(STARS.getInstance().checkDateFormat(startDate))
                             break;
-                        }catch(ParseException e){
-                            System.out.println("Please enter format as shown!");
-                        }
+                        else System.out.println("Please enter in the format as shown! e.g. 01/04/2017");
+                    }
 
+                    while(true){
+                        System.out.print("Please input new end date(dd/mm/yyyy): ");
+                        endDate = s.next();
+                        if(STARS.getInstance().checkDateFormat(endDate))
+                            break;
+                        else System.out.println("Please enter in the format as shown! e.g. 30/04/2017");
                     }
 
 
-                    while(true){
-                        try{
-                            System.out.print("Please input ending date(dd/mm/yyyy): ");
-                            endDate = s.next();
-                            endDateobj = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
-                            System.out.println(endDateobj);
-                            endDateCal.setTime(endDateobj);
-                            break;
 
-                        }catch(ParseException e){
-                            System.out.println("Please enter format as shown!");
-                        }
-
-                    }
-
-                    STARS.getInstance().setAccessPeriod(startDateCal, endDateCal);
-                    Calendar[] c = STARS.getInstance().getAccessPeriod();
                     System.out.println("Updated access period: ");
                     System.out.println("--------------------------");
-                    System.out.println("Start date: " + sdf.format(startDateCal.getTime()) + "   " + "End date: " + sdf.format(endDateCal.getTime()));
-
+                    System.out.println(STARS.getInstance().setAccessPeriod(startDate, endDate));
 
                     break;
 

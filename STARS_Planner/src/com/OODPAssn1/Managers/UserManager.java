@@ -1,11 +1,13 @@
 package com.OODPAssn1.Managers;
 
+import com.OODPAssn1.Entities.AccessPeriod;
 import com.OODPAssn1.Entities.Admin;
 import com.OODPAssn1.Entities.Student;
 import com.OODPAssn1.Entities.User;
 import com.OODPAssn1.MD5Hasher;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -19,18 +21,26 @@ public class UserManager extends DataManager
     private static UserManager instance;
 
     public final static String USER_PATH = "user.dat";
+    public final static String ACCESS_Period_PATH = "accessPeriod.dat";
     private List<User> userList = null;
+    private AccessPeriod acccessPeriod = null;
 
     private boolean isInitAlready = false;
 
     private UserManager()
     {
-        super(USER_PATH);
+        //super(USER_PATH);
+        super(USER_PATH, ACCESS_Period_PATH);
 
         //Retrieves the user lists from the database
         userList = (ArrayList) this.read(USER_PATH);
         if (userList == null)
             userList = new ArrayList();
+
+        //Retrieves the user lists from the database
+        acccessPeriod = (AccessPeriod) this.read(ACCESS_Period_PATH);
+        if (acccessPeriod == null)
+            acccessPeriod = new AccessPeriod();
     }
 
     public static UserManager getInstance()
@@ -75,7 +85,7 @@ public class UserManager extends DataManager
 
     public boolean save()
     {//Return true if save succeed
-        return this.write(userList, USER_PATH);
+        return (this.write(userList, USER_PATH) && this.write(acccessPeriod, ACCESS_Period_PATH));
     }
 
 
@@ -181,6 +191,15 @@ public class UserManager extends DataManager
             System.out.println(name + " successfully added to STARS!");
         else
             System.out.println("writing failed");
+
+    }
+
+    public AccessPeriod getAccessPeriod(){
+        return acccessPeriod;
+    }
+
+    public boolean changeAccessPeriod(Calendar start, Calendar end){
+        return acccessPeriod.setAccessPeriod(start, end);
 
     }
 
