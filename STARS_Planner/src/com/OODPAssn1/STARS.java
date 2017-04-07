@@ -4,9 +4,11 @@ import com.OODPAssn1.Entities.*;
 import com.OODPAssn1.Managers.CourseManager;
 import com.OODPAssn1.Managers.UserManager;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,8 +19,7 @@ public class STARS
     private static STARS instance;
     private boolean isInitAlready = false;
     private User currentLogOnUser;
-    private Calendar startDate;
-    private Calendar endDate;
+    private AccessPeriod currentAccessPeriod;
     private Notification studentNotification;
 
 
@@ -44,12 +45,8 @@ public class STARS
             System.out.println("STARS is being reinitialised again!");
             return -1;
         }
-        //Set default access period for student to current month and year
-        Calendar startDate = Calendar.getInstance();
-        startDate.set(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), 1);
-        Calendar endDate = Calendar.getInstance();
-        endDate.set(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), 30);
-        this.setAccessPeriod(startDate, endDate);
+
+
 
         studentNotification = new Notification();
 
@@ -81,45 +78,79 @@ public class STARS
     }
 
 
-    //------------------------Method to get access period-------------------------------------------------------
-
-    public Calendar[] getAccessPeriod()
-    {
-
-        Calendar[] accessPeriod = new Calendar[2];
-        accessPeriod[0] = this.startDate;
-        accessPeriod[1] = this.endDate;
-
-
-        return accessPeriod;
-
-    }
-
-//------------------------Method to set start date and end date of STARS availability-----------------------
-
-    public void setAccessPeriod(Calendar startDate, Calendar endDate)
-    {
-
-
-        this.startDate = startDate;
-        this.endDate = endDate;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
-
-    }
-
 //------------------------Method to check current date is within access period-----------------------------
 
     public boolean checkAccessPeriod()
     {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
         Calendar currentDate = Calendar.getInstance();
         //System.out.println("Current date:" + dateFormat.format(currentDate.getTime()));
         //System.out.println("Start date: " + dateFormat.format(startDate.getTime()) + "   " + "End date: " + dateFormat.format(endDate.getTime()));
-        return currentDate.after(startDate) && currentDate.before(endDate);
+        return currentDate.after(UserManager.getInstance().getAccessPeriod().getStartDate()) && currentDate.before(UserManager.getInstance().getAccessPeriod().getEndDate());
 
 
     }
+//----------------------------Method to check valid Date format---------------------------------------------------------
+
+    public boolean checkDateFormat(String date){
+
+        try{
+
+            Date dateObj = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+
+        }catch(ParseException e){
+            return false;
+        }
+        return true;
+    }
+
+//----------------------------Method to set access period---------------------------------------------------------------
+
+    public String setAccessPeriod(String start, String end)
+    {
+
+        Date startDateObj, endDateObj;
+        Calendar startDateCal = Calendar.getInstance(); Calendar endDateCal = Calendar.getInstance();
+        String startDate, endDate;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
+
+
+            try{
+                startDateObj = new SimpleDateFormat("dd/MM/yyyy").parse(start);
+                System.out.println(startDateObj);
+                startDateCal.setTime(startDateObj);
+                endDateObj = new SimpleDateFormat("dd/MM/yyyy").parse(end);
+                System.out.println(endDateObj);
+                endDateCal.setTime(endDateObj);
+
+            }catch(ParseException e){
+                System.out.println("Please enter format as shown!");
+            }
+
+        if(UserManager.getInstance().changeAccessPeriod(startDateCal, endDateCal)) {
+            this.saveData();
+            return "Start date: " + sdf.format(startDateCal.getTime()) + "   " + "End date: " + sdf.format(endDateCal.getTime());
+        }
+        else return "Error in setting access period!";
+
+
+    }
+
+//----------------------------Method to get access period as formatted string-------------------------------------------
+
+    public String getAccessPeriod(){
+
+        String rtrStr;
+        AccessPeriod accessPeriod;
+        accessPeriod = UserManager.getInstance().getAccessPeriod();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
+
+        rtrStr = "Start date: " + sdf.format(accessPeriod.getStartDate().getTime()) + "   " +
+                 "End date: " + sdf.format(accessPeriod.getEndDate().getTime());
+        return rtrStr;
+    }
+
 
 
     public boolean doesCourseExist(String courseId)
@@ -791,7 +822,7 @@ public class STARS
     public void populateDatabase()
     {
         UserManager.getInstance().addStudent("qingru", "c160144@e.ntu", "U222222B", 92298224, Student.GENDER.FEMALE, "Singaporean", "qingru", "password");
-        UserManager.getInstance().addStudent("qinghui", "c160144@e.ntu.edu.sg", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
+        UserManager.getInstance().addStudent("qinghui", "qlai002@e.ntu.edu.sg", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
         UserManager.getInstance().addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
         UserManager.getInstance().addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
         CourseManager.getInstance().addCourse("CE2003", "DSD", "SCE");
