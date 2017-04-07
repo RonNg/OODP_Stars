@@ -54,8 +54,16 @@ public class Student extends User implements Serializable
     }
 
 
-    public void deenrollCourseIndex()
+    public void deEnrollCourseIndex(int indexNo)
     {
+        for(int j =0; j < courseIndexList.size(); j++){
+
+            if(courseIndexList.get(j) == indexNo)
+                courseIndexList.remove(j);
+        }
+
     }
+
+
 
 }

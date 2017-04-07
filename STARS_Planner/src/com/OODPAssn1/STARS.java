@@ -145,7 +145,7 @@ public class STARS
 
             for(int j = 0;  j < indexList.size(); ++ j)
             {
-                if(indexList.get(i).getIndexNum() == indexNo)
+                if(indexList.get(j).getIndexNum() == indexNo)
                     return true; //index number is found in entire course list
             }
         }
@@ -230,6 +230,62 @@ public class STARS
 
 
      ==================================================*/
+
+//--------------------------------------Method to delete course from STARS----------------------------------------------
+/*
+1) Check for existance of course
+2) Check if course contain index that are registered with students
+    - Get course obj
+    - Get indexList
+    - Loop through indexList to get the studentsEnrolledList
+    - If size > 0, run another loop to retrieve student obj to remove index id from it's courseIndexList
+    - Save changes
+3) Remove course obj from courseList
+    - Save changes
+4) Return string that contain names of student that are de-enrolled due to deletion
+ */
+
+
+    public String deleteCourseViaCourseId(String cId){
+
+        String retStr = "";
+        String courseNotFoundErr = "Error! Course not found!";
+        String deleteCourseErr = "Error in deletion of course!";
+        //if course does not exists
+        if(!this.doesCourseExist(cId))
+            return courseNotFoundErr;
+        Course course = CourseManager.getInstance().findCourseById(cId);
+        Index index = null;
+        Student student = null;
+        List<Index> indexList = course.getIndexList();
+        String matricNo; // Stores matrix number
+
+        if(indexList.size() != 0) {//Check if Course contain index
+
+            for (int i = 0; i < indexList.size(); i++) {
+
+                index = indexList.get(i);
+                //- Loop through indexList to get the studentsEnrolledList
+                //- If size > 0, run another loop to retrieve student obj to remove index id from it's courseIndexList
+                if (index.getEnrolledStudentList().size() > 0) {
+
+                    for (int j = 0; j < index.getEnrolledStudentList().size(); j++) {
+                        matricNo = index.getEnrolledStudentList().get(j);
+                        student = UserManager.getInstance().getStudentByMatricNo(matricNo);
+                        student.deEnrollCourseIndex(index.getIndexNum());
+                        retStr = retStr + "Matric no.: " + matricNo +  "    Name:"  + student.getName() +
+                                "    From Index: " + index.getIndexNum() + "\n";
+                    }
+                    UserManager.getInstance().save();
+                }
+            }
+        }
+        if(!CourseManager.getInstance().deleteCourse(course))
+            retStr = deleteCourseErr;
+        else CourseManager.getInstance().save();
+
+        return retStr;
+    }
 
 //------------------------Method to print list of students enrolled in course-------------------------------------------
 
@@ -342,6 +398,60 @@ public class STARS
         return false;
     }
 
+//------------------------------------Method to delete index from course------------------------------------------------
+/*
+1) Check for existance of index
+2) Check if index are registered with students
+    - Get index obj
+    - get the studentsEnrolledList
+    - If size > 0, run loop to retrieve student obj using matric no. to remove index id from it's courseIndexList
+    - Save changes
+3) Remove index obj from indexList in course
+    - Find course obj by index
+    - Remove index from indexList
+    - Save changes
+4) Return string that contain names of student that are de-enrolled due to deletion
+ */
+    public String deleteIndexFromCourse(int indexNo){
+
+        String rtrStr = "";
+        String indexNotFoundStr = "Error! Index not found in STARS!";
+        List<String> studentsEnrolledList; // Stores matrix number
+        Index index = CourseManager.getInstance().findByIndex(indexNo);
+        Student student;
+        String matricNo;
+        if(index == null)
+            return indexNotFoundStr;
+
+        if (index.getEnrolledStudentList().size() > 0) {
+
+            for (int j = 0; j < index.getEnrolledStudentList().size(); j++) {
+                matricNo = index.getEnrolledStudentList().get(j);
+                student = UserManager.getInstance().getStudentByMatricNo(matricNo);
+                student.deEnrollCourseIndex(index.getIndexNum());
+                rtrStr = rtrStr + "Matric no.: " + matricNo +  "    Name:"  + student.getName() +
+                        "    From Index: " + index.getIndexNum() + "\n";
+            }
+            UserManager.getInstance().save();
+        }
+
+        return rtrStr;
+
+    }
+
+//------------------------------------Method to check vacancy of index--------------------------------------------------
+
+    public String checkIndexVacancy(int indexNo){
+
+        String rtrStr = "";
+        String indexNotFoundStr = "Error! Index not found in STARS!";
+        Index index = CourseManager.getInstance().findByIndex(indexNo);
+        if(index == null)
+            return indexNotFoundStr;
+        rtrStr = "Number of vacancy in Index " + indexNo + ": " + index.getNumberOfVacancy();
+        return rtrStr;
+    }
+
     public boolean admin_AddIndexLabTimeSlot (int indexNo, TimeSlot.DAY day,  int startH, int startM, int endH, int endM, String labLocation)
     {
         Index tempIndex = CourseManager.getInstance().findByIndex(indexNo);
@@ -378,10 +488,7 @@ public class STARS
         return true;
     }
 
-    public boolean admin_DeleteCourse(String courseId)
-    {
-        return false;
-    }
+
 
 //-------------------------------Method for enrolling of Student into STARS---------------------------------------------
 //This method will make use of UserManager to create student and write it into database.
@@ -459,12 +566,13 @@ public class STARS
     public void populateDatabase()
     {
 
-        UserManager.getInstance().addStudent("qingru", "c160144@e.ntu", "U222222B", 92298224, Student.GENDER.MALE, "Singaporean", "qingru", "password");
-        UserManager.getInstance().addStudent("qinghui", "c160144@e.ntu", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
-        UserManager.getInstance().addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
-        UserManager.getInstance().addAdmin("doug", "doug@e.ntu", "doug123",  "doug123");
+        //UserManager.getInstance().addStudent("qingru", "c160144@e.ntu", "U222222B", 92298224, Student.GENDER.MALE, "Singaporean", "qingru", "password");
+        //UserManager.getInstance().addStudent("qinghui", "c160144@e.ntu", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
+        //UserManager.getInstance().addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
+        //UserManager.getInstance().addAdmin("doug", "doug@e.ntu", "doug123",  "doug123");
         CourseManager.getInstance().addCourse("CE2003", "DSD", "SCE");
-        CourseManager.getInstance().createIndex(CourseManager.getInstance().findCourseById("CE2003"), 10042, 50);
+        CourseManager.getInstance().createIndex(CourseManager.getInstance().findCourseById("CE2003"), 10042, 20);
+        CourseManager.getInstance().createIndex(CourseManager.getInstance().findCourseById("CE2003"), 10043, 20);
     }
 
 

@@ -97,6 +97,29 @@ public class CourseManager extends DataManager
 
     }
 
+    public Course findCourseByIndexNo(int indexNo)
+    {
+        if (courseList == null)
+        {
+            System.out.println("printAll(): List is empty");
+            return null;
+        }
+        Course temp;
+        for (int i = 0; i < courseList.size(); ++i)
+        {
+            temp = courseList.get(i);
+            for(int j = 0; j < temp.getIndexList().size(); j++){
+
+                if(temp.getIndexList().get(i).getIndexNum() == indexNo)
+                    return temp;
+
+            }
+
+        }
+        return null;
+
+    }
+
 
 
     //---------Index methods---------
@@ -113,8 +136,8 @@ public class CourseManager extends DataManager
             List<Index> tempIndexList = courseList.get(i).getIndexList();
             for(int j = 0; j < tempIndexList.size(); ++ j)
             {
-                if(indexNo == tempIndexList.get(i).getIndexNum())
-                    return tempIndexList.get(i); //found
+                if(indexNo == tempIndexList.get(j).getIndexNum())
+                    return tempIndexList.get(j); //found
             }
         }
         return null; //can't find
