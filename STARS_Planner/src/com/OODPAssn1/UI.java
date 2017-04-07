@@ -245,7 +245,7 @@ public class UI
                     "3) Add a course\n" +//done
                     "4) Update a course\n" +//done
                     "5) Check available slot for an index number (vacancy in a class)\n" +//done
-                    "6) Print student list by index number.\n" + 
+                    "6) Print student list by index number.\n" +
                     "7) Print student list by course (all students registered for the selected course).\n" +//done
                     "8) Log out and save all changes\n" +//done
                     "9) Quit STARS and save all changes\n" +//done
@@ -360,7 +360,7 @@ public class UI
 
                         System.out.println("What would you like to edit for " + courseId + "?");
                         System.out.println("1) Add Index To Course\n"
-                                       +   "2) Delete from Course\n"
+                                       +   "2) Delete Index from Course\n"
                                        +   "3) Delete Course" );
 
                         int updateChoice = s.nextInt();
@@ -375,6 +375,7 @@ public class UI
                             case 2:
                                 System.out.println("Please input the index no. that you wish to remove from course: " );
                                 int indexNo = s.nextInt();
+
                                 admin_DeleteIndex(indexNo);
                                 break;
 
@@ -793,7 +794,15 @@ public class UI
 
     private static void admin_DeleteIndex(int indexNo) {
 
-        System.out.println(STARS.getInstance().deleteIndexFromCourse(indexNo));
+
+        String toBePrint = STARS.getInstance().deleteIndexFromCourse(indexNo);
+        if(!toBePrint.equals("Error! Index not found!") && !toBePrint.equals("Error occured while deleting index!")) {
+            System.out.println("\nCourse " + indexNo + " deletion is successful!");
+            System.out.println("Students that are de-enrolled from index due to index deletion:");
+            System.out.println("--------------------------------------------------------------");
+        }
+        System.out.println(toBePrint);
+        System.out.println("--------------------------------------------------------------");
 
     }
 
