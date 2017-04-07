@@ -96,14 +96,14 @@ public class UI
         {
             System.out.println("\nWhat will you like to do? \n" +
                     "-------------------------\n" +
-                    "1) Add Course Index\n" +
-                    "2) Drop Course Index\n" +
-                    "3) Check/Print Courses Registered\n" +
-                    "4) Check Vacancies Available\n" +
+                    "1) Add Course Index\n" +//done
+                    "2) Drop Course Index\n" +//done
+                    "3) Check/Print Courses Registered\n" +//done
+                    "4) Check Vacancies Available\n" +//done
                     "5) Change Index Number of Course\n" +
                     "6) Swap Index Number with Another Student\n" +
-                    "7) Log out and save all changes\n" +
-                    "8) Quit STARS and save all changes");
+                    "7) Log out and save all changes\n" +//done
+                    "8) Quit STARS and save all changes");//done
 
             choice = s.nextInt();
 
@@ -125,7 +125,12 @@ public class UI
                     break;
 
                 case 4://Check Vacancies Available
-
+                    System.out.println("\n =============================================== " +
+                            "\n                 Check Vacancy of Index             " +
+                            "\n =============================================== ");
+                    System.out.print("Please enter index no. that you wish to check: ");
+                    int indexNo = s.nextInt();
+                    System.out.println(STARS.getInstance().checkIndexVacancy(indexNo));
                     break;
 
                 case 5://Change Index Number of Course
@@ -286,15 +291,15 @@ public class UI
 
             System.out.println("\nWhat will you like to do? \n" +
                     "-------------------------\n" +
-                    "1) Edit student access period\n" +
-                    "2) Add a student\n" +
-                    "3) Add a course\n" +
-                    "4) Update a course\n" +
-                    "5) Check available slot for an index number (vacancy in a class)\n" +
+                    "1) Edit student access period\n" +//done
+                    "2) Add a student\n" +//done
+                    "3) Add a course\n" +//done
+                    "4) Update a course\n" +//done
+                    "5) Check available slot for an index number (vacancy in a class)\n" +//done
                     "6) Print student list by index number.\n" +
-                    "7) Print student list by course (all students registered for the selected course).\n" +
-                    "8) Log out and save all changes\n" +
-                    "9) Quit STARS and save all changes\n" +
+                    "7) Print student list by course (all students registered for the selected course).\n" +//done
+                    "8) Log out and save all changes\n" +//done
+                    "9) Quit STARS and save all changes\n" +//done
                     "10) Debug");
 
 
@@ -405,8 +410,9 @@ public class UI
                     {
 
                         System.out.println("What would you like to edit for " + courseId + "?");
-                        System.out.println("1) Add Index To Course"
-                                       + "\n2) Delete Course");
+                        System.out.println("1) Add Index To Course\n"
+                                       +   "2) Delete Index from Course\n"
+                                       +   "3) Delete Course" );
 
                         int updateChoice = s.nextInt();
 
@@ -417,10 +423,18 @@ public class UI
                                 admin_AddIndex(courseId);
                                 break;
 
-                            //Delete Course
                             case 2:
+                                System.out.println("Please input the index no. that you wish to remove from course: " );
+                                int indexNo = s.nextInt();
+
+                                admin_DeleteIndex(indexNo);
+                                break;
+
+                            //Delete Course
+                            case 3:
                                 admin_DeleteCourse(courseId);
                                 break;
+
                             default:
                                 System.out.println("Invalid choice. Returning to main menu");
                                 break;
@@ -428,11 +442,17 @@ public class UI
                     }
                 break;
 
-                case 5://Print student list by index number
-                    //TODO:
+
+                case 5://Check available slot for an index number (vacancy in a class)
+                    System.out.println("\n =============================================== " +
+                            "\n                 Check Vacancy of Index             " +
+                            "\n =============================================== ");
+                    System.out.print("Please enter index no. that you wish to check: ");
+                    int indexNo = s.nextInt();
+                    STARS.getInstance().checkIndexVacancy(indexNo);
                     break;
 
-                case 6://Print student list by course (all students registered for the selected course)
+                case 6://Print student list by index number
 
                     break;
 
@@ -463,6 +483,8 @@ public class UI
 
         }//end of while loop
     }
+
+
 
     /**
      * @return courseId if Course is successfully added into the system
@@ -595,17 +617,30 @@ public class UI
         return courseId;
     }
 
-    //TODO: When deleting course, must deregister students associated with indexes of the course
+//--------------------------------------Method to delete course from STARS----------------------------------------------
+
+
+
     public static void admin_DeleteCourse(String courseId)
     {
-        //if course exists
-        if(STARS.getInstance().doesCourseExist(courseId))
-        {
-
+        String toBePrint = STARS.getInstance().deleteCourseViaCourseId(courseId);
+        if(!toBePrint.equals("Error! Course not found!") && !toBePrint.equals("Error in deletion of course!")) {
+            System.out.println("\nCourse " + courseId + " deletion is successful!");
+            System.out.println("Students that are de-enrolled from course due to course deletion:");
+            System.out.println("--------------------------------------------------------------");
         }
+        System.out.println(toBePrint);
+        System.out.println("--------------------------------------------------------------");
 
     }
 
+//--------------------------------------Method to check vacancy in a index----------------------------------------------
+
+    public static void admin_CheckVacancy(int indexNo){
+
+        System.out.println(STARS.getInstance().checkIndexVacancy(indexNo));
+
+    }
 
     /**
      * This function adds index(s) to the course object arg
@@ -809,6 +844,19 @@ public class UI
         }//end of index list add
     }
 
+    private static void admin_DeleteIndex(int indexNo) {
+
+
+        String toBePrint = STARS.getInstance().deleteIndexFromCourse(indexNo);
+        if(!toBePrint.equals("Error! Index not found!") && !toBePrint.equals("Error occured while deleting index!")) {
+            System.out.println("\nCourse " + indexNo + " deletion is successful!");
+            System.out.println("Students that are de-enrolled from index due to index deletion:");
+            System.out.println("--------------------------------------------------------------");
+        }
+        System.out.println(toBePrint);
+        System.out.println("--------------------------------------------------------------");
+
+    }
 
 
 }
