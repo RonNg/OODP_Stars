@@ -97,21 +97,25 @@ public class CourseManager extends DataManager
 
     }
 
-    public Course getCourseByIndexNo (int indexNo)
+    public Course getCourseByIndexNo(int indexNo)
     {
-        for(int i = 0; i < courseList.size(); ++ i)
+        if (courseList == null)
         {
-            List<Index> tempIndexList = courseList.get(i).getIndexList();
-            for(int j = 0; j < tempIndexList.size(); ++ j)
-            {
-               if(tempIndexList.get(j).getIndexNum() == indexNo)
-               {
-                   return courseList.get(i);
-               }
-            }
+            System.out.println("printAll(): List is empty");
+            return null;
         }
+        Course temp;
+        for (int i = 0; i < courseList.size(); ++i)
+        {
+            temp = courseList.get(i);
+            for(int j = 0; j < temp.getIndexList().size(); j++){
 
-        return null; //Course not found
+                if(temp.getIndexList().get(i).getIndexNum() == indexNo)
+                    return temp;
+            }
+
+        }
+        return null;
     }
 
 

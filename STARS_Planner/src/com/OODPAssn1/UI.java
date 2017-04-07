@@ -442,7 +442,6 @@ public class UI
                     }
                 break;
 
-
                 case 5://Check available slot for an index number (vacancy in a class)
                     System.out.println("\n =============================================== " +
                             "\n                 Check Vacancy of Index             " +

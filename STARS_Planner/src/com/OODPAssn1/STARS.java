@@ -292,6 +292,57 @@ public class STARS
  */
 
 
+    public String printStudentsInCourse(String courseId)
+    {
+
+
+        String retStr = "";
+        String courseNotFoundErr = "Error! Course not found!";
+        String deleteCourseErr = "Error in deletion of course!";
+
+        //if course does not exists
+        if (!this.doesCourseExist(courseId))
+            return courseNotFoundErr;
+
+        Course course = CourseManager.getInstance().getCourseByCourseId(courseId);
+
+        Index index = null;
+        Student student = null;
+        List<Index> indexList = course.getIndexList();
+        String matricNo; // Stores matrix number
+
+        if (indexList.size() != 0)
+        {//Check if Course contain index
+
+            for (int i = 0; i < indexList.size(); i++)
+            {
+
+                index = indexList.get(i);
+                //- Loop through indexList to get the studentsEnrolledList
+                //- If size > 0, run another loop to retrieve student obj to remove index id from it's courseIndexList
+                if (index.getEnrolledStudentList().size() > 0)
+                {
+
+                    for (int j = 0; j < index.getEnrolledStudentList().size(); j++)
+                    {
+                        matricNo = index.getEnrolledStudentList().get(j);
+                        student = UserManager.getInstance().getStudentByMatricNo(matricNo);
+                        student.deEnrollCourseIndex(index.getIndexNum());
+                        retStr = retStr + "Matric no.: " + matricNo + "    Name:" + student.getName() +
+                                "    From Index: " + index.getIndexNum() + "\n";
+                    }
+                    UserManager.getInstance().save();
+                }
+            }
+        }
+        if (!CourseManager.getInstance().deleteCourse(course))
+            retStr = deleteCourseErr;
+        else
+            CourseManager.getInstance().save();
+
+        return retStr;
+    }
+
     public String deleteCourseViaCourseId(String cId)
     {
 
@@ -338,7 +389,7 @@ public class STARS
 
         return retStr;
     }
-    
+
 
     /*==================================================
 
@@ -401,6 +452,7 @@ public class STARS
         return false;
     }
 
+
     //------------------------------------Method to delete index from course------------------------------------------------
 /*
 1) Check for existance of index
@@ -417,7 +469,6 @@ public class STARS
  */
     public String deleteIndexFromCourse(int indexNo)
     {
-
         String rtrStr = "";
         String indexNotFoundStr = "Error! Index not found in STARS!";
         String deleteIndexStr = "Error occured while deleting index!";
@@ -449,8 +500,8 @@ public class STARS
             CourseManager.getInstance().save();
 
         return rtrStr;
-
     }
+
 
 //------------------------------------Method to check vacancy of index--------------------------------------------------
 
@@ -647,7 +698,7 @@ public class STARS
         {
             //Get Course by Index No will never return null as the indexList exists in some course
 
-            retStr += "Index: " + indexList.get(i) + " - " + CourseManager.getInstance().getCourseByIndexNo(indexList.get(i)).getCourseId() + "\n";
+            retStr += "Index: " + indexList.get(i) + " - " + CourseManager.getInstance().getCourseByIndexNo(indexList.get(i)).getCourseName() + "\n";
         }
         return retStr;
     }
