@@ -19,6 +19,7 @@ public class STARS
     private User currentLogOnUser;
     private Calendar startDate;
     private Calendar endDate;
+    private Notification studentNotification;
 
 
     private STARS(int i)
@@ -50,6 +51,7 @@ public class STARS
         endDate.set(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), 30);
         this.setAccessPeriod(startDate, endDate);
 
+        studentNotification = new Notification();
 
         return 1;
 
@@ -203,6 +205,8 @@ public class STARS
             return 0;
 
         Student tempStud = (Student) currentLogOnUser;
+
+        //Enroll into course
         int result = CourseManager.getInstance().enrolInIndex(tempStud.getMatricNo(), indexNo);
 
         switch (result)
@@ -212,6 +216,7 @@ public class STARS
             =======================================*/
             //Successfully enrolled
             case 1:
+                //Enroll into student index list
                 tempStud.addCourseIndex(indexNo); //Student is enrolled in Index list. Update student's course index information
                 break;
             //Added into waitlist
@@ -261,7 +266,16 @@ public class STARS
                 Student tempStudent = UserManager.getInstance().getStudentByMatricNo(result[1]);
                 tempStudent.addCourseIndex(Integer.parseInt(result[2]));
                 saveData();
+
                 //TODO: Email the student that s/he has been added into the course
+                String courseId = CourseManager.getInstance().getCourseByIndexNo(indexNo).getCourseId();
+                String courseName = CourseManager.getInstance().getCourseByIndexNo(indexNo).getCourseName();
+                String subject = "Succesfully enrolled into Index " + indexNo;
+
+                String message = "As a student has withdrawn from the index, you have been removed from the waitlist and enrolled into the Index " + indexNo
+                                    + " for " + courseId + " - " + courseName;
+
+                studentNotification.sendMessage(tempStudent.getEmail(), subject, message);
                 return 1;
             }
         }
@@ -754,15 +768,34 @@ public class STARS
         System.out.println("\n\n===============================");
     }
 
+    public void populateTestWaitlist()
+    {
+        UserManager.getInstance().addStudent("qinghui", "qlai002@e.ntu.edu.sg", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
+        UserManager.getInstance().addStudent("ron", "c160144@e.ntu.edu.sg", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
+        UserManager.getInstance().addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
+
+        CourseManager.getInstance().addCourse("CE2003", "DSD", "SCE");
+        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10042, 1);
+        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10043, 1);
+
+        //Adds bob into CourseManager and UserManager
+        CourseManager.getInstance().enrolInIndex("U1111111B", 10042);
+        UserManager.getInstance().getStudentByMatricNo("U1111111B").addCourseIndex(10042);
+
+        //Adds ron into waitlist
+        CourseManager.getInstance().enrolInIndex("U333333B", 10042);
+
+        saveData();
+
+    }
     public void populateDatabase()
     {
-
-        //UserManager.getInstance().addStudent("qingru", "c160144@e.ntu", "U222222B", 92298224, Student.GENDER.MALE, "Singaporean", "qingru", "password");
-        //UserManager.getInstance().addStudent("qinghui", "c160144@e.ntu", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
-        //UserManager.getInstance().addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
-        //UserManager.getInstance().addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
+        UserManager.getInstance().addStudent("qingru", "c160144@e.ntu", "U222222B", 92298224, Student.GENDER.FEMALE, "Singaporean", "qingru", "password");
+        UserManager.getInstance().addStudent("qinghui", "c160144@e.ntu.edu.sg", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
+        UserManager.getInstance().addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
+        UserManager.getInstance().addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
         CourseManager.getInstance().addCourse("CE2003", "DSD", "SCE");
-        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10042, 50);
-        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10043, 20);
+        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10042, 1);
+        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10043, 1);
     }
 }

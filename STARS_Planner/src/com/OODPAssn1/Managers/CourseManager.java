@@ -110,10 +110,9 @@ public class CourseManager extends DataManager
             temp = courseList.get(i);
             for(int j = 0; j < temp.getIndexList().size(); j++){
 
-                if(temp.getIndexList().get(i).getIndexNum() == indexNo)
+                if(temp.getIndexList().get(j).getIndexNum() == indexNo)
                     return temp;
             }
-
         }
         return null;
     }
@@ -194,6 +193,30 @@ public class CourseManager extends DataManager
 
     }
 
+    public String enrolFirstStudentInWaitlist (String matricNo, int indexNo)
+    {
+        Index tempIndex = getIndexByIndexNo(indexNo);
+
+        if(tempIndex == null)
+        return null;
+
+        //If the first student in waitlist matches the matric no passed in
+        if (tempIndex.getWaitList().get(0) == matricNo)
+        {
+
+            String tempMatricNo = (String) tempIndex.getWaitList().get(0);
+
+            //remove student from waitlist
+            tempIndex.getWaitList().remove(0);
+
+            tempIndex.enrolStudent(tempMatricNo);
+
+            return tempMatricNo; //Returns the matricNo of the student added into the index to STARS
+        }
+
+        return null;
+    }
+
     /**
      *
      * @param matricNo
@@ -224,11 +247,19 @@ public class CourseManager extends DataManager
             {
                 List<String> studentWaitList = tempIndex.getWaitList();
 
+                //Check if studentWaitlist 1 or more. 0 means no students in waitlist to push to index
                 //Enrol student at the front of the waitlist. enrolInIndex returns 1 if successful
-                if (enrolInIndex(studentWaitList.get(0), indexNo) == 1)
+                if (studentWaitList.size() >= 1 )
                 {
-                    String studentMatricNoFromWaitlist = studentWaitList.get(0);
-                    studentWaitList.remove(0); //Remove front waitlist.
+
+                    String studentMatricNoFromWaitlist = enrolFirstStudentInWaitlist(studentWaitList.get(0), indexNo);
+
+
+                    if(studentMatricNoFromWaitlist == null)
+                    {
+                        retStrArr[0] = "ERROR";
+                        return retStrArr;
+                    }
 
                     retStrArr[0] = "HANDLE";
                     retStrArr[1] = studentMatricNoFromWaitlist;
