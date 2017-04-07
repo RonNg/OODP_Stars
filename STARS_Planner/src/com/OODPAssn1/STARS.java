@@ -5,9 +5,7 @@ import com.OODPAssn1.Managers.CourseManager;
 import com.OODPAssn1.Managers.UserManager;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by jonah on 15/3/2017.
@@ -709,6 +707,7 @@ public class STARS
     public String getStudentRegisteredIndex(String matricNo)//For student
     {
         String retStr = "";
+        StringBuilder retStrBuild = new StringBuilder();
         Student tempStud = null;
 
         if (currentLogOnUser.getType() == User.USER_TYPE.STUDENT)
@@ -737,9 +736,20 @@ public class STARS
         for (int i = 0; i < indexList.size(); ++i)
         {
             //Get Course by Index No will never return null as the indexList exists in some course
+            Course tempCourse = CourseManager.getInstance().getCourseByIndexNo(indexList.get(i));
+            Index tempIndex = tempCourse.getIndex(indexList.get(i));
+            List<TimeSlot> tempList = tempIndex.getTutLabTimeSlotList();
 
-            retStr += "Index: " + indexList.get(i) + " - " + CourseManager.getInstance().getCourseByIndexNo(indexList.get(i)).getCourseName() + "\n";
+            Formatter formatter = new Formatter(retStrBuild, Locale.ENGLISH);
+
+            for(int n = 0; n < tempList.size(); n++){
+                TimeSlot tempTimeSlot = tempList.get(n);
+                formatter.format("%-10s | %-8d | %-5s | %-5s | %s-%-7s | %s %n",  tempCourse.getCourseId(), indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+            }
+
+            //retStr += "Index: " + indexList.get(i) + " - " + CourseManager.getInstance().getCourseByIndexNo(indexList.get(i)).getCourseName() + "\n";
         }
+        retStr += retStrBuild.toString();
         return retStr;
     }
 

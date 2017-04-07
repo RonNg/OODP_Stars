@@ -169,6 +169,7 @@ public class UI
     public static void student_AddCourse()
     {
         boolean addFinish = false;
+        boolean inputCheck = false;
         while (!addFinish)
         {
             System.out.println("Course available to enroll: \n" +
@@ -194,8 +195,18 @@ public class UI
 
             String indexInCourse = STARS.getInstance().getIndexListOfCourse(courseId);
             System.out.println(indexInCourse);
-            int indexToEnroll = s.nextInt();
-
+            String indexToEnrollInput;
+            int indexToEnroll = 0;
+            while(inputCheck==false){
+                indexToEnrollInput = s.next();
+                try{
+                    indexToEnroll = Integer.parseInt(indexToEnrollInput);
+                    inputCheck = true;
+                }catch (Exception e){
+                    System.out.println("Invalid Input. Please try again");
+                }
+            }
+            inputCheck = false;
             if(indexToEnroll == -1)
             {
                 break;
@@ -248,6 +259,8 @@ public class UI
     public static void student_DropIndex()
     {
         boolean dropFinish = false;
+        boolean inputCheck = false;
+        dropLoop:
         while(!dropFinish)
         {
             System.out.println("List of Index(s) registered: \n" +
@@ -258,18 +271,27 @@ public class UI
             s.nextLine();
 
             System.out.print("\n\nPlease input the index you wish to drop or type 'quit' to go back to main menu: ");
-            String indexNoToDrop = s.next();
+            String indexNoToDrop = null;
+            while(inputCheck == false){
+                indexNoToDrop = s.next();
+                //Checks if quit and then checks if the course exists, else restart.
+                try{
+                    if (indexNoToDrop.equals("quit"))
+                    {
+                        break dropLoop;
+                    }
+                    else if (STARS.getInstance().doesIndexExist(Integer.parseInt(indexNoToDrop)) == false)
+                    {
+                        System.out.println("\n\nIncorrect index entered. Please try again.\n\n");
+                        continue;
+                    }
+                    inputCheck = true;
+                }catch (Exception e){
+                    System.out.println("Invalid Input. Please try again");
+                    inputCheck = false;
+                }
+            }
 
-            //Checks if quit and then checks if the course exists, else restart.
-            if (indexNoToDrop.equals("quit"))
-            {
-                break;
-            }
-            else if (STARS.getInstance().doesIndexExist(Integer.parseInt(indexNoToDrop)) == false)
-            {
-                System.out.println("\n\nIncorrect index entered. Please try again.\n\n");
-                continue;
-            }
             //STARS will handle removing index from student and removing student from index
             int result = STARS.getInstance().student_DropIndex(Integer.parseInt(indexNoToDrop));
 
@@ -782,12 +804,12 @@ public class UI
             System.out.println("Enter the LAB location for Index " + indexNoToAdd + ":");
             String labLocation = s.next();
 
-            System.out.println("Enter the LAB START time in 24hrs format: ");
+            System.out.println("Enter the LAB START time in 24hrs format(HHMM): ");
             String time = s.next();
             int startTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
             int startTimeMM = Integer.parseInt(time.substring(time.length()/2));
 
-            System.out.println("Enter the LAB END time in 24hrs format: " );
+            System.out.println("Enter the LAB END time in 24hrs format(HHMM): " );
             time = s.next();
             int endTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
             int endTimeMM = Integer.parseInt(time.substring(time.length()/2));
@@ -868,12 +890,12 @@ public class UI
             System.out.println("Enter the TUT location for Index " + indexNoToAdd + ":");
             String tutLocation = s.next();
 
-            System.out.println("Enter the TUT START time in 24hrs format: ");
+            System.out.println("Enter the TUT START time in 24hrs format(HHMM): ");
             time = s.next();
             startTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
             startTimeMM = Integer.parseInt(time.substring(time.length()/2));
 
-            System.out.println("Enter the TUT END time in 24hrs format: " );
+            System.out.println("Enter the TUT END time in 24hrs format(HHMM): " );
             time = s.next();
             endTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
             endTimeMM = Integer.parseInt(time.substring(time.length()/2));

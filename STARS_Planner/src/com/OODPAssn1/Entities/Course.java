@@ -71,6 +71,15 @@ public class Course implements Serializable
         return indexList;
     }
 
+    public Index getIndex(int indexNum)
+    {
+        for(int n = 0; n < indexList.size(); n++){
+            if(indexList.get(n).getIndexNum() == indexNum)
+                return indexList.get(n);
+        }
+        return null;
+    }
+
     public boolean addIndex(int indexNum, int maxNumOfStudetns)
     {
         return indexList.add(new Index(indexNum, maxNumOfStudetns));
