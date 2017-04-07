@@ -126,7 +126,7 @@ public class STARS
         for (int i = 0; i < courseList.size(); ++i)
         {
 
-            System.out.println(courseList.get(i).getCourseId());
+            //System.out.println(courseList.get(i).getCourseId());
             if (courseList.get(i).getCourseId().equalsIgnoreCase(courseId))
 
                 return true;
@@ -593,6 +593,32 @@ public class STARS
 
      ==================================================*/
 
+//------------------------Method to print list of students enrolled in index--------------------------------------------
+
+    public String getStudentsInIndex(int indexNo){
+
+        String indexNotFoundStr = "Error! Index not found in system!";
+        String indexIsEmptyStr = "No student has enrolled to index yet.";
+        String retStr = "";
+        Student student;
+        Index index = CourseManager.getInstance().getIndexByIndexNo(indexNo);
+        if(index == null)
+            return indexNotFoundStr;
+        List<String> indexList = index.getEnrolledStudentList();
+        if(indexList.size()==0)
+            return indexIsEmptyStr;
+        for(int i = 0; i < indexList.size(); i++){
+
+            student = UserManager.getInstance().getStudentByMatricNo(indexList.get(i));
+            retStr = retStr + "Name: " + student.getName() + "  Gender: " + student.getGender() +
+                    "  Nationality: " + student.getNationality() + "\n";
+
+        }
+
+        return retStr;
+
+    }
+
 
 //------------------------Method to print list of students enrolled in course-------------------------------------------
 
@@ -666,7 +692,7 @@ public class STARS
      * @param matricNo Matriculation number of the student. Leave empty if accessed by Student Menu
      * @return formatted string containing currently registered indexes of the student
      */
-    public String getStudentRegisteredIndex(String matricNo)
+    public String getStudentRegisteredIndex(String matricNo)//For student
     {
         String retStr = "";
         Student tempStud = null;
@@ -716,15 +742,25 @@ public class STARS
 
         System.out.println("\n\n===============================");
         CourseManager.getInstance().printAllIndexDetails();
+
+        System.out.println("\n\n===============================");
+        List<Integer> indexList = UserManager.getInstance().getStudentByMatricNo("U1111111B").getCourseIndexList();
+        if(indexList.size()>0){
+            System.out.println("Index registered by Qinghui: ");
+            for(int i = 0; i < indexList.size(); i++){
+                System.out.println(indexList.get(i));
+            }
+        }else System.out.println("No Index registered by Qinghui.");
+        System.out.println("\n\n===============================");
     }
 
     public void populateDatabase()
     {
 
-        UserManager.getInstance().addStudent("qingru", "c160144@e.ntu", "U222222B", 92298224, Student.GENDER.MALE, "Singaporean", "qingru", "password");
-        UserManager.getInstance().addStudent("qinghui", "c160144@e.ntu", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
-        UserManager.getInstance().addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
-        UserManager.getInstance().addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
+        //UserManager.getInstance().addStudent("qingru", "c160144@e.ntu", "U222222B", 92298224, Student.GENDER.MALE, "Singaporean", "qingru", "password");
+        //UserManager.getInstance().addStudent("qinghui", "c160144@e.ntu", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
+        //UserManager.getInstance().addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
+        //UserManager.getInstance().addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
         CourseManager.getInstance().addCourse("CE2003", "DSD", "SCE");
         CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10042, 50);
         CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10043, 20);

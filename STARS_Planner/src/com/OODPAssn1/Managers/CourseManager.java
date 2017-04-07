@@ -276,7 +276,7 @@ public class CourseManager extends DataManager
                     indexString  = indexString + ", " + Integer.toString(indexList.get(j).getIndexNum());
             }
 
-            System.out.print("ID: " + temp.getCourseId() + " | Name: " + temp.getCourseName() + " | Index(s): " + indexString);
+            System.out.println("ID: " + temp.getCourseId() + " | Name: " + temp.getCourseName() + " | Index(s): " + indexString);
         }
         return 1;
     }

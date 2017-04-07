@@ -287,7 +287,7 @@ public class UI
         int choice;
 
         while (true)
-        {//Loop to show the menu until 7 is choosen
+        {//Loop to show the menu until 9 is choosen
 
             System.out.println("\nWhat will you like to do? \n" +
                     "-------------------------\n" +
@@ -296,7 +296,7 @@ public class UI
                     "3) Add a course\n" +//done
                     "4) Update a course\n" +//done
                     "5) Check available slot for an index number (vacancy in a class)\n" +//done
-                    "6) Print student list by index number.\n" +
+                    "6) Print student list by index number.\n" +//done
                     "7) Print student list by course (all students registered for the selected course).\n" +//done
                     "8) Log out and save all changes\n" +//done
                     "9) Quit STARS and save all changes\n" +//done
@@ -389,10 +389,26 @@ public class UI
                     //98245937, Student.GENDER.MALE, "SG", "dude123", "dude123");
                     break;
 
-                //TODO: Add Index after course creation
+
                 case 3://Add a Course and proceed to add index after if user chooses so
 
+                    System.out.println("\n =============================================== " +
+                                       "\n                 Add new course             " +
+                                       "\n =============================================== ");
+
                     String courseIdAdded = admin_AddCourse(); //Goes to the UI menu for adding course.
+
+                        String ans ="";
+                        while(!ans.equals("1") && !ans.equals("2")) {
+                            System.out.println("Do you want to continue to add Index for the Course you just added?");
+                            System.out.println("-------------------------------------------------------------------");
+                            System.out.println("1) Yes\n" +
+                                    "2) No");
+                            ans = s.next();
+                        }
+                        if(ans.equals("1"))
+                            admin_AddIndex(courseIdAdded);
+
                     break;
 
                 case 4://Update Course
@@ -444,18 +460,28 @@ public class UI
 
                 case 5://Check available slot for an index number (vacancy in a class)
                     System.out.println("\n =============================================== " +
-                            "\n                 Check Vacancy of Index             " +
-                            "\n =============================================== ");
+                                       "\n               Check Vacancy of Index             " +
+                                       "\n =============================================== ");
                     System.out.print("Please enter index no. that you wish to check: ");
                     int indexNo = s.nextInt();
                     admin_CheckVacancy(indexNo);
                     break;
 
                 case 6://Print student list by index number
-
+                    System.out.println("\n =============================================== " +
+                                       "\n        Print student list by Index Number             " +
+                                       "\n =============================================== ");
+                    System.out.println("Please enter Index No. for printing: " );
+                    int ino = s.nextInt();
+                    System.out.println("Student registered in index " + ino + ":");
+                    System.out.println("-----------------------------------------");
+                    System.out.println(STARS.getInstance().getStudentsInIndex(ino));
                     break;
 
                 case 7://Print student list by course (all students registered for the selected course)
+                    System.out.println("\n =============================================== " +
+                            "\n                 Print student list by course            " +
+                            "\n =============================================== ");
                     System.out.println("Please enter course ID for printing: " );
                     String cId = s.next();
                     System.out.println("Student registered in course " + cId + ":");
@@ -490,10 +516,15 @@ public class UI
      */
     public static String admin_AddCourse()
     {
-        //TODO: Check whether course already exists
 
-        System.out.println("Please enter Course ID");
-        String courseId = s.next();
+        String courseId;
+        while(true) {
+            System.out.println("Please enter Course ID");
+            courseId = s.next();
+            if(!STARS.getInstance().doesCourseExist(courseId))
+                break;
+            else System.out.println("Course ID already taken! Please input again");
+        }
         System.out.println("Please enter Course Name");
 
         s.nextLine();
