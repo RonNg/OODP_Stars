@@ -130,7 +130,7 @@ public class UI
                             "\n =============================================== ");
                     System.out.print("Please enter index no. that you wish to check: ");
                     int indexNo = s.nextInt();
-                    System.out.println(STARS.getInstance().checkIndexVacancy(indexNo));
+                    admin_CheckVacancy(indexNo);
                     break;
 
                 case 5://Change Index Number of Course
@@ -448,7 +448,7 @@ public class UI
                             "\n =============================================== ");
                     System.out.print("Please enter index no. that you wish to check: ");
                     int indexNo = s.nextInt();
-                    STARS.getInstance().checkIndexVacancy(indexNo);
+                    admin_CheckVacancy(indexNo);
                     break;
 
                 case 6://Print student list by index number
