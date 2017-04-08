@@ -181,7 +181,7 @@ public class UserManager extends DataManager
     }
 
 
-    public void addAdmin(final String name, final String email, final String username, final String password)
+    public boolean addAdmin(final String name, final String email, final String username, final String password)
     {
         try
         {
@@ -189,14 +189,11 @@ public class UserManager extends DataManager
             userList.add(new Admin(name, email, username, hashedPass));
         } catch (Exception e)
         {
-            System.out.println("addAdmin() Exception caught: " + e.getMessage());
+            return false;
         }
 
 
-        if (this.save())
-            System.out.println(name + " successfully added to STARS!");
-        else
-            System.out.println("writing failed");
+        return this.save();
 
     }
 

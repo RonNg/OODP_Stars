@@ -285,34 +285,6 @@ public class CourseManager extends DataManager
 
 //----------------------------------Method for debugging purposes. Remove for production--------------------------------
 
-    public int printAllCourse()
-    {
-        if (courseList == null || courseList.size() <= 0)
-        {
-            System.out.println("printAll(): List is empty");
-            return 0;
-        }
-
-        Course temp = null;
-        for (int i = 0; i < courseList.size(); ++i)
-        {
-            temp = courseList.get(i);
-
-            String indexString = "No Index(s)";
-            List<Index> indexList = temp.getIndexList();
-            for(int j = 0; indexList != null && j < indexList.size(); ++ j)
-            {
-                if(j < 1)
-                    indexString = Integer.toString(indexList.get(j).getIndexNum());
-                else
-                    indexString  = indexString + ", " + Integer.toString(indexList.get(j).getIndexNum());
-            }
-
-            System.out.println("ID: " + temp.getCourseId() + " | Name: " + temp.getCourseName() + " | Index(s): " + indexString);
-        }
-        return 1;
-    }
-
     public int printAllIndexDetails()
     {
         Index temp = null;
@@ -346,7 +318,8 @@ public class CourseManager extends DataManager
             for(int x = 0; timeSlotList != null && x < timeSlotList.size(); ++x )
             {
                 //LAB: 1400-1500hrs LOCATION
-                System.out.println(timeSlotList.get(x).getType() + ": "
+
+                System.out.println(timeSlotList.get(x).getType() + ": " + timeSlotList.get(x).getDay().toString() + " "
                         + timeSlotList.get(x).getStartTime() + " - " +  timeSlotList.get(x).getEndTime() + "hrs "
                         + timeSlotList.get(x).getLocation());
             }//print fin

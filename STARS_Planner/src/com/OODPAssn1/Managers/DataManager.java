@@ -50,7 +50,7 @@ public class DataManager
         }
     }
 
-    public DataManager(final String filepath1, String filepath2)//Constructor for two files
+    public DataManager(final String filepath1, final String filepath2)//Constructor for two files
     {
         File directory = new File(cFilePath);
 
@@ -84,7 +84,7 @@ public class DataManager
             }
         }
 
-        File file2 = new File(cFilePath + filepath1);
+        File file2 = new File(cFilePath + filepath2);
         if (!file2.exists())
         { // Checks if file already exist
             try
@@ -125,14 +125,8 @@ public class DataManager
             in.close();
             return pDetails; // return list if successful read
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
-            ex.printStackTrace();
-
-        }
-        catch (ClassNotFoundException ex)
-        {
-            ex.printStackTrace();
         }
 
         return null; // return null by default if error occurred

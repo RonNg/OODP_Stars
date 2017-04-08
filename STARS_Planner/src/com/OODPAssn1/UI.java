@@ -189,9 +189,7 @@ public class UI
 
             String indexInCourse = stars.getIndexListOfCourse(courseId);
             System.out.println(indexInCourse);
-            String indexToEnrollInput;
-            int indexToEnroll = 0;
-            indexToEnrollInput = getString();
+            int indexToEnroll = getInt();
             if(indexToEnroll == -1)
             {
                 break;
@@ -263,20 +261,20 @@ public class UI
 
             //s.nextLine();
 
-            System.out.print("\n\nPlease input the index you wish to drop or type 'quit' to go back to main menu: ");
-            String indexNoToDrop = null;
-            indexNoToDrop = getString();
-            if (indexNoToDrop.equals("quit"))
+            System.out.print("\n\nPlease input the index you wish to drop or type '-1' to go back to main menu: ");
+            int indexNoToDrop;
+            indexNoToDrop = getInt();
+            if (indexNoToDrop == -1)
             {
                 break;
             }
-            else if (stars.doesIndexExist(Integer.parseInt(indexNoToDrop)) == false)
+            else if (stars.doesIndexExist(indexNoToDrop) == false)
             {
                 System.out.println("\n\nIncorrect index entered. Please try again.\n\n");
                 continue;
             }
             //STARS will handle removing index from student and removing student from index
-            int result = stars.student_DropIndex(Integer.parseInt(indexNoToDrop));
+            int result = stars.student_DropIndex(indexNoToDrop);
 
             if(result == 1)
             {
@@ -284,7 +282,7 @@ public class UI
             }
             else
             {
-                System.out.println("An error occured. You did not drop your index");
+                System.out.println("You are not enrolled in the Index");
             }
 
             dropFinish = true;

@@ -1043,26 +1043,13 @@ public class STARS
         userManager.printAllUser();
 
         System.out.println("\n\n===============================");
-        courseManager.printAllCourse();
+        System.out.println(printCourseList());
 
         System.out.println("\n\n===============================");
         courseManager.printAllIndexDetails();
 
         System.out.println("\n\n===============================");
 
-        List<Integer> indexList = userManager.getStudentByMatricNo("U1111111B").getCourseIndexList();
-
-        if (indexList.size() > 0)
-        {
-
-            System.out.println("Index registered by Qinghui: ");
-            for (int i = 0; i < indexList.size(); i++)
-            {
-                System.out.println(indexList.get(i));
-            }
-        } else
-            System.out.println("No Index registered by Qinghui.");
-        System.out.println("\n\n===============================");
     }
 
     public void populateTestWaitlist()
@@ -1122,12 +1109,81 @@ public class STARS
 
     public void populateDatabase()
     {
-        //userManager.addStudent("qingru", "c160144@e.ntu", "U222222B", 92298224, Student.GENDER.FEMALE, "Singaporean", "qingru", "password");
-        //userManager.addStudent("qinghui", "qlai002@e.ntu.edu.sg", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
-        //userManager.addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
-        //userManager.addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
-        courseManager.addCourse("CE2003", "DSD", "SCE");
-        courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10042, 1);
-        courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10043, 1);
+        String name = "Student";
+        String nation = "Nation ";
+        List<String> emailList = Arrays.asList("c160144@e.ntu.edu.sg","qhu003@e.ntu.edu.sg","qlai002@e.ntu.edu.sg");
+        List<Student.GENDER> genderList = Arrays.asList(Student.GENDER.FEMALE, Student.GENDER.MALE);
+        for(int n = 1; n <= 15; n++){
+            userManager.addStudent(name+n, emailList.get((n%3)),Integer.toString(n),n,genderList.get(n%2),nation+n, name+n, name+n);
+        }
+
+        userManager.addAdmin("admin", "admin@e.ntu", "admin", "admin");
+
+        Course temphold;
+
+        if(courseManager.addCourse("CE2003", "Digital Systems Design", "SCE")){
+            temphold = courseManager.getCourseByCourseId("CE2003");
+            courseManager.addLecTimeSlot(temphold, TimeSlot.DAY.FRI, 10, 30, 11, 30, "LT11");
+            courseManager.addLecTimeSlot(temphold, TimeSlot.DAY.TUE, 15, 30, 16, 30, "LT11");
+
+            courseManager.createIndex(temphold, 10041, 10);
+            courseManager.getIndexByIndexNo(10041).addTutTimeSlot(TimeSlot.DAY.THU,9,30,10,30,"TR+16");
+            courseManager.getIndexByIndexNo(10041).addLabTimeSlot(TimeSlot.DAY.TUE,8,30,10,30,"HWLAB3");
+
+            courseManager.createIndex(temphold, 10042, 10);
+            courseManager.getIndexByIndexNo(10042).addTutTimeSlot(TimeSlot.DAY.THU,13,30,14,30,"TR+15");
+            courseManager.getIndexByIndexNo(10042).addLabTimeSlot(TimeSlot.DAY.WED,14,30,16,30,"HWLAB3");
+
+        }
+
+        if(courseManager.addCourse("CE2002", "Object Oriented Design and Programming", "SCE")) {
+            temphold = courseManager.getCourseByCourseId("CE2002");
+            courseManager.addLecTimeSlot(temphold, TimeSlot.DAY.THU, 8, 30, 9, 30, "LT2A");
+            courseManager.addLecTimeSlot(temphold, TimeSlot.DAY.TUE, 14, 30, 15, 30, "LT2A");
+
+            courseManager.createIndex(temphold, 10031, 10);
+            courseManager.getIndexByIndexNo(10031).addTutTimeSlot(TimeSlot.DAY.WED, 10, 30, 11, 30, "TR+37");
+            courseManager.getIndexByIndexNo(10031).addLabTimeSlot(TimeSlot.DAY.MON, 14, 30, 16, 30, "SWLAB2");
+
+            courseManager.createIndex(temphold, 10032, 10);
+            courseManager.getIndexByIndexNo(10032).addTutTimeSlot(TimeSlot.DAY.MON, 9, 30, 10, 30, "TR+15");
+            courseManager.getIndexByIndexNo(10032).addLabTimeSlot(TimeSlot.DAY.WED, 14, 30, 16, 30, "SWLAB2");
+        }
+
+        if(courseManager.addCourse("MH1812", "Discrete Mathematics", "SPMS")) {
+            temphold = courseManager.getCourseByCourseId("MH1812");
+            courseManager.addLecTimeSlot(temphold, TimeSlot.DAY.WED, 9, 30, 10, 30, "LT4");
+            courseManager.addLecTimeSlot(temphold, TimeSlot.DAY.THU, 16, 30, 17, 30, "LT4");
+
+            courseManager.createIndex(temphold, 10161, 10);
+            courseManager.getIndexByIndexNo(10161).addTutTimeSlot(TimeSlot.DAY.THU, 10, 30, 11, 30, "TR+17");
+            courseManager.getIndexByIndexNo(10161).addLabTimeSlot(TimeSlot.DAY.TUE, 10, 30, 12, 30, "TR+15");
+
+            courseManager.createIndex(temphold, 10163, 10);
+            courseManager.getIndexByIndexNo(10163).addTutTimeSlot(TimeSlot.DAY.THU, 10, 30, 11, 30, "TR+16");
+            courseManager.getIndexByIndexNo(10163).addLabTimeSlot(TimeSlot.DAY.WED, 14, 30, 16, 30, "TR+15");
+        }
+
+        if(courseManager.addCourse("HW0188", "Engineering Communication I", "HSS")) {
+            temphold = courseManager.getCourseByCourseId("HW0188");
+
+            courseManager.createIndex(temphold, 15171, 10);
+            courseManager.getIndexByIndexNo(15171).addTutTimeSlot(TimeSlot.DAY.MON, 9, 30, 11, 30, "TR+34");
+
+            courseManager.createIndex(temphold, 23001, 10);
+            courseManager.getIndexByIndexNo(23001).addTutTimeSlot(TimeSlot.DAY.FRI, 14, 30, 16, 30, "TR+3");
+        }
+
+        /*userManager.addStudent("qingru", "c160144@e.ntu", "U222222B", 92298224, Student.GENDER.FEMALE, "Singaporean", "qingru", "password");
+        userManager.addStudent("student", "qhu003@.e.ntu.edu.sg", "Ustudent", 9999, Student.GENDER.FEMALE,"studentNationality,", "student", "student");
+        userManager.addStudent("qinghui", "qlai002@e.ntu.edu.sg", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
+        userManager.addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
+
+        */
+        /*
+        courseManager.addCourse("CE2003", "Digital System Design", "SCE");
+        courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10042, 2);
+        courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10043, 2);
+        */
     }
 }
