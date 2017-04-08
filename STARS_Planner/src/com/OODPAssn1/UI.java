@@ -6,10 +6,6 @@ import com.OODPAssn1.Entities.User;
 import com.OODPAssn1.Managers.CourseManager;
 
 import java.io.Console;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Scanner;
 
 
@@ -232,7 +228,7 @@ public class UI
                     System.out.println("\n\n\nYou are already enrolled in Index " + indexToEnroll + "\n");
                     break;
 
-                //Already in the index of the waitlist
+                //Already in the waitlist of the index
                 case 3:
                     System.out.println("\n\n\nYou are already in the waitlist of Index " + indexToEnroll + "\n");
                     studentPosInWaitList = STARS.getInstance().student_getPositionInWaitlist(indexToEnroll); //Gets the student's position in the waitlist
@@ -299,7 +295,6 @@ public class UI
         int indexNo = getInt();
         admin_CheckVacancy(indexNo);
     }
-
 
 
 //------------------------------------Method to display Admin's menu--------------------------------------------------
