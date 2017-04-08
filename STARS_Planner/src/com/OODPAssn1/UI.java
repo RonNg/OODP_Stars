@@ -233,6 +233,11 @@ public class UI
                     System.out.println("You are currently position " + studentPosInWaitList[0] + " out of " + studentPosInWaitList[1] + " in the waitlist");
                     break;
 
+                case 112://Succesfull switched index
+                    System.out.println("\n\n\nYou have successfully switched to Index " + indexToEnroll);
+                    break;
+
+
                /*======================================
                    FAIL TO BE ADDED INTO INDEX/WAITLIST
                =======================================*/
@@ -240,13 +245,16 @@ public class UI
                 case 2:
                     System.out.println("\n\n\nYou are already enrolled in Index " + indexToEnroll + "\n");
                     break;
-
                 //Already in the waitlist of the index
                 case 3:
                     System.out.println("\n\n\nYou are already in the waitlist of Index " + indexToEnroll + "\n");
                     studentPosInWaitList = STARS.getInstance().student_getPositionInWaitlist(indexToEnroll); //Gets the student's position in the waitlist
                     System.out.println("You are currently position " + studentPosInWaitList[0] + "out of " + studentPosInWaitList[1] + "in the waitlist");
                     break;
+                case 111:
+                    System.out.println("You can't join the same waitlist");
+                    break;
+
             }
             addFinish = true;
         }
