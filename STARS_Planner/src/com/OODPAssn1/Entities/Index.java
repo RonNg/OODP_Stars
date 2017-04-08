@@ -126,26 +126,10 @@ public class Index implements Serializable
         return success;
     }
 
-
-    // public String withdrawStudent(String matricNo)
-    // {
-    //     if (studentsEnrolledList.remove(matricNo))
-    //     {
-    //         numberOfStudent--;
-    //         if ((numberOfStudent + 1) == maxNumberOfStudent)
-    //         {
-    //             String toEnroll = studentWaitList.get(0);
-    //             if (enrolStudent(toEnroll) == 1)
-    //             {
-    //                 studentWaitList.remove(0);
-    //                 return toEnroll;
-    //             }
-    //             return "ERROR";
-    //         }
-    //         return "SUCCESS";
-    //     }
-    //     return "ERROR";
-    // }
+    public boolean removeStudentFromWaitlist ( String matricNo )
+    {
+        return studentWaitList.remove(matricNo);
+    }
 
     public boolean checkIfStudentEnrolled(String matricNo)
     {

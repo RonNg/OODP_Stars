@@ -84,7 +84,6 @@ public class STARS
         return null;
     }
 
-
 //------------------------Method to check current date is within access period-----------------------------
 
     public boolean checkAccessPeriod()
@@ -102,10 +101,8 @@ public class STARS
 
     public boolean checkDateFormat(String date)
     {
-
         try
         {
-
             Date dateObj = new SimpleDateFormat("dd/MM/yyyy").parse(date);
 
         } catch (ParseException e)
@@ -211,6 +208,10 @@ public class STARS
         List<TimeSlot> course1LectList = course1.getLecTimeSlotList();
         List<TimeSlot> course2LectList = course2.getLecTimeSlotList();
 
+
+        if (course1.getCourseId().equals(course2.getCourseId()))
+            return "SAME COURSE";
+
         for (int i = 0; i < course1LectList.size(); ++i)
         {
             for (int x = 0; x < course2LectList.size(); ++x)
@@ -219,10 +220,10 @@ public class STARS
                 if (course1LectList.get(i).getDay().equals(course2LectList.get(x).getDay()))
                 {
                     //if Course 2's Lect start time is in between Course 1's Lecture time, there's a clash
-                    int course1StartTime = Integer.parseInt(course1LectList.get(i).getStartTime().substring(0,2) + course1LectList.get(i).getStartTime().substring(3));
-                    int course1EndTime = Integer.parseInt(course1LectList.get(i).getEndTime().substring(0,2) + course1LectList.get(i).getEndTime().substring(3));
-                    int course2StartTime = Integer.parseInt(course2LectList.get(x).getStartTime().substring(0,2) + course2LectList.get(x).getStartTime().substring(3));
-                    int course2EndTime = Integer.parseInt(course2LectList.get(x).getEndTime().substring(0,2) + course2LectList.get(x).getEndTime().substring(3));
+                    int course1StartTime = Integer.parseInt(course1LectList.get(i).getStartTime().substring(0, 2) + course1LectList.get(i).getStartTime().substring(3));
+                    int course1EndTime = Integer.parseInt(course1LectList.get(i).getEndTime().substring(0, 2) + course1LectList.get(i).getEndTime().substring(3));
+                    int course2StartTime = Integer.parseInt(course2LectList.get(x).getStartTime().substring(0, 2) + course2LectList.get(x).getStartTime().substring(3));
+                    int course2EndTime = Integer.parseInt(course2LectList.get(x).getEndTime().substring(0, 2) + course2LectList.get(x).getEndTime().substring(3));
 
 
                     //Start time must check if equals. If both start time is 1400, it clashes.
@@ -252,11 +253,11 @@ public class STARS
                 if (index1TutLabList.get(i).getDay().equals(index2TutLabList.get(x).getDay()))
                 {
                     //if Index 2's Tut start time is in between Index 1's Tut time, there's a clash
-                    int index1TutLabStartTime = Integer.parseInt(index1TutLabList.get(i).getStartTime().substring(0,2) + index1TutLabList.get(i).getStartTime().substring(3));
-                    int index1TutLabEndTime = Integer.parseInt(index1TutLabList.get(i).getEndTime().substring(0,2) + index1TutLabList.get(i).getEndTime().substring(3));
+                    int index1TutLabStartTime = Integer.parseInt(index1TutLabList.get(i).getStartTime().substring(0, 2) + index1TutLabList.get(i).getStartTime().substring(3));
+                    int index1TutLabEndTime = Integer.parseInt(index1TutLabList.get(i).getEndTime().substring(0, 2) + index1TutLabList.get(i).getEndTime().substring(3));
 
-                    int index2TutLabStartTime = Integer.parseInt(index1TutLabList.get(x).getStartTime().substring(0,2) + index1TutLabList.get(x).getStartTime().substring(3));
-                    int index2TutLabEndTime = Integer.parseInt(index1TutLabList.get(x).getEndTime().substring(0,2) + index1TutLabList.get(x).getEndTime().substring(3));
+                    int index2TutLabStartTime = Integer.parseInt(index1TutLabList.get(x).getStartTime().substring(0, 2) + index1TutLabList.get(x).getStartTime().substring(3));
+                    int index2TutLabEndTime = Integer.parseInt(index1TutLabList.get(x).getEndTime().substring(0, 2) + index1TutLabList.get(x).getEndTime().substring(3));
 
                     if (index2TutLabStartTime >= index1TutLabStartTime && index2TutLabStartTime < index1TutLabEndTime)
                     {
@@ -322,25 +323,69 @@ public class STARS
 
         Student tempStud = (Student) currentLogOnUser;
 
-
-        //TODO: Switch index if same course and got vacancy
-
-
         //This code chunk checks for Index Clash
         List<Integer> currentUserIndexList = tempStud.getCourseIndexList();
+<<<<<<< HEAD
         Index indexToJoin = courseManager.getIndexByIndexNo(indexNo);
+=======
+        Index indexToJoin = CourseManager.getInstance().getIndexByIndexNo(indexNo);
+
+        /*===============================
+                  SWITCH INDEX
+         ================================*/
+        Course courseOfIndexToJoin = CourseManager.getInstance().getCourseByIndexNo(indexToJoin.getIndexNum());
+
+        //Code will only execute if joining same course
+        //loop through every index to see if you are in a waitlist of one of them
+        for(int i = 0; i < courseOfIndexToJoin.getIndexList().size(); ++ i)
+        {
+            //If you are already in the wiatlist of the index to join, return error.
+            if(courseOfIndexToJoin.getIndexList().get(i).getIndexNum() == indexToJoin.getIndexNum())
+            {
+                if(indexToJoin.checkIfStudentInWaitList(tempStud.getMatricNo()))
+                    return 111; //TODO: you're already in the waitlist, cannot join again
+            }
+            else //compare different indexes only
+            {
+                //Check if you're already in the waitlist in diff index but same course
+                if (courseOfIndexToJoin.getIndexList().get(i).checkIfStudentInWaitList(tempStud.getMatricNo()))
+                {
+                    //Remove yourself from the other waitlist
+                    courseOfIndexToJoin.getIndexList().get(i).removeStudentFromWaitlist(tempStud.getMatricNo());
+                    //enrol to the index to join
+                    int result = CourseManager.getInstance().enrolInIndex(tempStud.getMatricNo(), indexNo);
+
+                    if (result == 1)// if succesfully enrolled (not waitlist)
+                    {
+                        tempStud.addCourseIndex(indexNo);
+                        saveData();
+                        return 112;
+                    }
+                    return result;
+                }
+            }
+        }//If you are trying to join index of same course, it won't get past this line
+
+
+        /*===================================
+                    CHECK CLASH
+         ===================================*/
+        //Checks every single index in the current user against the index to join to see if there is a clash
+>>>>>>> d7ccb3ff4dd442c22e553b6e755ed5fd7b6bfe51
         for (int i = 0; i < currentUserIndexList.size(); ++i)
         {
             Index currUserIndex = courseManager.getIndexByIndexNo(currentUserIndexList.get(i));
 
-
+            //TODO: Switch index if same course and got vacancy. Need to check if student is in waitlist of current course also
             String result = checkIfIndexClash(currUserIndex, indexToJoin);
-
-            if(result.equals("No clash") == false)
+            if (result.equals("NO CLASH") == false)
             {
-                System.out.println(result);
+                if(result.equals("SAME COURSE"))
+                    return 2;
+
                 return 4; //Index clashes
             }
+
         }
 
         //If it goes beyond this point, it means its not an index switch/index doesn't clash.
@@ -366,6 +411,7 @@ public class STARS
         saveData();
         return result;
     }
+
 
     /**
      * Withdraw from the Index number specified by the current logged in student
@@ -557,10 +603,12 @@ public class STARS
 //------------------------Method for adding/updating of Course----------------------------------------------------------
 
 
-    public void admin_AddCourse(String courseId, String courseName, String faculty)
+    public boolean admin_AddCourse(String courseId, String courseName, String faculty)
     {
-        if (courseManager.addCourse(courseId, courseName, faculty))
-            courseManager.save(); //Save after adding
+        boolean success = CourseManager.getInstance().addCourse(courseId, courseName, faculty);
+        if(success)
+            CourseManager.getInstance().save(); //Save after adding
+        return success;
     }
 
     public boolean admin_AddLecTimeSlot(String courseId, TimeSlot.DAY timeSlotDay, int startTimeHH, int startTimeMM, int endTimeHH, int endTimeMM, String locationLT)
