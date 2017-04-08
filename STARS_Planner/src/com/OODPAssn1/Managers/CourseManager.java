@@ -68,7 +68,7 @@ public class CourseManager extends DataManager
 
     public boolean addLecTimeSlot(Course course, TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
     {
-        return courseList.get(courseList.indexOf(course)).addlecTimeSlot(day, startH, startM, endH, endM, location);
+        return courseList.get(courseList.indexOf(course)).addLecTimeSlot(day, startH, startM, endH, endM, location);
     }
 
     public boolean deleteLecTimeSlot(Course course, TimeSlot timeSlot)

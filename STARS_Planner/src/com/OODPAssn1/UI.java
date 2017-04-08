@@ -5,10 +5,6 @@ import com.OODPAssn1.Entities.TimeSlot;
 import com.OODPAssn1.Entities.User;
 
 import java.io.Console;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Scanner;
 
 
@@ -307,7 +303,6 @@ public class UI
             dropFinish = true;
         }
     }
-
 
 
 //------------------------------------Method to display Admin's menu--------------------------------------------------
