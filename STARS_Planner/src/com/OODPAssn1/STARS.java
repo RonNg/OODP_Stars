@@ -557,15 +557,10 @@ public class STARS
 
     public boolean admin_AddCourse(String courseId, String courseName, String faculty)
     {
-<<<<<<< HEAD
         boolean success = CourseManager.getInstance().addCourse(courseId, courseName, faculty);
         if(success)
             CourseManager.getInstance().save(); //Save after adding
         return success;
-=======
-        if (courseManager.addCourse(courseId, courseName, faculty))
-            courseManager.save(); //Save after adding
->>>>>>> 7495002f6246c87411f001fdcd41a9c02dcc2e52
     }
 
     public boolean admin_AddLecTimeSlot(String courseId, TimeSlot.DAY timeSlotDay, int startTimeHH, int startTimeMM, int endTimeHH, int endTimeMM, String locationLT)

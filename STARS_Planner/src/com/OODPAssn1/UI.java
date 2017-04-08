@@ -332,83 +332,10 @@ public class UI
             {
 
                 case 1://Edit student access period
-<<<<<<< HEAD
                     admin_EditStudentAccessPeriod();
-=======
-                    System.out.println("\n =============================================== " +
-                                       "\n            Changing Access Period            " +
-                                       "\n =============================================== ");
-                    System.out.println("\nCurrent Access period: ");
-                    System.out.println("------------------------");
-                    System.out.println(stars.getAccessPeriod() + "\n");
-
-                    String startDate;
-                    String endDate;
-
-                    while(true){
-                        System.out.print("Please input new start date(dd/mm/yyyy): ");
-
-
-                        startDate = getString();
-                        if(stars.checkDateFormat(startDate))
-
-                            break;
-                        else System.out.println("Please enter in the format as shown! e.g. 01/04/2017");
-                    }
-
-                    while(true){
-                        System.out.print("Please input new end date(dd/mm/yyyy): ");
-
-
-                        endDate = getString();
-                        if(stars.checkDateFormat(endDate))
-                            break;
-                        else System.out.println("Please enter in the format as shown! e.g. 30/04/2017");
-                    }
-
-
-
-                    System.out.println("Updated access period: ");
-                    System.out.println("--------------------------");
-                    System.out.println(stars.setAccessPeriod(startDate, endDate));
-
->>>>>>> 7495002f6246c87411f001fdcd41a9c02dcc2e52
                     break;
                 case 2://Add a Student
-<<<<<<< HEAD
                     admin_AddStudent();
-=======
-
-                    System.out.println("Please enter name of student:");
-                    String name = getString();
-                    System.out.println("Please enter email of student:");
-                    String email = getString();
-                    System.out.println("Please enter Matric no. of student: ");
-                    String matricNo = getString();
-                    System.out.println("Please enter conatct No. of student");
-                    int contact = getInt();
-                    System.out.println("Please enter gender of student(m for male, f for female): ");
-                    String genderStr = getString();
-                    System.out.println("Please enter nationality of student: ");
-                    String nationality = getString();
-                    System.out.println("Please enter username of student: ");
-                    String username = getString();
-                    System.out.println("Please enter password of student: ");
-                    String password = getString();
-                    /*Code to hide password. Only works in console not in IDE
-                      char[] passString = c.readPassword();
-                      String password = new String(passString );
-                    */
-                    if (genderStr.equals("m"))
-                        stars.admin_addStudent(name, email, matricNo,
-                                contact, Student.GENDER.MALE, nationality, username, password);
-                    else
-                        stars.admin_addStudent(name, email, matricNo,
-                                contact, Student.GENDER.FEMALE, nationality, username, password);
-
-                    //stars.admin_addStudent("dude", "dude@e.ntu.edu.sg", "U1625639G",
-                    //98245937, Student.GENDER.MALE, "SG", "dude123", "dude123");
->>>>>>> 7495002f6246c87411f001fdcd41a9c02dcc2e52
                     break;
                 case 3://Add a Course and proceed to add index after if user chooses so
                     admin_AddCourse(); //Goes to the UI menu for adding course.
@@ -538,15 +465,11 @@ public class UI
         String faculty = getString();
 
         //Adds the course and returns the course object so that we can use it to add the lecture time
-<<<<<<< HEAD
-        if(!STARS.getInstance().admin_AddCourse(courseId, courseName, faculty)){
+        if(!stars.admin_AddCourse(courseId, courseName, faculty)){
             System.out.println("Something went wrong. Course not added.Exiting.. ");
             return;
         }
-=======
-        stars.admin_AddCourse(courseId, courseName, faculty);
->>>>>>> 7495002f6246c87411f001fdcd41a9c02dcc2e52
-
+        
         System.out.println("");
         System.out.println("Please enter the number of lectures per week for Course " + courseId);
         int noOfLect = getInt();
@@ -568,7 +491,7 @@ public class UI
             System.out.println("Please enter the LT number for the Lecture  " + timeSlotDay.name());
             String locationLT = getString();
 
-            boolean success = STARS.getInstance().admin_AddLecTimeSlot(courseId, timeSlotDay, startTime/100, startTime%100, endTime/100, endTime%100, locationLT);
+            boolean success = stars.admin_AddLecTimeSlot(courseId, timeSlotDay, startTime/100, startTime%100, endTime/100, endTime%100, locationLT);
 
             if (success)
                 System.out.println("Lecture on " + timeSlotDay.name() + " successfully added!");
@@ -592,7 +515,7 @@ public class UI
         printTitle("Edit Access Period");
         System.out.println("\nCurrent Access period: ");
         System.out.println("------------------------");
-        System.out.println(STARS.getInstance().getAccessPeriod() + "\n");
+        System.out.println(stars.getAccessPeriod() + "\n");
 
         String startDate;
         String endDate;
@@ -600,7 +523,7 @@ public class UI
         while(true){
             System.out.print("Please input new start date(dd/mm/yyyy): ");
             startDate = getString();
-            if(STARS.getInstance().checkDateFormat(startDate))
+            if(stars.checkDateFormat(startDate))
                 break;
             else System.out.println("Please enter in the format as shown! e.g. 01/04/2017");
         }
@@ -608,20 +531,15 @@ public class UI
         while(true){
             System.out.print("Please input new end date(dd/mm/yyyy): ");
             endDate = getString();
-            if(STARS.getInstance().checkDateFormat(endDate))
+            if(stars.checkDateFormat(endDate))
                 break;
             else System.out.println("Please enter in the format as shown! e.g. 30/04/2017");
         }
-
-
-<<<<<<< HEAD
-=======
-            boolean success = stars.admin_AddLecTimeSlot(courseId, timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT);
->>>>>>> 7495002f6246c87411f001fdcd41a9c02dcc2e52
+        
 
         System.out.println("Updated access period: ");
         System.out.println("--------------------------");
-        System.out.println(STARS.getInstance().setAccessPeriod(startDate, endDate));
+        System.out.println(stars.setAccessPeriod(startDate, endDate));
     }
 
     public static void admin_AddStudent()
@@ -648,10 +566,10 @@ public class UI
                       String password = new String(passString );
                     */
         if (genderStr.equals("m"))
-            STARS.getInstance().admin_addStudent(name, email, matricNo,
+            stars.admin_addStudent(name, email, matricNo,
                     contact, Student.GENDER.MALE, nationality, username, password);
         else
-            STARS.getInstance().admin_addStudent(name, email, matricNo,
+            stars.admin_addStudent(name, email, matricNo,
                     contact, Student.GENDER.FEMALE, nationality, username, password);
 
     }
@@ -724,12 +642,8 @@ public class UI
 
             System.out.println("Enter the LAB END time in 24hrs format(HHMM): " );
             endTime = getTime();
-
-<<<<<<< HEAD
-            STARS.getInstance().admin_AddIndexLabTimeSlot(indexNoToAdd, timeSlotDay, startTime/100, startTime%100, endTime/100, endTime%100, labLocation );
-=======
-            stars.admin_AddIndexLabTimeSlot(indexNoToAdd, timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, labLocation );
->>>>>>> 7495002f6246c87411f001fdcd41a9c02dcc2e52
+            
+            stars.admin_AddIndexLabTimeSlot(indexNoToAdd, timeSlotDay, startTime/100, startTime%100, endTime/100, endTime%100, labLocation );
 
             /*===================================
                           ADD TUT
@@ -747,12 +661,8 @@ public class UI
 
             System.out.println("Enter the TUT END time in 24hrs format(HHMM): " );
             endTime = getTime();
-
-<<<<<<< HEAD
-            STARS.getInstance().admin_AddIndexTutTimeSlot(indexNoToAdd, timeSlotDay, startTime/100, startTime%100, endTime/100, endTime%100, tutLocation );
-=======
-            stars.admin_AddIndexTutTimeSlot(indexNoToAdd, timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, tutLocation);
->>>>>>> 7495002f6246c87411f001fdcd41a9c02dcc2e52
+            
+            stars.admin_AddIndexTutTimeSlot(indexNoToAdd, timeSlotDay, startTime/100, startTime%100, endTime/100, endTime%100, tutLocation );
 
         }//end of index list add
     }
