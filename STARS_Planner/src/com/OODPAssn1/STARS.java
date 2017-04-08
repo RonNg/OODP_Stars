@@ -448,19 +448,12 @@ public class STARS
             if (result.equals("NO CLASH") == false)
             {
                 if(result.equals("SAME COURSE"))
-                    return 2;
+                    return 5; //Changed to 5************************************ QYQYQYQYQYQYQYQY
 
                 return 4; //Index clashes
             }
 
         }
-
-        for(int m = 0; m < currentUserIndexList.size(); m++) {
-            if(courseOfIndexToJoin.equals(courseManager.getCourseByIndexNo(currentUserIndexList.get(m)))){
-                return 5;
-            }
-        }
-
 
         //If it goes beyond this point, it means its not an index switch/index doesn't clash.
         //Enroll into course
