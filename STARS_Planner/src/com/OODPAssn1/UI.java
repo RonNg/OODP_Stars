@@ -3,10 +3,8 @@ package com.OODPAssn1;
 import com.OODPAssn1.Entities.Student;
 import com.OODPAssn1.Entities.TimeSlot;
 import com.OODPAssn1.Entities.User;
-import com.OODPAssn1.Managers.CourseManager;
 
 import java.io.Console;
-import java.rmi.server.ExportException;
 import java.util.Scanner;
 
 
@@ -170,7 +168,7 @@ public class UI
         {
             System.out.println("Course available to enroll: \n" +
                     "--------------------------");
-            stars.printCourseList();
+            System.out.println(stars.printCourseList());
 
             System.out.print("\n\nPlease input the course ID of the course you wished to enroll in or type 'quit' to go back to main menu: ");
             String courseId = getString();
@@ -338,64 +336,18 @@ public class UI
 
             switch (choice)
             {
-
                 case 1://Edit student access period
                     admin_EditStudentAccessPeriod();
                     break;
                 case 2://Add a Student
-
                     admin_AddStudent();
-
                     break;
                 case 3://Add a Course and proceed to add index after if user chooses so
                     admin_AddCourse(); //Goes to the UI menu for adding course.
                     break;
                 case 4://Update Course
-
-                    System.out.println("\n =============================================== " +
-                                       "\n                 Update a course             " +
-                                       "\n =============================================== ");
-
-
-                    stars.printCourseList(); //prints out all course for selection
-                    System.out.println("\nEnter the Course ID for the course which you would you like to update: ");
-                    String courseId = getString();
-
-                    if (stars.doesCourseExist(courseId) == false);
-                    {
-
-                        System.out.println("What would you like to edit for " + courseId + "?");
-                        System.out.println("1) Add Index To Course\n"
-                                       +   "2) Delete Index from Course\n"
-                                       +   "3) Delete Course" );
-
-                        int updateChoice = getInt();
-
-                        switch(updateChoice)
-                        {
-                            //Add Index to Course
-                            case 1:
-                                admin_AddIndex(courseId);
-                                break;
-
-                            case 2:
-                                System.out.println("Please input the index no. that you wish to remove from course: " );
-                                int indexNo = getInt();
-
-                                admin_DeleteIndex(indexNo);
-                                break;
-
-                            //Delete Course
-                            case 3:
-                                admin_DeleteCourse(courseId);
-                                break;
-
-                            default:
-                                System.out.println("Invalid choice. Returning to main menu");
-                                break;
-                        }
-                    }
-                break;
+                    admin_UpdateCourse();
+                   break;
 
                 case 5://Check available slot for an index number (vacancy in a class)
                     System.out.println("\n =============================================== " +
@@ -555,36 +507,95 @@ public class UI
     public static void admin_AddStudent()
     {
         printTitle("Add Student");
+
         System.out.println("Please enter name of student:");
         String name = getString();
+
         System.out.println("Please enter email of student:");
         String email = getString();
+
         System.out.println("Please enter Matric no. of student: ");
-        String matricNo = getString();
-        System.out.println("Please enter conatct No. of student");
+        String matricNo;
+        while(true){
+            matricNo = getString();
+            if(stars.checkStudentExist(matricNo))
+                System.out.println("Matic no. already taken. Please enter other matric no.");
+            else
+                break;
+        }
+
+        System.out.println("Please enter contact No. of student");
         int contact = getInt();
+
         System.out.println("Please enter gender of student(m for male, f for female): ");
-        String genderStr = getString();
+        Student.GENDER stGender;
+        stGender = getGender();
+
         System.out.println("Please enter nationality of student: ");
         String nationality = getString();
+
         System.out.println("Please enter username of student: ");
         String username = getString();
+
         System.out.println("Please enter password of student: ");
         String password = getString();
+
                     /*Code to hide password. Only works in console not in IDE
                       char[] passString = c.readPassword();
                       String password = new String(passString );
                     */
-        boolean result;
-        if (genderStr.equals("m"))
-            result = stars.admin_addStudent(name, email, matricNo,
-                    contact, Student.GENDER.MALE, nationality, username, password);
-        else
-            result = stars.admin_addStudent(name, email, matricNo,
-                    contact, Student.GENDER.FEMALE, nationality, username, password);
+        boolean result = stars.admin_addStudent(name, email, matricNo, contact, stGender, nationality, username, password);
         if(result)
             System.out.println(name + "successfully added to STARS");
-        else System.out.println("Another student with " + matricNo + " already exist in STARS!");
+        else {
+            System.out.println("Another student with " + matricNo + " already exist in STARS!\nPlease re-enter another Matric No: ");
+            matricNo = getString();
+        }
+
+    }
+
+    public static void admin_UpdateCourse()
+    {
+        printTitle("Update Course");
+        System.out.println(stars.printCourseList()); //prints out all course for selection
+        System.out.println("\nEnter the Course ID for the course which you would you like to update: ");
+        String courseId = getString();
+
+        if (stars.doesCourseExist(courseId) == false);
+        {
+
+            System.out.println("What would you like to edit for " + courseId + "?");
+
+            System.out.println("1) Add Index To Course\n"
+                    +   "2) Delete Index from Course\n"
+                    +   "3) Delete Course" );
+
+            int updateChoice = getInt();
+
+            switch(updateChoice)
+            {
+                //Add Index to Course
+                case 1:
+                    admin_AddIndex(courseId);
+                    break;
+
+                case 2:
+                    System.out.println("Please input the index no. that you wish to remove from course: " );
+                    int indexNo = getInt();
+
+                    admin_DeleteIndex(indexNo);
+                    break;
+
+                //Delete Course
+                case 3:
+                    admin_DeleteCourse(courseId);
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Returning to main menu");
+                    break;
+            }
+        }
 
     }
 
@@ -704,6 +715,8 @@ public class UI
         while(!inputCheck){
             try{
                 input = s.nextLine();
+                if(input.length() == 0)
+                    continue;
                 Integer.parseInt(input);
                 inputCheck = true;
             }catch(Exception e){
@@ -719,6 +732,8 @@ public class UI
         while (!inputCheck){
             try{
                 input = s.nextLine();
+                if(input.length() == 0)
+                    continue;
                 inputCheck = true;
             }catch(Exception e){
                 System.out.println("Invalid Input. Please try again.");
@@ -732,6 +747,8 @@ public class UI
         while(true){
             try{
                 input = s.nextLine();
+                if(input.length() == 0)
+                    continue;
                 switch (input.toUpperCase()){
                     case "Y":
                     case "YES":
@@ -748,12 +765,14 @@ public class UI
     }
 
     public static int getTime(){
-        boolean inputCheck = false;;
-        String input ="";
+        boolean inputCheck = false;
+        String input;
         int output = 0;
         while(inputCheck==false){
             try{
                 input = s.nextLine();
+                if(input.length() == 0)
+                    continue;
                 input = input.replaceAll(":","");
                 input = input.replaceAll("-","");
                 output = Integer.parseInt(input);
@@ -769,12 +788,14 @@ public class UI
     }
 
     public static TimeSlot.DAY getDay(){
-        boolean inputCheck = false;;
+        boolean inputCheck = false;
         String input ="";
         TimeSlot.DAY output = null;
         while(inputCheck==false){
             try{
                 input = s.nextLine();
+                if(input.length() == 0)
+                    continue;
                 switch (input.trim().toUpperCase()){
                     case "M":
                     case "MON":
@@ -828,6 +849,26 @@ public class UI
             }
         }
         return output;
+    }
+
+    public static Student.GENDER getGender(){
+        String input;
+        while(true){
+            try{
+                input = s.nextLine();
+                if(input.length() == 0)
+                    continue;
+                if(input.length()!=1)
+                    throw new Exception();
+                if(input.toUpperCase().charAt(0) == 'M')
+                    return Student.GENDER.MALE;
+                if(input.toUpperCase().charAt(0) == 'F')
+                    return Student.GENDER.FEMALE;
+                throw new Exception();
+            }catch(Exception e){
+                System.out.println("Invalid Input. Please try again.");
+            }
+        }
     }
 
     public static void printTitle(String title){

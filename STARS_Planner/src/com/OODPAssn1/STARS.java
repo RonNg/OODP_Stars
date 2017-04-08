@@ -468,6 +468,7 @@ public class STARS
         return 0;
     }
 
+
     /*==================================================
 
 
@@ -768,6 +769,12 @@ public class STARS
 
     }
 
+    public boolean checkStudentExist(String matricNo){
+        if(userManager.getStudentByMatricNo(matricNo)==null)
+            return false;
+        return true;
+    }
+
 
 //-------------------------------Method to write all list back to database----------------------------------------------
 
@@ -782,9 +789,34 @@ public class STARS
     }
 //------------------------------Method to print all course available for registration-----------------------------------
 
-    public void printCourseList()
+    public String printCourseList()
     {
-        courseManager.printAllCourse();
+        String output = "";
+        StringBuilder outputBuild;
+        List<Course> courseList = courseManager.getCourseList();
+        if (courseList == null || courseList.size() <= 0)
+        {
+            return "No Course Found";
+        }
+        Course temp;
+        for (int i = 0; i < courseList.size(); ++i)
+        {
+            temp = courseList.get(i);
+            outputBuild = new StringBuilder();
+            Formatter formatter = new Formatter(outputBuild, Locale.ENGLISH);
+            formatter.format("%-8s | %-50s | Indexes: ",temp.getCourseId(),temp.getCourseName());
+            output+=outputBuild.toString();
+            List<Index> indexList = temp.getIndexList();
+            for(int j = 0; indexList != null && j < indexList.size(); j++)
+            {
+                if(j < 1)
+                    output+=Integer.toString(indexList.get(j).getIndexNum());
+                else
+                    output+=", " + Integer.toString(indexList.get(j).getIndexNum());
+            }
+            output+="\n";
+        }
+        return output;
     }
 
 
@@ -947,9 +979,9 @@ public class STARS
             {
                 TimeSlot tempTimeSlot = tempList.get(n);
                 if (n <= 0)
-                    formatter.format("%-10s | %-8d | %-5s | %-5s | %s-%-7s | %s %n", tempCourse.getCourseId(), indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+                    formatter.format("%-8s | %-8d | %-5s | %-5s | %s-%-7s | %s %n", tempCourse.getCourseId(), indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
                 else
-                    formatter.format("%-10s | %-8d | %-5s | %-5s | %s-%-7s | %s %n", "", indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+                    formatter.format("%-8s | %-8d | %-5s | %-5s | %s-%-7s | %s %n", "", indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
             }
 
             //retStr += "Index: " + indexList.get(i) + " - " + courseManager.getCourseByIndexNo(indexList.get(i)).getCourseName() + "\n";
