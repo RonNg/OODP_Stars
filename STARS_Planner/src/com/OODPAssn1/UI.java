@@ -380,9 +380,9 @@ public class UI
                     String email = getString();
                     System.out.println("Please enter Matric no. of student: ");
                     String matricNo = getString();
-                    System.out.println("Please enter conatct No. of student");
+                    System.out.println("Please enter contact No. of student");
                     int contact = getInt();
-                    System.out.println("Please enter gender of student(m for male, f for female): ");
+                    System.out.println("Please enter gender of student(m for male, f for female. Default will be female.): ");
                     String genderStr = getString();
                     System.out.println("Please enter nationality of student: ");
                     String nationality = getString();
@@ -394,13 +394,16 @@ public class UI
                       char[] passString = c.readPassword();
                       String password = new String(passString );
                     */
+                    boolean result;
                     if (genderStr.equals("m"))
-                        stars.admin_addStudent(name, email, matricNo,
+                        result = stars.admin_addStudent(name, email, matricNo,
                                 contact, Student.GENDER.MALE, nationality, username, password);
                     else
-                        stars.admin_addStudent(name, email, matricNo,
+                        result = stars.admin_addStudent(name, email, matricNo,
                                 contact, Student.GENDER.FEMALE, nationality, username, password);
-
+                    if(result)
+                        System.out.println(name + "successfully added to STARS");
+                    else System.out.println("Another student with " + matricNo + " already exist in STARS!");
                     //stars.admin_addStudent("dude", "dude@e.ntu.edu.sg", "U1625639G",
                     //98245937, Student.GENDER.MALE, "SG", "dude123", "dude123");
                     break;
