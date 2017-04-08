@@ -12,13 +12,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+
 /**
  * Created by jonah on 15/3/2017.
  */
 public class STARS
 {
     private static STARS instance;
+
     private boolean isInitAlready = false;
+    private UserManager userManager;
+    private CourseManager courseManager;
     private User currentLogOnUser;
     private AccessPeriod currentAccessPeriod;
     private Notification studentNotification;
@@ -48,6 +52,9 @@ public class STARS
         }
 
 
+
+        userManager = UserManager.getInstance();
+        courseManager = CourseManager.getInstance();
         studentNotification = new Notification();
 
         return 1;
@@ -67,7 +74,7 @@ public class STARS
     public User.USER_TYPE loginToStars(String userName, String password)
     {
 
-        User user = UserManager.getInstance().authenticateUser(userName, password);
+        User user = userManager.authenticateUser(userName, password);
         if (user != null) //Login successful
         {
             //System.out.println(user.getType() + " " + user.getUsername() + " is now logged on to Stars!");
@@ -87,7 +94,7 @@ public class STARS
         Calendar currentDate = Calendar.getInstance();
         //System.out.println("Current date:" + dateFormat.format(currentDate.getTime()));
         //System.out.println("Start date: " + dateFormat.format(startDate.getTime()) + "   " + "End date: " + dateFormat.format(endDate.getTime()));
-        return currentDate.after(UserManager.getInstance().getAccessPeriod().getStartDate()) && currentDate.before(UserManager.getInstance().getAccessPeriod().getEndDate());
+        return currentDate.after(userManager.getAccessPeriod().getStartDate()) && currentDate.before(userManager.getAccessPeriod().getEndDate());
 
 
     }
@@ -132,12 +139,14 @@ public class STARS
             System.out.println("Please enter format as shown!");
         }
 
-        if (UserManager.getInstance().changeAccessPeriod(startDateCal, endDateCal))
-        {
-            this.saveData();
-            return "Start date: " + sdf.format(startDateCal.getTime()) + "   " + "End date: " + sdf.format(endDateCal.getTime());
-        } else
-            return "Error in setting access period!";
+
+        if(userManager.changeAccessPeriod(startDateCal, endDateCal)) {
+
+                this.saveData();
+                return "Start date: " + sdf.format(startDateCal.getTime()) + "   " + "End date: " + sdf.format(endDateCal.getTime());
+            } else
+                return "Error in setting access period!";
+
 
 
     }
@@ -149,7 +158,7 @@ public class STARS
 
         String rtrStr;
         AccessPeriod accessPeriod;
-        accessPeriod = UserManager.getInstance().getAccessPeriod();
+        accessPeriod = userManager.getAccessPeriod();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
 
         rtrStr = "Start date: " + sdf.format(accessPeriod.getStartDate().getTime()) + "   " +
@@ -159,7 +168,7 @@ public class STARS
 
     public boolean doesCourseExist(String courseId)
     {
-        List<Course> courseList = CourseManager.getInstance().getCourseList();
+        List<Course> courseList = courseManager.getCourseList();
         for (int i = 0; i < courseList.size(); ++i)
         {
 
@@ -174,7 +183,7 @@ public class STARS
 
     public boolean doesIndexExist(int indexNo)
     {
-        List<Course> courseList = CourseManager.getInstance().getCourseList();
+        List<Course> courseList = courseManager.getCourseList();
         for (int i = 0; i < courseList.size(); ++i)
         {
             List<Index> indexList = courseList.get(i).getIndexList();
@@ -282,7 +291,7 @@ public class STARS
 
         int[] returnPos = new int[2];
 
-        List<String> tempWaitList = CourseManager.getInstance().getIndexByIndexNo(indexNo).getWaitList();
+        List<String> tempWaitList = courseManager.getIndexByIndexNo(indexNo).getWaitList();
 
         for (int i = 0; i < tempWaitList.size(); ++i)
         {
@@ -334,7 +343,7 @@ public class STARS
 
         //If it goes beyond this point, it means its not an index switch/index doesn't clash.
         //Enroll into course
-        int result = CourseManager.getInstance().enrolInIndex(tempStud.getMatricNo(), indexNo);
+        int result = courseManager.enrolInIndex(tempStud.getMatricNo(), indexNo);
 
         switch (result)
         {
@@ -371,7 +380,7 @@ public class STARS
         Student currentLogOnStud = (Student) currentLogOnUser;
 
         //Remove student from index in CourseManager
-        String[] result = CourseManager.getInstance().dropFromIndex(currentLogOnStud.getMatricNo(), indexNo);
+        String[] result = courseManager.dropFromIndex(currentLogOnStud.getMatricNo(), indexNo);
 
 
         if (result[0] != "ERROR")
@@ -390,12 +399,15 @@ public class STARS
             //Remove index from student
             if (result[0] == "HANDLE")
             {
-                Student tempStudent = UserManager.getInstance().getStudentByMatricNo(result[1]);
+                Student tempStudent = userManager.getStudentByMatricNo(result[1]);
                 tempStudent.addCourseIndex(Integer.parseInt(result[2]));
                 saveData();
 
-                String courseId = CourseManager.getInstance().getCourseByIndexNo(indexNo).getCourseId();
-                String courseName = CourseManager.getInstance().getCourseByIndexNo(indexNo).getCourseName();
+
+                //TODO: Email the student that s/he has been added into the course
+                String courseId = courseManager.getCourseByIndexNo(indexNo).getCourseId();
+                String courseName = courseManager.getCourseByIndexNo(indexNo).getCourseName();
+
                 String subject = "Succesfully enrolled into Index " + indexNo;
 
                 String message = "As a student has withdrawn from the index, you have been removed from the waitlist and enrolled into the Index " + indexNo
@@ -444,7 +456,7 @@ public class STARS
         if (!this.doesCourseExist(courseId))
             return courseNotFoundErr;
 
-        Course course = CourseManager.getInstance().getCourseByCourseId(courseId);
+        Course course = courseManager.getCourseByCourseId(courseId);
 
         Index index = null;
         Student student = null;
@@ -466,19 +478,19 @@ public class STARS
                     for (int j = 0; j < index.getEnrolledStudentList().size(); j++)
                     {
                         matricNo = index.getEnrolledStudentList().get(j);
-                        student = UserManager.getInstance().getStudentByMatricNo(matricNo);
+                        student = userManager.getStudentByMatricNo(matricNo);
                         student.deEnrollCourseIndex(index.getIndexNum());
                         retStr = retStr + "Matric no.: " + matricNo + "    Name:" + student.getName() +
                                 "    From Index: " + index.getIndexNum() + "\n";
                     }
-                    UserManager.getInstance().save();
+                    userManager.save();
                 }
             }
         }
-        if (!CourseManager.getInstance().deleteCourse(course))
+        if (!courseManager.deleteCourse(course))
             retStr = deleteCourseErr;
         else
-            CourseManager.getInstance().save();
+            courseManager.save();
 
         return retStr;
     }
@@ -492,7 +504,7 @@ public class STARS
         //if course does not exists
         if (!this.doesCourseExist(cId))
             return courseNotFoundErr;
-        Course course = CourseManager.getInstance().getCourseByCourseId(cId);
+        Course course = courseManager.getCourseByCourseId(cId);
         Index index = null;
         Student student = null;
         List<Index> indexList = course.getIndexList();
@@ -513,19 +525,19 @@ public class STARS
                     for (int j = 0; j < index.getEnrolledStudentList().size(); j++)
                     {
                         matricNo = index.getEnrolledStudentList().get(j);
-                        student = UserManager.getInstance().getStudentByMatricNo(matricNo);
+                        student = userManager.getStudentByMatricNo(matricNo);
                         student.deEnrollCourseIndex(index.getIndexNum());
                         retStr = retStr + "Matric no.: " + matricNo + "    Name:" + student.getName() +
                                 "    From Index: " + index.getIndexNum() + "\n";
                     }
-                    UserManager.getInstance().save();
+                    userManager.save();
                 }
             }
         }
-        if (!CourseManager.getInstance().deleteCourse(course))
+        if (!courseManager.deleteCourse(course))
             retStr = deleteCourseErr;
         else
-            CourseManager.getInstance().save();
+            courseManager.save();
 
         return retStr;
     }
@@ -545,21 +557,27 @@ public class STARS
 
     public boolean admin_AddCourse(String courseId, String courseName, String faculty)
     {
+<<<<<<< HEAD
         boolean success = CourseManager.getInstance().addCourse(courseId, courseName, faculty);
         if(success)
             CourseManager.getInstance().save(); //Save after adding
         return success;
+=======
+        if (courseManager.addCourse(courseId, courseName, faculty))
+            courseManager.save(); //Save after adding
+>>>>>>> 7495002f6246c87411f001fdcd41a9c02dcc2e52
     }
 
     public boolean admin_AddLecTimeSlot(String courseId, TimeSlot.DAY timeSlotDay, int startTimeHH, int startTimeMM, int endTimeHH, int endTimeMM, String locationLT)
     {
-        Course course = CourseManager.getInstance().getCourseByCourseId(courseId);
+        Course course = courseManager.getCourseByCourseId(courseId);
 
         if (course != null)
         {
             //Save after adding
             course.addLecTimeSlot(timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT);
-            CourseManager.getInstance().save();
+            courseManager.save();
+
             return true;
         } else
         {
@@ -571,7 +589,7 @@ public class STARS
     public boolean admin_AddIndex(String courseId, int indexNoToAdd, int maxStudent)
     {
         boolean alreadyExists = false;
-        Course tempCourse = CourseManager.getInstance().getCourseByCourseId(courseId);
+        Course tempCourse = courseManager.getCourseByCourseId(courseId);
 
         //Check whether this index already exists
         List<Index> courseIndexList = tempCourse.getIndexList();
@@ -587,7 +605,7 @@ public class STARS
         if (success)
         {
             //Save after adding
-            CourseManager.getInstance().save();
+            courseManager.save();
             return true;
         }
 
@@ -615,7 +633,7 @@ public class STARS
         String indexNotFoundStr = "Error! Index not found in STARS!";
         String deleteIndexStr = "Error occured while deleting index!";
         List<String> studentsEnrolledList; // Stores matrix number
-        Index index = CourseManager.getInstance().getIndexByIndexNo(indexNo);
+        Index index = courseManager.getIndexByIndexNo(indexNo);
         Student student;
         Course course;
         String matricNo;
@@ -628,18 +646,18 @@ public class STARS
             for (int j = 0; j < index.getEnrolledStudentList().size(); j++)
             {
                 matricNo = index.getEnrolledStudentList().get(j);
-                student = UserManager.getInstance().getStudentByMatricNo(matricNo);
+                student = userManager.getStudentByMatricNo(matricNo);
                 student.deEnrollCourseIndex(index.getIndexNum());
                 rtrStr = rtrStr + "Matric no.: " + matricNo + "    Name:" + student.getName() +
                         "    From Index: " + index.getIndexNum() + "\n";
             }
-            UserManager.getInstance().save();
+            userManager.save();
         }
-        course = CourseManager.getInstance().getCourseByIndexNo(indexNo);
-        if (!CourseManager.getInstance().deleteIndex(course, index))
+        course = courseManager.getCourseByIndexNo(indexNo);
+        if (!courseManager.deleteIndex(course, index))
             rtrStr = deleteIndexStr;
         else
-            CourseManager.getInstance().save();
+            courseManager.save();
 
         return rtrStr;
     }
@@ -652,7 +670,7 @@ public class STARS
 
         String rtrStr = "";
         String indexNotFoundStr = "Error! Index not found in STARS!";
-        Index index = CourseManager.getInstance().getIndexByIndexNo(indexNo);
+        Index index = courseManager.getIndexByIndexNo(indexNo);
         if (index == null)
             return indexNotFoundStr;
         rtrStr = "Number of vacancy in Index " + indexNo + ": " + index.getNumberOfVacancy();
@@ -661,7 +679,7 @@ public class STARS
 
     public boolean admin_AddIndexLabTimeSlot(int indexNo, TimeSlot.DAY day, int startH, int startM, int endH, int endM, String labLocation)
     {
-        Index tempIndex = CourseManager.getInstance().getIndexByIndexNo(indexNo);
+        Index tempIndex = courseManager.getIndexByIndexNo(indexNo);
         //Can't find the index
         if (tempIndex == null)
             return false;
@@ -670,7 +688,7 @@ public class STARS
 
         if (success)
         {
-            CourseManager.getInstance().save();
+            courseManager.save();
             return true;
         }
 
@@ -679,7 +697,7 @@ public class STARS
 
     public boolean admin_AddIndexTutTimeSlot(int indexNo, TimeSlot.DAY day, int startH, int startM, int endH, int endM, String tutLocation)
     {
-        Index tempIndex = CourseManager.getInstance().getIndexByIndexNo(indexNo);
+        Index tempIndex = courseManager.getIndexByIndexNo(indexNo);
         //Can't find the index
         if (tempIndex == null)
             return false;
@@ -688,7 +706,7 @@ public class STARS
 
         if (success)
         {
-            CourseManager.getInstance().save();
+            courseManager.save();
             return true;
         }
 
@@ -704,7 +722,7 @@ public class STARS
                                  String username, String password)
     {
 
-        UserManager.getInstance().addStudent(name, email, matricNo, contact, gender,
+        userManager.addStudent(name, email, matricNo, contact, gender,
                 nationality, username, password);
 
     }
@@ -714,7 +732,7 @@ public class STARS
 
     public boolean saveData()
     {
-        if (UserManager.getInstance().save() && CourseManager.getInstance().save())
+        if (userManager.save() && courseManager.save())
         {
             //When we save the data of UserManager, the password is encrypted again. We need to decrypt it for login to work again.
             return true;
@@ -725,7 +743,7 @@ public class STARS
 
     public void printCourseList()
     {
-        CourseManager.getInstance().printAllCourse();
+        courseManager.printAllCourse();
     }
 
 
@@ -744,16 +762,18 @@ public class STARS
         String indexIsEmptyStr = "No student has enrolled to index yet.";
         String retStr = "";
         Student student;
-        Index index = CourseManager.getInstance().getIndexByIndexNo(indexNo);
-        if (index == null)
+
+        Index index = courseManager.getIndexByIndexNo(indexNo);
+        if(index == null)
             return indexNotFoundStr;
+
         List<String> indexList = index.getEnrolledStudentList();
         if (indexList.size() == 0)
             return indexIsEmptyStr;
         for (int i = 0; i < indexList.size(); i++)
         {
 
-            student = UserManager.getInstance().getStudentByMatricNo(indexList.get(i));
+            student = userManager.getStudentByMatricNo(indexList.get(i));
             retStr = retStr + "Name: " + student.getName() + "  Gender: " + student.getGender() +
                     "  Nationality: " + student.getNationality() + "\n";
 
@@ -770,12 +790,13 @@ public class STARS
     {
 
         String courseNotFoundStr = "Error! Course not found in system!";
-        String CourseisEmptyStr = "No student has enrolled to course yet.";
+        String CourseIsEmptyStr = "No student has enrolled to course yet.";
         String retStr = "";
-        Course course = CourseManager.getInstance().getCourseByCourseId(courseId);
+        Course course = courseManager.getCourseByCourseId(courseId);
         List<Index> indexList = null;
-        List<String> studentMatric = new ArrayList<String>();
-        List<Student> studentList = new ArrayList<Student>();
+        List<String> currIndexMatricList;
+        List<String> enrolledStudentMatricList = new ArrayList<String>();
+        Student student;
 
         int sizeOfIndex = 0;
 
@@ -786,27 +807,34 @@ public class STARS
             indexList = course.getIndexList();
             for (int i = 0; i < indexList.size(); ++i)
             {
-                List<String> currIndexMatricList = indexList.get(i).getEnrolledStudentList();
+                currIndexMatricList = indexList.get(i).getEnrolledStudentList();
                 for (int j = 0; j < currIndexMatricList.size(); ++j)
                 {
-                    studentMatric.add(currIndexMatricList.get(j));
+                    enrolledStudentMatricList.add(currIndexMatricList.get(j));
                 }
             }
         }
 
-        if (studentMatric.size() > 0)
+        if (enrolledStudentMatricList.size() != 0)
         {
-            for (int i = 0; i < studentMatric.size(); i++)
+            for (int i = 0; i < enrolledStudentMatricList.size(); i++)
             {
-                studentList.add(UserManager.getInstance().getStudentByMatricNo(studentMatric.get(i)));
-                retStr = retStr + "Name: " + studentList.get(i).getName() + "  Gender: " + studentList.get(i).getGender() +
-                        "  Nationality: " + studentList.get(i).getNationality() + "\n";
+                student = userManager.getStudentByMatricNo(enrolledStudentMatricList.get(i));
+                retStr = this.formatStudentInfoRtrStr(student, retStr);
+
 
             }
         } else
-            retStr = CourseisEmptyStr;
+            retStr = CourseIsEmptyStr;
 
         return retStr;
+    }
+
+    public String formatStudentInfoRtrStr(Student s, String retStr ){
+
+        return retStr = retStr + "Name: " + s.getName() + "  Gender: " + s.getGender() +
+                "  Nationality: " + s.getNationality() + "\n";
+
     }
 
 
@@ -818,7 +846,7 @@ public class STARS
     public String getIndexListOfCourse(String courseId)
     {
         String retStr = "";
-        List<Index> indexList = CourseManager.getInstance().getIndexList(CourseManager.getInstance().getCourseByCourseId(courseId));
+        List<Index> indexList = courseManager.getIndexList(courseManager.getCourseByCourseId(courseId));
 
         for (int i = 0; i < indexList.size(); ++i)
         {
@@ -906,7 +934,7 @@ public class STARS
             tempStud = (Student) currentLogOnUser;
         } else
         {
-            tempStud = (Student) UserManager.getInstance().getStudentByMatricNo(matricNo);
+            tempStud = (Student) userManager.getStudentByMatricNo(matricNo);
             //Only admin has to handle this. This error will not occur if logged in user is student
             if (tempStud == null)
             {
@@ -926,8 +954,10 @@ public class STARS
         for (int i = 0; i < indexList.size(); ++i)
         {
             //Get Course by Index No will never return null as the indexList exists in some course
-            Course tempCourse = CourseManager.getInstance().getCourseByIndexNo(indexList.get(i));
-            retStr += "Index: " + indexList.get(i) + " - " + tempCourse.getCourseName() + "\n";
+
+
+            retStr += "Index: " + indexList.get(i) + " - " + courseManager.getCourseByIndexNo(indexList.get(i)).getCourseName() + "\n";
+
         }
         return retStr;
     }
@@ -938,18 +968,21 @@ public class STARS
     public void printAllList()
     {
         System.out.println("===============================");
-        UserManager.getInstance().printAllUser();
+        userManager.printAllUser();
 
         System.out.println("\n\n===============================");
-        CourseManager.getInstance().printAllCourse();
+        courseManager.printAllCourse();
 
         System.out.println("\n\n===============================");
-        CourseManager.getInstance().printAllIndexDetails();
+        courseManager.printAllIndexDetails();
 
         System.out.println("\n\n===============================");
-        List<Integer> indexList = UserManager.getInstance().getStudentByMatricNo("U1111111B").getCourseIndexList();
+
+        List<Integer> indexList = userManager.getStudentByMatricNo("U1111111B").getCourseIndexList();
+
         if (indexList.size() > 0)
         {
+
             System.out.println("Index registered by Qinghui: ");
             for (int i = 0; i < indexList.size(); i++)
             {
@@ -962,58 +995,64 @@ public class STARS
 
     public void populateTestWaitlist()
     {
-        UserManager.getInstance().addStudent("qinghui", "qlai002@e.ntu.edu.sg", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
-        UserManager.getInstance().addStudent("ron", "c160144@e.ntu.edu.sg", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
-        UserManager.getInstance().addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
+        userManager.addStudent("qinghui", "qlai002@e.ntu.edu.sg", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
+        userManager.addStudent("ron", "c160144@e.ntu.edu.sg", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
+        userManager.addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
+
+
+        courseManager.addCourse("CE2003", "DSD", "SCE");
+        courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10042, 1);
+        courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10043, 1);
 
 
         /*=============================
                 Create DSD course
          =============================*/
-        CourseManager.getInstance().addCourse("CE2003", "Digital System Design", "SCE");
-        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10042, 1);
-        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10043, 1);
+        courseManager.addCourse("CE2003", "Digital System Design", "SCE");
+        courseManager.createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10042, 1);
+        courseManager.createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10043, 1);
 
-        CourseManager.getInstance().addLecTimeSlot(CourseManager.getInstance().getCourseByIndexNo(10042), TimeSlot.DAY.MON, 14, 00, 15, 00, "LT4");
-        CourseManager.getInstance().getCourseByIndexNo(10042).getIndex(10042).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR45");
-        CourseManager.getInstance().getCourseByIndexNo(10042).getIndex(10042).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 2");
 
-        CourseManager.getInstance().getCourseByIndexNo(10043).getIndex(10043).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR30");
-        CourseManager.getInstance().getCourseByIndexNo(10043).getIndex(10043).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 1");
+        courseManager.addLecTimeSlot(CourseManager.getInstance().getCourseByIndexNo(10042), TimeSlot.DAY.MON, 14, 00, 15, 00, "LT4");
+        courseManager.getCourseByIndexNo(10042).getIndex(10042).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR45");
+        courseManager.getCourseByIndexNo(10042).getIndex(10042).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 2");
+
+        courseManager.getCourseByIndexNo(10043).getIndex(10043).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR30");
+        courseManager.getCourseByIndexNo(10043).getIndex(10043).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 1");
 
         /*=============================
                 Create OODP course
          =============================*/
-        CourseManager.getInstance().addCourse("CE2002", "Object Oriented Design & Programming", "SCE");
-        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2002"), 10052, 1);
-        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2002"), 10053, 1);
+        courseManager.addCourse("CE2002", "Object Oriented Design & Programming", "SCE");
+        courseManager.createIndex(CourseManager.getInstance().getCourseByCourseId("CE2002"), 10052, 1);
+        courseManager.createIndex(CourseManager.getInstance().getCourseByCourseId("CE2002"), 10053, 1);
 
-        CourseManager.getInstance().addLecTimeSlot(CourseManager.getInstance().getCourseByIndexNo(10052), TimeSlot.DAY.MON, 11, 00, 12, 00, "LT4");
-        CourseManager.getInstance().getCourseByIndexNo(10052).getIndex(10052).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR45");
-        CourseManager.getInstance().getCourseByIndexNo(10052).getIndex(10052).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 2");
+        courseManager.addLecTimeSlot(CourseManager.getInstance().getCourseByIndexNo(10052), TimeSlot.DAY.MON, 11, 00, 12, 00, "LT4");
+        courseManager.getCourseByIndexNo(10052).getIndex(10052).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR45");
+        courseManager.getCourseByIndexNo(10052).getIndex(10052).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 2");
 
-        CourseManager.getInstance().getCourseByIndexNo(10053).getIndex(10053).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR30");
-        CourseManager.getInstance().getCourseByIndexNo(10053).getIndex(10053).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 1");
+        courseManager.getCourseByIndexNo(10053).getIndex(10053).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR30");
+        courseManager.getCourseByIndexNo(10053).getIndex(10053).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 1");
 
 
         //Adds bob into CourseManager and UserManager
-        CourseManager.getInstance().enrolInIndex("U1111111B", 10042);
-        UserManager.getInstance().getStudentByMatricNo("U1111111B").addCourseIndex(10042);
+        courseManager.enrolInIndex("U1111111B", 10042);
+        userManager.getStudentByMatricNo("U1111111B").addCourseIndex(10042);
 
         //Adds ron into waitlist
-        CourseManager.getInstance().enrolInIndex("U333333B", 10042);
+        courseManager.enrolInIndex("U333333B", 10042);
 
         saveData();
     }
 
     public void populateDatabase()
     {
-        UserManager.getInstance().addStudent("qingru", "c160144@e.ntu", "U222222B", 92298224, Student.GENDER.FEMALE, "Singaporean", "qingru", "password");
-        UserManager.getInstance().addStudent("qinghui", "qlai002@e.ntu.edu.sg", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
-        UserManager.getInstance().addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
-        UserManager.getInstance().addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
-        CourseManager.getInstance().addCourse("CE2003", "DSD", "SCE");
-        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10042, 1);
-        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10043, 1);
+        userManager.addStudent("qingru", "c160144@e.ntu", "U222222B", 92298224, Student.GENDER.FEMALE, "Singaporean", "qingru", "password");
+        userManager.addStudent("qinghui", "qlai002@e.ntu.edu.sg", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
+        userManager.addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
+        userManager.addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
+        courseManager.addCourse("CE2003", "DSD", "SCE");
+        courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10042, 1);
+        courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10043, 1);
     }
 }

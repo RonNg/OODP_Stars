@@ -15,11 +15,12 @@ public class UI
 
     private static Scanner s = new Scanner(System.in);
     private static Console c = System.console();
+    private static STARS stars = STARS.getInstance();
     private static User.USER_TYPE loggedOnUserType = null;
 
     public static void main(String[] args)
     {
-        //STARS.getInstance().populateDatabase();
+        //stars.populateDatabase();
         while (true)
         {//Main UI loop
 
@@ -61,19 +62,19 @@ public class UI
 
             if (passWord.equals("debug"))
             {
-                STARS.getInstance().populateDatabase();
+                stars.populateDatabase();
                 System.out.println("Database populated with following: \n");
-                STARS.getInstance().printAllList();
+                stars.printAllList();
                 continue;
             }
             else if (passWord.equals("waitlist"))
             {
-                STARS.getInstance().populateTestWaitlist();
+                stars.populateTestWaitlist();
                 System.out.println("Test waitlist populated: \n");
-                STARS.getInstance().printAllList();
+                stars.printAllList();
                 continue;
             }
-            userType = STARS.getInstance().loginToStars(userName, passWord);
+            userType = stars.loginToStars(userName, passWord);
         }
 
         return userType;
@@ -88,12 +89,12 @@ public class UI
         int choice;
         printTitle("STARS");
 
-        if (!STARS.getInstance().checkAccessPeriod())
+        if (!stars.checkAccessPeriod())
         {
 
             System.out.println("\nSTARS can only be access within this period: ");
             System.out.println("--------------------------------------------");
-            System.out.println(STARS.getInstance().getAccessPeriod() + "\n");
+            System.out.println(stars.getAccessPeriod() + "\n");
             System.out.println("Logging you out now...\n");
             return;
         }
@@ -127,7 +128,9 @@ public class UI
                     break;
 
                 case 3://Check/Print Courses Registered
+
                     student_printCourseRegistered();
+
                     break;
 
                 case 4://Check Vacancies Available
@@ -143,11 +146,11 @@ public class UI
                     break;
 
                 case 7://Save changes and return to login menu
-                    STARS.getInstance().saveData();
+                    stars.saveData();
                     return;
 
                 case 8://Save changes and quit program
-                    STARS.getInstance().saveData();
+                    stars.saveData();
                     loggedOnUserType = null;
                     return;
 
@@ -167,7 +170,7 @@ public class UI
         {
             System.out.println("Course available to enroll: \n" +
                     "--------------------------");
-            STARS.getInstance().printCourseList();
+            stars.printCourseList();
 
             System.out.print("\n\nPlease input the course ID of the course you wished to enroll in or type 'quit' to go back to main menu: ");
             String courseId = getString();
@@ -177,7 +180,7 @@ public class UI
             {
                 break;
             }
-            else if (STARS.getInstance().doesCourseExist(courseId) == false)
+            else if (stars.doesCourseExist(courseId) == false)
             {
                 System.out.println("\n\nThe course does not exist, please try again.\n\n");
                 continue;
@@ -186,7 +189,7 @@ public class UI
             System.out.println("\n\nPlease enter the index to enroll in according to course selected (or enter -1 to quit): \n" +
                     "---------------------------------------------------------");
 
-            String indexInCourse = STARS.getInstance().getIndexListOfCourse(courseId);
+            String indexInCourse = stars.getIndexListOfCourse(courseId);
             System.out.println(indexInCourse);
             String indexToEnrollInput;
             int indexToEnroll = 0;
@@ -197,7 +200,7 @@ public class UI
             }
 
             //Checks if index exists else restart
-            if (STARS.getInstance().doesIndexExist(indexToEnroll) == false)
+            if (stars.doesIndexExist(indexToEnroll) == false)
             {
                 System.out.println("\n\nThe index does not exist, please try again.\n\n");
                 continue;
@@ -205,7 +208,7 @@ public class UI
 
 
             //Enrols student into index
-            int result = STARS.getInstance().student_EnrolIndex(indexToEnroll);
+            int result = stars.student_EnrolIndex(indexToEnroll);
             int[] studentPosInWaitList;
             switch (result)
             {
@@ -216,7 +219,7 @@ public class UI
                     System.out.println("\n\n\nYou have successfully enrolled into the Index " + indexToEnroll);
                     break;
                 case -1: //Added into waitlist
-                    studentPosInWaitList = STARS.getInstance().student_getPositionInWaitlist(indexToEnroll); //Gets the student's position in the waitlist
+                    studentPosInWaitList = stars.student_getPositionInWaitlist(indexToEnroll); //Gets the student's position in the waitlist
                     System.out.println("\n\n\nYou have been placed into the wait list of " + indexToEnroll);
                     System.out.println("You are currently position " + studentPosInWaitList[0] + " out of " + studentPosInWaitList[1] + " in the waitlist");
                     break;
@@ -232,7 +235,7 @@ public class UI
                 //Already in the waitlist of the index
                 case 3:
                     System.out.println("\n\n\nYou are already in the waitlist of Index " + indexToEnroll + "\n");
-                    studentPosInWaitList = STARS.getInstance().student_getPositionInWaitlist(indexToEnroll); //Gets the student's position in the waitlist
+                    studentPosInWaitList = stars.student_getPositionInWaitlist(indexToEnroll); //Gets the student's position in the waitlist
                     System.out.println("You are currently position " + studentPosInWaitList[0] + "out of " + studentPosInWaitList[1] + "in the waitlist");
                     break;
             }
@@ -249,7 +252,7 @@ public class UI
         {
             System.out.println("List of Index(s) registered: \n" +
                                 "--------------------------");
-            String toPrint = STARS.getInstance().getStudentRegisteredIndex("");
+            String toPrint = stars.getStudentRegisteredIndex("");
             System.out.println(toPrint);
 
             //s.nextLine();
@@ -261,13 +264,13 @@ public class UI
             {
                 break;
             }
-            else if (STARS.getInstance().doesIndexExist(Integer.parseInt(indexNoToDrop)) == false)
+            else if (stars.doesIndexExist(Integer.parseInt(indexNoToDrop)) == false)
             {
                 System.out.println("\n\nIncorrect index entered. Please try again.\n\n");
                 continue;
             }
             //STARS will handle removing index from student and removing student from index
-            int result = STARS.getInstance().student_DropIndex(Integer.parseInt(indexNoToDrop));
+            int result = stars.student_DropIndex(Integer.parseInt(indexNoToDrop));
 
             if(result == 1)
             {
@@ -285,7 +288,7 @@ public class UI
     public static void student_printCourseRegistered()
     {
         printTitle("Course Registered");
-        String toPrint = STARS.getInstance().getStudentTimeTable("");
+        String toPrint = stars.getStudentTimeTable("");
         System.out.println(toPrint);
     }
 
@@ -304,6 +307,7 @@ public class UI
     {
 
         int choice;
+
 
         while (true)
         {//Loop to show the menu until 9 is choosen
@@ -328,10 +332,83 @@ public class UI
             {
 
                 case 1://Edit student access period
+<<<<<<< HEAD
                     admin_EditStudentAccessPeriod();
+=======
+                    System.out.println("\n =============================================== " +
+                                       "\n            Changing Access Period            " +
+                                       "\n =============================================== ");
+                    System.out.println("\nCurrent Access period: ");
+                    System.out.println("------------------------");
+                    System.out.println(stars.getAccessPeriod() + "\n");
+
+                    String startDate;
+                    String endDate;
+
+                    while(true){
+                        System.out.print("Please input new start date(dd/mm/yyyy): ");
+
+
+                        startDate = getString();
+                        if(stars.checkDateFormat(startDate))
+
+                            break;
+                        else System.out.println("Please enter in the format as shown! e.g. 01/04/2017");
+                    }
+
+                    while(true){
+                        System.out.print("Please input new end date(dd/mm/yyyy): ");
+
+
+                        endDate = getString();
+                        if(stars.checkDateFormat(endDate))
+                            break;
+                        else System.out.println("Please enter in the format as shown! e.g. 30/04/2017");
+                    }
+
+
+
+                    System.out.println("Updated access period: ");
+                    System.out.println("--------------------------");
+                    System.out.println(stars.setAccessPeriod(startDate, endDate));
+
+>>>>>>> 7495002f6246c87411f001fdcd41a9c02dcc2e52
                     break;
                 case 2://Add a Student
+<<<<<<< HEAD
                     admin_AddStudent();
+=======
+
+                    System.out.println("Please enter name of student:");
+                    String name = getString();
+                    System.out.println("Please enter email of student:");
+                    String email = getString();
+                    System.out.println("Please enter Matric no. of student: ");
+                    String matricNo = getString();
+                    System.out.println("Please enter conatct No. of student");
+                    int contact = getInt();
+                    System.out.println("Please enter gender of student(m for male, f for female): ");
+                    String genderStr = getString();
+                    System.out.println("Please enter nationality of student: ");
+                    String nationality = getString();
+                    System.out.println("Please enter username of student: ");
+                    String username = getString();
+                    System.out.println("Please enter password of student: ");
+                    String password = getString();
+                    /*Code to hide password. Only works in console not in IDE
+                      char[] passString = c.readPassword();
+                      String password = new String(passString );
+                    */
+                    if (genderStr.equals("m"))
+                        stars.admin_addStudent(name, email, matricNo,
+                                contact, Student.GENDER.MALE, nationality, username, password);
+                    else
+                        stars.admin_addStudent(name, email, matricNo,
+                                contact, Student.GENDER.FEMALE, nationality, username, password);
+
+                    //stars.admin_addStudent("dude", "dude@e.ntu.edu.sg", "U1625639G",
+                    //98245937, Student.GENDER.MALE, "SG", "dude123", "dude123");
+>>>>>>> 7495002f6246c87411f001fdcd41a9c02dcc2e52
                     break;
                 case 3://Add a Course and proceed to add index after if user chooses so
                     admin_AddCourse(); //Goes to the UI menu for adding course.
@@ -343,11 +420,11 @@ public class UI
                                        "\n =============================================== ");
 
 
-                    STARS.getInstance().printCourseList(); //prints out all course for selection
+                    stars.printCourseList(); //prints out all course for selection
                     System.out.println("\nEnter the Course ID for the course which you would you like to update: ");
                     String courseId = getString();
 
-                    if (STARS.getInstance().doesCourseExist(courseId) == false);
+                    if (stars.doesCourseExist(courseId) == false);
                     {
 
                         System.out.println("What would you like to edit for " + courseId + "?");
@@ -400,7 +477,7 @@ public class UI
                     int ino = getInt();
                     System.out.println("Student registered in index " + ino + ":");
                     System.out.println("-----------------------------------------");
-                    System.out.println(STARS.getInstance().getStudentsInIndex(ino));
+                    System.out.println(stars.getStudentsInIndex(ino));
                     break;
 
                 case 7://Print student list by course (all students registered for the selected course)
@@ -411,20 +488,21 @@ public class UI
                     String cId = getString();
                     System.out.println("Student registered in course " + cId + ":");
                     System.out.println("-----------------------------------------");
-                    System.out.println(STARS.getInstance().getStudentsInCourse(cId));
+                    String outputStr = stars.getStudentsInCourse(cId);
+                    System.out.println(outputStr);
                     break;
 
                 case 8://Save changes and return to login menu
-                    STARS.getInstance().saveData();
+                    stars.saveData();
                     return;
 
                 case 9://Save changes and quit program
-                    STARS.getInstance().saveData();
+                    stars.saveData();
                     loggedOnUserType = null;
                     return;
 
                 case 10://Use for debugging purposes
-                    STARS.getInstance().printAllList();
+                    stars.printAllList();
                     break;
                 default:
                     System.out.println("Invalid selection!");
@@ -445,8 +523,10 @@ public class UI
         String courseId;
         while(true) {
             System.out.println("Please enter Course ID");
+
             courseId = getString();
-            if(!STARS.getInstance().doesCourseExist(courseId))
+            if(!stars.doesCourseExist(courseId))
+
                 break;
             else System.out.println("Course ID already taken! Please input again");
         }
@@ -458,10 +538,14 @@ public class UI
         String faculty = getString();
 
         //Adds the course and returns the course object so that we can use it to add the lecture time
+<<<<<<< HEAD
         if(!STARS.getInstance().admin_AddCourse(courseId, courseName, faculty)){
             System.out.println("Something went wrong. Course not added.Exiting.. ");
             return;
         }
+=======
+        stars.admin_AddCourse(courseId, courseName, faculty);
+>>>>>>> 7495002f6246c87411f001fdcd41a9c02dcc2e52
 
         System.out.println("");
         System.out.println("Please enter the number of lectures per week for Course " + courseId);
@@ -530,6 +614,10 @@ public class UI
         }
 
 
+<<<<<<< HEAD
+=======
+            boolean success = stars.admin_AddLecTimeSlot(courseId, timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT);
+>>>>>>> 7495002f6246c87411f001fdcd41a9c02dcc2e52
 
         System.out.println("Updated access period: ");
         System.out.println("--------------------------");
@@ -572,7 +660,7 @@ public class UI
 
     public static void admin_DeleteCourse(String courseId)
     {
-        String toBePrint = STARS.getInstance().deleteCourseViaCourseId(courseId);
+        String toBePrint = stars.deleteCourseViaCourseId(courseId);
         if(!toBePrint.equals("Error! Course not found!") && !toBePrint.equals("Error in deletion of course!")) {
             System.out.println("\nCourse " + courseId + " deletion is successful!");
             System.out.println("Students that are de-enrolled from course due to course deletion:");
@@ -587,7 +675,7 @@ public class UI
 
     public static void admin_CheckVacancy(int indexNo){
 
-        System.out.println(STARS.getInstance().checkIndexVacancy(indexNo));
+        System.out.println(stars.checkIndexVacancy(indexNo));
 
     }
 
@@ -609,7 +697,7 @@ public class UI
             System.out.println("Please enter the maximum number of students per class: " );
             int maxStudent = getInt();
 
-            if(STARS.getInstance().admin_AddIndex(courseId, indexNoToAdd, maxStudent) == false ) //Failed to add
+            if(stars.admin_AddIndex(courseId, indexNoToAdd, maxStudent) == false ) //Failed to add
             {
                 System.out.println("The index already exists, please try again");
                 -- i;  //Start the loop again while preserving the current iteration. since continue makes the loop go to the next iteration, --i cancels out ++i
@@ -637,7 +725,11 @@ public class UI
             System.out.println("Enter the LAB END time in 24hrs format(HHMM): " );
             endTime = getTime();
 
+<<<<<<< HEAD
             STARS.getInstance().admin_AddIndexLabTimeSlot(indexNoToAdd, timeSlotDay, startTime/100, startTime%100, endTime/100, endTime%100, labLocation );
+=======
+            stars.admin_AddIndexLabTimeSlot(indexNoToAdd, timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, labLocation );
+>>>>>>> 7495002f6246c87411f001fdcd41a9c02dcc2e52
 
             /*===================================
                           ADD TUT
@@ -656,7 +748,11 @@ public class UI
             System.out.println("Enter the TUT END time in 24hrs format(HHMM): " );
             endTime = getTime();
 
+<<<<<<< HEAD
             STARS.getInstance().admin_AddIndexTutTimeSlot(indexNoToAdd, timeSlotDay, startTime/100, startTime%100, endTime/100, endTime%100, tutLocation );
+=======
+            stars.admin_AddIndexTutTimeSlot(indexNoToAdd, timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, tutLocation);
+>>>>>>> 7495002f6246c87411f001fdcd41a9c02dcc2e52
 
         }//end of index list add
     }
@@ -664,7 +760,7 @@ public class UI
     private static void admin_DeleteIndex(int indexNo) {
 
 
-        String toBePrint = STARS.getInstance().deleteIndexFromCourse(indexNo);
+        String toBePrint = stars.deleteIndexFromCourse(indexNo);
         if(!toBePrint.equals("Error! Index not found!") && !toBePrint.equals("Error occured while deleting index!")) {
             System.out.println("\nCourse " + indexNo + " deletion is successful!");
             System.out.println("Students that are de-enrolled from index due to index deletion:");
