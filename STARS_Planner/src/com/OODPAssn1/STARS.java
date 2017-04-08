@@ -266,8 +266,8 @@ public class STARS
                     int index1TutLabStartTime = Integer.parseInt(index1TutLabList.get(i).getStartTime().substring(0, 2) + index1TutLabList.get(i).getStartTime().substring(3));
                     int index1TutLabEndTime = Integer.parseInt(index1TutLabList.get(i).getEndTime().substring(0, 2) + index1TutLabList.get(i).getEndTime().substring(3));
 
-                    int index2TutLabStartTime = Integer.parseInt(index1TutLabList.get(x).getStartTime().substring(0, 2) + index1TutLabList.get(x).getStartTime().substring(3));
-                    int index2TutLabEndTime = Integer.parseInt(index1TutLabList.get(x).getEndTime().substring(0, 2) + index1TutLabList.get(x).getEndTime().substring(3));
+                    int index2TutLabStartTime = Integer.parseInt(index2TutLabList.get(x).getStartTime().substring(0, 2) + index2TutLabList.get(x).getStartTime().substring(3));
+                    int index2TutLabEndTime = Integer.parseInt(index2TutLabList.get(x).getEndTime().substring(0, 2) + index2TutLabList.get(x).getEndTime().substring(3));
 
                     if (index2TutLabStartTime >= index1TutLabStartTime && index2TutLabStartTime < index1TutLabEndTime)
                     {
@@ -381,6 +381,8 @@ public class STARS
      * Successfully enrolled into index -> 1 <br>
      * Already enrolled in index -> 2 <br>
      * Already in waitlist of the index -> 3
+     * Index Clash -> 4
+     * Already in another index of the same course -> 5
      */
     public int student_EnrolIndex(int indexNo)
     {
@@ -398,7 +400,7 @@ public class STARS
         /*===============================
                   SWITCH INDEX
          ================================*/
-        Course courseOfIndexToJoin = CourseManager.getInstance().getCourseByIndexNo(indexToJoin.getIndexNum());
+        Course courseOfIndexToJoin = courseManager.getCourseByIndexNo(indexToJoin.getIndexNum());
 
         //Code will only execute if joining same course
         //loop through every index to see if you are in a waitlist of one of them
@@ -418,7 +420,7 @@ public class STARS
                     //Remove yourself from the other waitlist
                     courseOfIndexToJoin.getIndexList().get(i).removeStudentFromWaitlist(tempStud.getMatricNo());
                     //enrol to the index to join
-                    int result = CourseManager.getInstance().enrolInIndex(tempStud.getMatricNo(), indexNo);
+                    int result = courseManager.enrolInIndex(tempStud.getMatricNo(), indexNo);
 
                     if (result == 1)// if succesfully enrolled (not waitlist)
                     {
@@ -452,6 +454,13 @@ public class STARS
             }
 
         }
+
+        for(int m = 0; m < currentUserIndexList.size(); m++) {
+            if(courseOfIndexToJoin.equals(courseManager.getCourseByIndexNo(currentUserIndexList.get(m)))){
+                return 5;
+            }
+        }
+
 
         //If it goes beyond this point, it means its not an index switch/index doesn't clash.
         //Enroll into course
@@ -699,7 +708,7 @@ public class STARS
 
     public boolean admin_AddCourse(String courseId, String courseName, String faculty)
     {
-        boolean success = CourseManager.getInstance().addCourse(courseId, courseName, faculty);
+        boolean success = courseManager.addCourse(courseId, courseName, faculty);
         if(success)
             courseManager.save(); //Save after adding
         return success;
@@ -1013,14 +1022,28 @@ public class STARS
     public String getIndexListOfCourse(String courseId)
     {
         String retStr = "";
+        StringBuilder retStrBuild;
+        Formatter formatter;
         List<Index> indexList = courseManager.getIndexList(courseManager.getCourseByCourseId(courseId));
 
         for (int i = 0; i < indexList.size(); ++i)
         {
-            Index currIndex = indexList.get(i);
-            retStr += "Index " + currIndex.getIndexNum() + " -> " + "Vacancies: " + currIndex.getNumberOfVacancy() + "|| Student(s) in waitlist: " + currIndex.getWaitList().size() + "\n";
-        }
+            Index tempIndex = indexList.get(i);
+            List<TimeSlot> tempList  = tempIndex.getTutLabTimeSlotList();
+            for (int n = 0; n < tempList.size(); n++)
+            {
+                TimeSlot tempTimeSlot = tempList.get(n);
+                retStrBuild = new StringBuilder();
+                formatter = new Formatter(retStrBuild, Locale.ENGLISH);
+                if(n==0){
+                    formatter.format("%-8d | %-5s | %-5s | %s-%-7s | %s %n", indexList.get(i).getIndexNum(), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+                }else{
+                    formatter.format("%-8s | %-5s | %-5s | %s-%-7s | %s %n", "", tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+                }
 
+                retStr += retStrBuild.toString();
+            }
+        }
         return retStr;
         //TODO: Print out details of index e.g Time slot info etc...
     }
@@ -1034,8 +1057,9 @@ public class STARS
     public String getStudentTimeTable(String matricNo)//For student
     {
         String retStr = "";
-        StringBuilder retStrBuild = new StringBuilder();
+        StringBuilder retStrBuild;
         Student tempStud = null;
+        Formatter formatter;
 
         if (currentLogOnUser.getType() == User.USER_TYPE.STUDENT)
         {
@@ -1067,22 +1091,33 @@ public class STARS
             Index tempIndex = tempCourse.getIndex(indexList.get(i));
             List<TimeSlot> tempList;
             tempList = tempCourse.getLecTimeSlotList();
-            tempList.addAll(tempIndex.getTutLabTimeSlotList());
-
-            Formatter formatter = new Formatter(retStrBuild, Locale.ENGLISH);
-
             for (int n = 0; n < tempList.size(); n++)
             {
                 TimeSlot tempTimeSlot = tempList.get(n);
+                retStrBuild = new StringBuilder();
+                formatter = new Formatter(retStrBuild, Locale.ENGLISH);
                 if (n <= 0)
                     formatter.format("%-8s | %-8d | %-5s | %-5s | %s-%-7s | %s %n", tempCourse.getCourseId(), indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
                 else
                     formatter.format("%-8s | %-8d | %-5s | %-5s | %s-%-7s | %s %n", "", indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+                retStr += retStrBuild.toString();
             }
-
-            //retStr += "Index: " + indexList.get(i) + " - " + courseManager.getCourseByIndexNo(indexList.get(i)).getCourseName() + "\n";
+            int lecTimeSlotSize = tempList.size();
+            tempList = tempIndex.getTutLabTimeSlotList();
+            for (int n = 0; n < tempList.size(); n++)
+            {
+                TimeSlot tempTimeSlot = tempList.get(n);
+                retStrBuild = new StringBuilder();
+                formatter = new Formatter(retStrBuild, Locale.ENGLISH);
+                if (lecTimeSlotSize==0)
+                    formatter.format("%-8s | %-8d | %-5s | %-5s | %s-%-7s | %s %n", tempCourse.getCourseId(), indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+                else
+                    formatter.format("%-8s | %-8d | %-5s | %-5s | %s-%-7s | %s %n", "", indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+                retStr += retStrBuild.toString();
+                lecTimeSlotSize = 99;
+            }
         }
-        retStr += retStrBuild.toString();
+
         return retStr;
     }
 

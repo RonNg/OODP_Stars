@@ -240,6 +240,12 @@ public class UI
                 case 111:
                     System.out.println("You can't join the same waitlist");
                     break;
+                case 4:
+                    System.out.println("Unable to enroll in Index, timing clashed with your other Indexes");
+                    break;
+                case 5:
+                    System.out.println("You are already in another Index of this course");
+                    break;
 
             }
             addFinish = true;
