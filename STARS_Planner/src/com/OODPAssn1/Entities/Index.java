@@ -109,14 +109,20 @@ public class Index implements Serializable
         return 0; //error occured
     }
 
-    public boolean withdrawStudent (String matricNo)
+    /**
+     *
+     * @param matricNo
+     * @param bypassWaitlist pass in FALSE if we want to handle the waitlist.
+     * @return
+     */
+    public boolean withdrawStudent (String matricNo, boolean bypassWaitlist)
     {
         boolean success = studentsEnrolledList.remove(matricNo);
 
         if(success)
         {
             -- numberOfStudent;
-            if(getNumberOfVacancy() == 1) //if when withdrawing from this index, the number of vacancies is exactly 1, it means it was previously full. Handle waitlist
+            if(getNumberOfVacancy() == 1 && !bypassWaitlist) //if when withdrawing from this index, the number of vacancies is exactly 1, it means it was previously full. Handle waitlist
             {
                 //TODO: Handle waitlist here
                 //Flag for handling waitlist. For Coursemanager use
@@ -125,6 +131,7 @@ public class Index implements Serializable
         }
         return success;
     }
+
 
     public boolean removeStudentFromWaitlist ( String matricNo )
     {
