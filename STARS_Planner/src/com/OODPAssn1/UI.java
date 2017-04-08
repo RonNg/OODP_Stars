@@ -547,19 +547,25 @@ public class UI
         String endDate;
 
         while(true){
-            System.out.print("Please input new start date(dd/mm/yyyy): ");
+            System.out.print("Please input new start date(dd/mm/yyyy) or enter \"quit\" to quit: ");
             startDate = getString();
-            if(stars.checkDateFormat(startDate))
+            if(startDate.equals("quit"))
+                return;
+            if(stars.checkDateFormat(startDate) && stars.checkStartDateCompatibility(startDate))
                 break;
-            else System.out.println("Please enter in the format as shown! e.g. 01/04/2017");
+            else System.out.println("Please enter in the format as shown! e.g. 01/04/2017 " +
+                                    "and make sure start date entered is after today!");
         }
 
         while(true){
-            System.out.print("Please input new end date(dd/mm/yyyy): ");
+            System.out.print("Please input new end date(dd/mm/yyyy) or enter \"quit\" to quit: : ");
             endDate = getString();
-            if(stars.checkDateFormat(endDate))
+            if(endDate.equals("quit"))
+                return;
+            if(stars.checkDateFormat(endDate) && stars.checkEndDateCompatibility(startDate, endDate))
                 break;
-            else System.out.println("Please enter in the format as shown! e.g. 30/04/2017");
+            else System.out.println("Please enter in the format as shown! e.g. 30/04/2017 " +
+                                    "and make sure end date is after start date!");
         }
         
 

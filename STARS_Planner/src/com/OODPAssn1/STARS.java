@@ -112,15 +112,54 @@ public class STARS
 
     public boolean checkDateFormat(String date)
     {
+
         try
         {
             Date dateObj = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+            if(Integer.parseInt(date.substring(0,2)) > 31 || Integer.parseInt(date.substring(3,5)) > 12)
+                return false;
+
+
 
         } catch (ParseException e)
         {
             return false;
         }
         return true;
+    }
+
+    public boolean checkStartDateCompatibility(String start){
+
+        Date startDate;
+        Date currentDate = new Date();
+
+        try
+        {
+            startDate = new SimpleDateFormat("dd/MM/yyyy").parse(start);
+
+
+
+        } catch (ParseException e)
+        {
+            return false;
+        }
+        return startDate.after(currentDate);
+    }
+
+    public boolean checkEndDateCompatibility(String start, String end){
+
+        Date startDate;
+        Date endDate;
+        try
+        {
+            startDate = new SimpleDateFormat("dd/MM/yyyy").parse(start);
+            endDate = new SimpleDateFormat("dd/MM/yyyy").parse(end);
+
+        } catch (ParseException e)
+        {
+            return false;
+        }
+        return endDate.after(startDate);
     }
 
 //----------------------------Method to set access period---------------------------------------------------------------
