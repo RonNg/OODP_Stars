@@ -410,18 +410,9 @@ public class UI
     {
         printTitle("Add Course");
         String courseId;
-        while(true) {
-            System.out.println("Please enter Course ID");
-
-            courseId = getString();
-            if(!stars.doesCourseExist(courseId))
-
-                break;
-            else System.out.println("Course ID already taken! Please input again");
-        }
+        System.out.println("Please enter Course ID");
+        courseId = getCourseId();
         System.out.println("Please enter Course Name");
-
-        //s.nextLine();
         String courseName = getString();
         System.out.println("Please enter Faculty");
         String faculty = getString();
@@ -628,6 +619,7 @@ public class UI
      */
     public static void admin_AddIndex(String courseId)
     {
+
         System.out.println("How many index(s) do you want to add for " + courseId + "?");
         int numberOfIndexToAdd = getInt();
 
@@ -636,6 +628,10 @@ public class UI
         {
             System.out.println("Please enter the index number to add: " );
             int indexNoToAdd = getInt();
+            while(stars.doesIndexExist(indexNoToAdd)){
+                System.out.println("Index " + "already in system! Please input again!");
+                indexNoToAdd = getInt();
+            }
 
             System.out.println("Please enter the maximum number of students per class: " );
             int maxStudent = getInt();
@@ -785,6 +781,43 @@ public class UI
             }
         }
         return output;
+    }
+
+    public static String getCourseId(){
+
+        String courseId;
+        boolean format = false;
+
+        while(true) {
+            courseId = getString();
+            if(courseId.length() == 6 && Character.isLetter(courseId.charAt(0)) &&  Character.isLetter(courseId.charAt(1))){
+
+                for(int i = 2; i < 6; i++){
+                    if(!Character.isDigit(courseId.charAt(i))){
+                        //System.out.println("Invalid format entered!");
+                        format = false;
+                        break;
+                    } else format = true;
+                }
+
+                if(format)
+                    if(!stars.doesCourseExist(courseId))
+                         break;
+                    else{
+
+                        System.out.println(courseId + " already exist in STARS!");
+                    }
+
+            }
+            if(!format)
+                System.out.println("Invalid format entered. Length of course code should be 6." +
+                                   " First two digit is alphanumeric follow by four digits.");
+            System.out.println("Please input again!");
+        }
+
+        System.out.println("Format is fine!");
+
+        return courseId;
     }
 
     public static TimeSlot.DAY getDay(){
