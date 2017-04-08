@@ -96,7 +96,7 @@ public class Course implements Serializable
 
     public boolean addLecTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
     {
-        return lecTimeSlotList.add(new TimeSlot(day, startH, startM, endH, endM, location, "LECT"));
+        return lecTimeSlotList.add(new TimeSlot(day, startH, startM, endH, endM, location, "LEC"));
     }
 
     public boolean deleteLectTimeSlot(TimeSlot dTimeSlot)

@@ -126,13 +126,11 @@ public class UI
                     break;
 
                 case 3://Check/Print Courses Registered
-
                     student_printCourseRegistered();
-
                     break;
 
                 case 4://Check Vacancies Available
-                   student_checkVacancies();
+                    student_checkVacancies();
                     break;
 
                 case 5://Change Index Number of Course
@@ -140,7 +138,7 @@ public class UI
                     break;
 
                 case 6://Swap Index Number with Another Student
-
+                    student_SwapIndex();
                     break;
 
                 case 7://Save changes and return to login menu
@@ -159,6 +157,7 @@ public class UI
 
         }//end of while
     }
+
 
     public static void student_AddCourse()
     {
@@ -302,6 +301,76 @@ public class UI
         System.out.print("Please enter index no. that you wish to check: ");
         int indexNo = getInt();
         admin_CheckVacancy(indexNo);
+    }
+
+    public static void student_SwapIndex ()
+    {
+        boolean swapFinish = false;
+        printTitle("Swap Index");
+        while (!swapFinish)
+        {
+            System.out.println("Please enter the index number that you want to swap ('-1' to exit): ");
+            int currentUserIndex = getInt();
+            if(currentUserIndex == -1)
+                return;
+            if (stars.checkIfIndexExists(currentUserIndex) == false)
+            {
+                System.out.println("Invalid index number entered. Please try again.");
+                continue;
+            }
+
+            switch (stars.checkIfEnrolled(currentUserIndex, ""))
+            {
+                case 1: //Student is enrolled
+                    System.out.println("Please enter your peer's username: ");
+                    String peerUsername = getString();
+
+                    System.out.println("Please enter your peer's password: ");
+                    String peerPassword = getString();
+
+                    String peerMatricNo = stars.validateStudentLogin(peerUsername, peerPassword);
+
+                    if (peerMatricNo != null)
+                    {
+                        System.out.println("Please enter the index to swap: ");
+                        int peerIndex = getInt();
+
+                        if (stars.checkIfEnrolled(peerIndex, peerMatricNo) == 1)
+                        {
+                            if (stars.areIndexSameCourse(currentUserIndex, peerIndex))
+                            {
+                                //Do swap here
+                                if (stars.student_SwapIndex(currentUserIndex, peerMatricNo, peerIndex) == 1)
+                                {
+                                    System.out.println("Index successfully swapped with your peer!");
+                                    swapFinish = true;
+                                }
+                                else
+                                {
+                                    System.out.println("Error in swapping");
+                                    swapFinish = true;
+                                    break;
+                                }
+                            }
+                        }
+                        else //Peer is not enrolled in index
+                        {
+                            System.out.println("Peer is not enrolled in this index. Please try again.");
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("Invalid username/password. Please try again.");
+                        continue;
+                    }
+                    break;
+                case 0:
+                    System.out.println("Invalid index entered. Please try again.");
+                    break;
+            }
+        }
+
     }
 
 

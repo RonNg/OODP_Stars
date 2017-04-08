@@ -701,7 +701,7 @@ public class STARS
     {
         boolean success = CourseManager.getInstance().addCourse(courseId, courseName, faculty);
         if(success)
-            CourseManager.getInstance().save(); //Save after adding
+            courseManager.save(); //Save after adding
         return success;
     }
 
@@ -1065,7 +1065,9 @@ public class STARS
             //Get Course by Index No will never return null as the indexList exists in some course
             Course tempCourse = courseManager.getCourseByIndexNo(indexList.get(i));
             Index tempIndex = tempCourse.getIndex(indexList.get(i));
-            List<TimeSlot> tempList = tempIndex.getTutLabTimeSlotList();
+            List<TimeSlot> tempList;
+            tempList = tempCourse.getLecTimeSlotList();
+            tempList.addAll(tempIndex.getTutLabTimeSlotList());
 
             Formatter formatter = new Formatter(retStrBuild, Locale.ENGLISH);
 

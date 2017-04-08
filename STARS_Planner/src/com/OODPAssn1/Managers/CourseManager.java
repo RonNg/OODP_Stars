@@ -16,12 +16,7 @@ public class CourseManager extends DataManager
     private static CourseManager cMInstance;
 
     public static final String COURSE_PATH = "course.dat";
-    //public static final String INDEX_PATH = "index.dat";
     private List<Course> courseList = null;
-
-
-    private boolean isInitAlready = false;
-
 
     private CourseManager()
     {
@@ -59,18 +54,29 @@ public class CourseManager extends DataManager
     {
         //Note that writing of new data into DB is not done here!
         if(this.getCourseByCourseId(courseId) == null)
-            return courseList.add(new Course(courseId, courseName, faculty));
-        else return false;
+            if(courseList.add(new Course(courseId, courseName, faculty))){
+                save();
+                return true;
+            }
+        return false;
     }
 
     public boolean deleteCourse(Course dCourse)
     {
-        return courseList.remove(dCourse);
+        if(courseList.remove(dCourse)) {
+            save();
+            return true;
+        }
+        return false;
     }
 
     public boolean addLecTimeSlot(Course course, TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
     {
-        return courseList.get(courseList.indexOf(course)).addLecTimeSlot(day, startH, startM, endH, endM, location);
+        if(courseList.get(courseList.indexOf(course)).addLecTimeSlot(day, startH, startM, endH, endM, location)){
+            save();
+            return true;
+        }
+        return false;
     }
 
     public boolean deleteLecTimeSlot(Course course, TimeSlot timeSlot)
@@ -147,13 +153,20 @@ public class CourseManager extends DataManager
     public boolean createIndex(Course course, int indexNum, int maxNumOfStudetns)
     {
         Course tempCourse = courseList.get(courseList.indexOf(course));
-        return tempCourse.addIndex(indexNum, maxNumOfStudetns);
-        //return courseList.get(courseList.indexOf(course)).addIndex(indexNum, maxNumOfStudetns);
+        if(tempCourse.addIndex(indexNum, maxNumOfStudetns)) {
+            save();
+            return true;
+        }
+        return false;
     }
 
     public boolean deleteIndex(Course course, Index index)
     {
-        return courseList.get(courseList.indexOf(course)).deleteIndex(index);
+        if(courseList.get(courseList.indexOf(course)).deleteIndex(index)){
+            save();
+            return true;
+        }
+        return false;
     }
 
 
@@ -186,11 +199,13 @@ public class CourseManager extends DataManager
         }
         else if (tempIndex.checkIfStudentInWaitList(matricNo)) //Check if student is in waitlist
         {
+
             return 3;
              //TODO: Check if student is already in waitlist
         }
-
-        return tempIndex.enrolStudent(matricNo); //enrols the student into the index by Matric No
+        int holdRes = tempIndex.enrolStudent(matricNo);
+        save();
+        return holdRes ; //enrols the student into the index by Matric No
 
     }
 
@@ -273,14 +288,9 @@ public class CourseManager extends DataManager
             return retStrArr;
         }
         retStrArr[0] = "ERROR"; //Returns success if no need to handle waitlist
+        save();
         return retStrArr;
     }
-
-    // public String withdrawFromIndex(String matricNo, Course course, Index index)
-    // { // "SUCCESS" - Success "ERROR" - something wrong OTHERS - matric number of student to send email to
-    //     Course toChange = courseList.get(courseList.indexOf(course));
-    //     return toChange.getIndexList().get(toChange.getIndexList().indexOf(index)).withdrawStudent(matricNo);
-    // }
 
 //----------------------------------Method for debugging purposes. Remove for production--------------------------------
 
