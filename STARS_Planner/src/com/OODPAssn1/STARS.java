@@ -205,8 +205,8 @@ public class STARS
     public String checkIfIndexClash(Index index1, Index index2)
     {
         //Check Lecture clash
-        Course course1 = CourseManager.getInstance().getCourseByIndexNo(index1.getIndexNum());
-        Course course2 = CourseManager.getInstance().getCourseByIndexNo(index2.getIndexNum());
+        Course course1 = courseManager.getCourseByIndexNo(index1.getIndexNum());
+        Course course2 = courseManager.getCourseByIndexNo(index2.getIndexNum());
 
         List<TimeSlot> course1LectList = course1.getLecTimeSlotList();
         List<TimeSlot> course2LectList = course2.getLecTimeSlotList();
@@ -328,10 +328,10 @@ public class STARS
 
         //This code chunk checks for Index Clash
         List<Integer> currentUserIndexList = tempStud.getCourseIndexList();
-        Index indexToJoin = CourseManager.getInstance().getIndexByIndexNo(indexNo);
+        Index indexToJoin = courseManager.getIndexByIndexNo(indexNo);
         for (int i = 0; i < currentUserIndexList.size(); ++i)
         {
-            Index currUserIndex = CourseManager.getInstance().getIndexByIndexNo(currentUserIndexList.get(i));
+            Index currUserIndex = courseManager.getIndexByIndexNo(currentUserIndexList.get(i));
 
 
             String result = checkIfIndexClash(currUserIndex, indexToJoin);
@@ -712,12 +712,12 @@ public class STARS
 //-------------------------------Method for enrolling of Student into STARS---------------------------------------------
 //This method will make use of UserManager to create student and write it into database.
 
-    public void admin_addStudent(String name, String email, String matricNo,
+    public boolean admin_addStudent(String name, String email, String matricNo,
                                  int contact, Student.GENDER gender, String nationality,
                                  String username, String password)
     {
 
-        userManager.addStudent(name, email, matricNo, contact, gender,
+        return userManager.addStudent(name, email, matricNo, contact, gender,
                 nationality, username, password);
 
     }
@@ -891,7 +891,7 @@ public class STARS
         for (int i = 0; i < indexList.size(); ++i)
         {
             //Get Course by Index No will never return null as the indexList exists in some course
-            Course tempCourse = CourseManager.getInstance().getCourseByIndexNo(indexList.get(i));
+            Course tempCourse = courseManager.getCourseByIndexNo(indexList.get(i));
             Index tempIndex = tempCourse.getIndex(indexList.get(i));
             List<TimeSlot> tempList = tempIndex.getTutLabTimeSlotList();
 
@@ -906,7 +906,7 @@ public class STARS
                     formatter.format("%-10s | %-8d | %-5s | %-5s | %s-%-7s | %s %n", "", indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
             }
 
-            //retStr += "Index: " + indexList.get(i) + " - " + CourseManager.getInstance().getCourseByIndexNo(indexList.get(i)).getCourseName() + "\n";
+            //retStr += "Index: " + indexList.get(i) + " - " + courseManager.getCourseByIndexNo(indexList.get(i)).getCourseName() + "\n";
         }
         retStr += retStrBuild.toString();
         return retStr;
@@ -992,42 +992,45 @@ public class STARS
     {
         userManager.addStudent("qinghui", "qlai002@e.ntu.edu.sg", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
         userManager.addStudent("ron", "c160144@e.ntu.edu.sg", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
-        userManager.addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
+        //userManager.addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
 
 
-        courseManager.addCourse("CE2003", "DSD", "SCE");
-        courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10042, 1);
-        courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10043, 1);
+        //courseManager.addCourse("CE2003", "DSD", "SCE");
+        //courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10042, 1);
+        //courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10043, 1);
 
 
         /*=============================
                 Create DSD course
          =============================*/
-        courseManager.addCourse("CE2003", "Digital System Design", "SCE");
-        courseManager.createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10042, 1);
-        courseManager.createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10043, 1);
+        if(courseManager.addCourse("CE2003", "Digital System Design", "SCE")){
+
+        courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10042, 1);
+        courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10043, 1);
 
 
-        courseManager.addLecTimeSlot(CourseManager.getInstance().getCourseByIndexNo(10042), TimeSlot.DAY.MON, 14, 00, 15, 00, "LT4");
+        courseManager.addLecTimeSlot(courseManager.getCourseByIndexNo(10042), TimeSlot.DAY.MON, 14, 00, 15, 00, "LT4");
         courseManager.getCourseByIndexNo(10042).getIndex(10042).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR45");
         courseManager.getCourseByIndexNo(10042).getIndex(10042).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 2");
 
         courseManager.getCourseByIndexNo(10043).getIndex(10043).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR30");
         courseManager.getCourseByIndexNo(10043).getIndex(10043).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 1");
+    }   else System.out.println("Course already exist");
+
 
         /*=============================
                 Create OODP course
          =============================*/
-        courseManager.addCourse("CE2002", "Object Oriented Design & Programming", "SCE");
-        courseManager.createIndex(CourseManager.getInstance().getCourseByCourseId("CE2002"), 10052, 1);
-        courseManager.createIndex(CourseManager.getInstance().getCourseByCourseId("CE2002"), 10053, 1);
+        if(courseManager.addCourse("CE2002", "Object Oriented Design & Programming", "SCE")){
+            courseManager.createIndex(courseManager.getCourseByCourseId("CE2002"), 10052, 1);
+            courseManager.createIndex(courseManager.getCourseByCourseId("CE2002"), 10053, 1);
+            courseManager.addLecTimeSlot(courseManager.getCourseByIndexNo(10052), TimeSlot.DAY.MON, 11, 00, 12, 00, "LT4");
+            courseManager.getCourseByIndexNo(10052).getIndex(10052).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR45");
+            courseManager.getCourseByIndexNo(10052).getIndex(10052).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 2");
+            courseManager.getCourseByIndexNo(10053).getIndex(10053).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR30");
+            courseManager.getCourseByIndexNo(10053).getIndex(10053).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 1");
 
-        courseManager.addLecTimeSlot(CourseManager.getInstance().getCourseByIndexNo(10052), TimeSlot.DAY.MON, 11, 00, 12, 00, "LT4");
-        courseManager.getCourseByIndexNo(10052).getIndex(10052).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR45");
-        courseManager.getCourseByIndexNo(10052).getIndex(10052).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 2");
-
-        courseManager.getCourseByIndexNo(10053).getIndex(10053).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR30");
-        courseManager.getCourseByIndexNo(10053).getIndex(10053).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 1");
+        } else System.out.println("Course already exist");
 
 
         //Adds bob into CourseManager and UserManager
@@ -1042,10 +1045,10 @@ public class STARS
 
     public void populateDatabase()
     {
-        userManager.addStudent("qingru", "c160144@e.ntu", "U222222B", 92298224, Student.GENDER.FEMALE, "Singaporean", "qingru", "password");
-        userManager.addStudent("qinghui", "qlai002@e.ntu.edu.sg", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
-        userManager.addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
-        userManager.addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
+        //userManager.addStudent("qingru", "c160144@e.ntu", "U222222B", 92298224, Student.GENDER.FEMALE, "Singaporean", "qingru", "password");
+        //userManager.addStudent("qinghui", "qlai002@e.ntu.edu.sg", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
+        //userManager.addStudent("ron", "c160144@e.ntu", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
+        //userManager.addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
         courseManager.addCourse("CE2003", "DSD", "SCE");
         courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10042, 1);
         courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10043, 1);

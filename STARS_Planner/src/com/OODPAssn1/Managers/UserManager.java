@@ -157,10 +157,15 @@ public class UserManager extends DataManager
 //Note that writing of new data into DB is not done here!
 
 
-    public void addStudent(String name, String email, String matricNo,
+    public boolean addStudent(String name, String email, String matricNo,
                            int contact, Student.GENDER gender, String nationality,
                            String username, String password)
     {
+
+        if(this.getStudentByMatricNo(matricNo) != null){
+            return false;
+        }
+
         try
         {
             String hashedPass = MD5Hasher.hash(password);
@@ -172,6 +177,7 @@ public class UserManager extends DataManager
             System.out.println("addStudent() Exception caught: " + e.getMessage());
         }
 
+        return true;
     }
 
 
