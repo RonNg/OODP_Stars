@@ -877,18 +877,10 @@ public class STARS
             for (int n = 0; n < tempList.size(); n++)
             {
                 TimeSlot tempTimeSlot = tempList.get(n);
-<<<<<<< HEAD
-                if(n == 0)
-                    formatter.format("%-10s | %-8d | %-5s | %-5s | %s-%-7s | %s %n",  tempCourse.getCourseId(), indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
-                else
-                    formatter.format("%-10s | %-8d | %-5s | %-5s | %s-%-7s | %s %n",  " ", indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
-=======
-
                 if (n <= 0)
                     formatter.format("%-10s | %-8d | %-5s | %-5s | %s-%-7s | %s %n", tempCourse.getCourseId(), indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
                 else
                     formatter.format("%-10s | %-8d | %-5s | %-5s | %s-%-7s | %s %n", "", indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
->>>>>>> dc10902cc85c888b4a6036358c45d7e25c35ac72
             }
 
             //retStr += "Index: " + indexList.get(i) + " - " + CourseManager.getInstance().getCourseByIndexNo(indexList.get(i)).getCourseName() + "\n";
