@@ -84,6 +84,17 @@ public class STARS
         return null;
     }
 
+    public String validateStudentLogin (String username, String password)
+    {
+        User user = userManager.authenticateUser(username, password);
+        if (user != null && user instanceof  Student) //Login successful
+        {
+            return ((Student)user).getMatricNo();
+        }
+        else
+            return null;
+    }
+
 //------------------------Method to check current date is within access period-----------------------------
 
     public boolean checkAccessPeriod()
@@ -274,6 +285,62 @@ public class STARS
         return "NO CLASH";
     }
 
+
+    /**
+     *
+     * @param indexNo  Index number to check
+     * @param matricNo Leave empty if matric no to check is the current user's matric no
+     * @return -1 Error <br>
+     *          0 if student is not enrolled in this index <br>
+     *          1 if student is enrolled in this index
+     */
+    public int checkIfEnrolled (int indexNo, String matricNo)
+    {
+        Index tempIndex = courseManager.getIndexByIndexNo(indexNo);
+
+        if (tempIndex == null)
+            return -1; //Index does not exist
+
+        if (matricNo == "")
+        {
+            if (currentLogOnUser instanceof Student)
+            {
+                Student currLoggedStudent = (Student) currentLogOnUser;
+
+                if (tempIndex.checkIfStudentEnrolled(currLoggedStudent.getMatricNo()))
+                    return 1;
+                else
+                    return 0;
+            }
+            else
+                return -1;
+        }
+        else
+        {
+            if (tempIndex.checkIfStudentEnrolled(matricNo))
+                return 1;
+            else
+                return 0;
+        }
+
+    }
+
+    public boolean checkIfIndexExists(int indexNo)
+    {
+        if (courseManager.getIndexByIndexNo(indexNo) != null)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean areIndexSameCourse (int indexNo1, int indexNo2)
+    {
+        if (courseManager.getCourseByIndexNo(indexNo1) == courseManager.getCourseByIndexNo(indexNo2))
+            return true;
+        else
+            return false;
+    }
+
       /*==================================================
 
 
@@ -424,7 +491,7 @@ public class STARS
         Student currentLogOnStud = (Student) currentLogOnUser;
 
         //Remove student from index in CourseManager
-        String[] result = courseManager.dropFromIndex(currentLogOnStud.getMatricNo(), indexNo);
+        String[] result = courseManager.dropFromIndex(currentLogOnStud.getMatricNo(), indexNo, false);
 
 
         if (result[0] != "ERROR")
@@ -464,6 +531,35 @@ public class STARS
 
         return 0;
     }
+
+    public int student_SwapIndex(int firstIndex, String secondMatric, int secondIndex)
+    {
+        String firstMatric = ((Student)currentLogOnUser).getMatricNo();
+
+        //We need to do some evil stuff and bypass waitlist handling
+        courseManager.dropFromIndex(firstMatric, firstIndex, true);
+        userManager.getStudentByMatricNo(firstMatric).getCourseIndexList().remove((Integer)firstIndex);
+
+        courseManager.dropFromIndex(secondMatric, secondIndex, true);
+        userManager.getStudentByMatricNo(secondMatric).getCourseIndexList().remove((Integer)secondIndex);
+
+        //SWAPPED!
+        if (courseManager.enrolInIndex(firstMatric, secondIndex) == 1)
+        {
+            userManager.getStudentByMatricNo(firstMatric).getCourseIndexList().add((Integer)secondIndex);
+            if(courseManager.enrolInIndex(secondMatric, firstIndex) == 1)
+            {
+                userManager.getStudentByMatricNo(secondMatric).getCourseIndexList().add((Integer)firstIndex);
+                saveData();
+                return 1;
+            }
+        }
+
+        return 0; //Failed to swap index
+
+    }
+
+
 
     /*==================================================
 
@@ -1079,7 +1175,8 @@ public class STARS
         userManager.getStudentByMatricNo("U1111111B").addCourseIndex(10042);
 
         //Adds ron into waitlist
-        courseManager.enrolInIndex("U333333B", 10042);
+        courseManager.enrolInIndex("U333333B", 10043);
+        userManager.getStudentByMatricNo("U333333B").addCourseIndex(10043);
 
         saveData();
     }

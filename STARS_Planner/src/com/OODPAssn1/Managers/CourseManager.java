@@ -225,7 +225,7 @@ public class CourseManager extends DataManager
      *         second index - contains student's matriculation number to add into index <br><br>
      *         third index - contains the index number to add the student matriculation number (specified in second index) to.
      */
-    public String [] dropFromIndex (String matricNo , int indexNo)
+    public String [] dropFromIndex (String matricNo , int indexNo, boolean bypassWaitlist)
     {
         Index tempIndex = getIndexByIndexNo(indexNo);
 
@@ -237,9 +237,8 @@ public class CourseManager extends DataManager
             retStrArr[0] = "ERROR";
             return retStrArr;
         }
-
         //If the student MatricNo was found and succesfully removed from the index
-        if (tempIndex.withdrawStudent(matricNo) == true)
+        if (tempIndex.withdrawStudent(matricNo, bypassWaitlist) == true)
         {
             //CHECK IF NEED TO HANDLE WAITLIST
             if (tempIndex.checkIfHandleWaitlist() == true)
