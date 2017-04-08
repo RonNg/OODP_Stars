@@ -343,43 +343,9 @@ public class UI
                     admin_EditStudentAccessPeriod();
                     break;
                 case 2://Add a Student
-<<<<<<< HEAD
 
-                    System.out.println("Please enter name of student:");
-                    String name = getString();
-                    System.out.println("Please enter email of student:");
-                    String email = getString();
-                    System.out.println("Please enter Matric no. of student: ");
-                    String matricNo = getString();
-                    System.out.println("Please enter contact No. of student");
-                    int contact = getInt();
-                    System.out.println("Please enter gender of student(m for male, f for female. Default will be female.): ");
-                    String genderStr = getString();
-                    System.out.println("Please enter nationality of student: ");
-                    String nationality = getString();
-                    System.out.println("Please enter username of student: ");
-                    String username = getString();
-                    System.out.println("Please enter password of student: ");
-                    String password = getString();
-                    /*Code to hide password. Only works in console not in IDE
-                      char[] passString = c.readPassword();
-                      String password = new String(passString );
-                    */
-                    boolean result;
-                    if (genderStr.equals("m"))
-                        result = stars.admin_addStudent(name, email, matricNo,
-                                contact, Student.GENDER.MALE, nationality, username, password);
-                    else
-                        result = stars.admin_addStudent(name, email, matricNo,
-                                contact, Student.GENDER.FEMALE, nationality, username, password);
-                    if(result)
-                        System.out.println(name + "successfully added to STARS");
-                    else System.out.println("Another student with " + matricNo + " already exist in STARS!");
-                    //stars.admin_addStudent("dude", "dude@e.ntu.edu.sg", "U1625639G",
-                    //98245937, Student.GENDER.MALE, "SG", "dude123", "dude123");
-=======
                     admin_AddStudent();
->>>>>>> d7ccb3ff4dd442c22e553b6e755ed5fd7b6bfe51
+
                     break;
                 case 3://Add a Course and proceed to add index after if user chooses so
                     admin_AddCourse(); //Goes to the UI menu for adding course.
@@ -609,12 +575,16 @@ public class UI
                       char[] passString = c.readPassword();
                       String password = new String(passString );
                     */
+        boolean result;
         if (genderStr.equals("m"))
-            stars.admin_addStudent(name, email, matricNo,
+            result = stars.admin_addStudent(name, email, matricNo,
                     contact, Student.GENDER.MALE, nationality, username, password);
         else
-            stars.admin_addStudent(name, email, matricNo,
+            result = stars.admin_addStudent(name, email, matricNo,
                     contact, Student.GENDER.FEMALE, nationality, username, password);
+        if(result)
+            System.out.println(name + "successfully added to STARS");
+        else System.out.println("Another student with " + matricNo + " already exist in STARS!");
 
     }
 

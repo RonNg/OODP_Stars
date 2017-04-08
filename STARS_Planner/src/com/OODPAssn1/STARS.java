@@ -325,10 +325,9 @@ public class STARS
 
         //This code chunk checks for Index Clash
         List<Integer> currentUserIndexList = tempStud.getCourseIndexList();
-<<<<<<< HEAD
+
         Index indexToJoin = courseManager.getIndexByIndexNo(indexNo);
-=======
-        Index indexToJoin = CourseManager.getInstance().getIndexByIndexNo(indexNo);
+
 
         /*===============================
                   SWITCH INDEX
@@ -371,7 +370,7 @@ public class STARS
                     CHECK CLASH
          ===================================*/
         //Checks every single index in the current user against the index to join to see if there is a clash
->>>>>>> d7ccb3ff4dd442c22e553b6e755ed5fd7b6bfe51
+
         for (int i = 0; i < currentUserIndexList.size(); ++i)
         {
             Index currUserIndex = courseManager.getIndexByIndexNo(currentUserIndexList.get(i));
@@ -762,8 +761,7 @@ public class STARS
 
     public boolean admin_addStudent(String name, String email, String matricNo,
                                  int contact, Student.GENDER gender, String nationality,
-                                 String username, String password)
-    {
+                                 String username, String password) {
 
         return userManager.addStudent(name, email, matricNo, contact, gender,
                 nationality, username, password);
