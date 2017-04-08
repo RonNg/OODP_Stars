@@ -127,12 +127,9 @@ public class UI
                     break;
 
                 case 3://Check/Print Courses Registered
-<<<<<<< HEAD
-                    String toPrint = stars.getStudentRegisteredIndex("");
-                    System.out.println(toPrint);
-=======
+
                     student_printCourseRegistered();
->>>>>>> bf2a245d600a380455bd3087246eddd1bf5557f1
+
                     break;
 
                 case 4://Check Vacancies Available
@@ -290,7 +287,7 @@ public class UI
     public static void student_printCourseRegistered()
     {
         printTitle("Course Registered");
-        String toPrint = STARS.getInstance().getStudentTimeTable("");
+        String toPrint = stars.getStudentTimeTable("");
         System.out.println(toPrint);
     }
 
@@ -346,26 +343,21 @@ public class UI
 
                     while(true){
                         System.out.print("Please input new start date(dd/mm/yyyy): ");
-<<<<<<< HEAD
-                        startDate = s.next();
-                        if(stars.checkDateFormat(startDate))
-=======
+
+
                         startDate = getString();
-                        if(STARS.getInstance().checkDateFormat(startDate))
->>>>>>> bf2a245d600a380455bd3087246eddd1bf5557f1
+                        if(stars.checkDateFormat(startDate))
+
                             break;
                         else System.out.println("Please enter in the format as shown! e.g. 01/04/2017");
                     }
 
                     while(true){
                         System.out.print("Please input new end date(dd/mm/yyyy): ");
-<<<<<<< HEAD
-                        endDate = s.next();
-                        if(stars.checkDateFormat(endDate))
-=======
+
+
                         endDate = getString();
-                        if(STARS.getInstance().checkDateFormat(endDate))
->>>>>>> bf2a245d600a380455bd3087246eddd1bf5557f1
+                        if(stars.checkDateFormat(endDate))
                             break;
                         else System.out.println("Please enter in the format as shown! e.g. 30/04/2017");
                     }
@@ -545,13 +537,10 @@ public class UI
         String courseId;
         while(true) {
             System.out.println("Please enter Course ID");
-<<<<<<< HEAD
-            courseId = s.next();
-            if(!stars.doesCourseExist(courseId))
-=======
+
             courseId = getString();
-            if(!STARS.getInstance().doesCourseExist(courseId))
->>>>>>> bf2a245d600a380455bd3087246eddd1bf5557f1
+            if(!stars.doesCourseExist(courseId))
+
                 break;
             else System.out.println("Course ID already taken! Please input again");
         }

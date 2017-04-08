@@ -7,13 +7,11 @@ import com.OODPAssn1.Managers.UserManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-<<<<<<< HEAD
-=======
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
->>>>>>> bf2a245d600a380455bd3087246eddd1bf5557f1
+
 
 /**
  * Created by jonah on 15/3/2017.
@@ -54,11 +52,9 @@ public class STARS
         }
 
 
-<<<<<<< HEAD
+
         userManager = UserManager.getInstance();
         courseManager = CourseManager.getInstance();
-=======
->>>>>>> bf2a245d600a380455bd3087246eddd1bf5557f1
         studentNotification = new Notification();
 
         return 1;
@@ -145,16 +141,14 @@ public class STARS
             System.out.println("Please enter format as shown!");
         }
 
-<<<<<<< HEAD
+
         if(userManager.changeAccessPeriod(startDateCal, endDateCal)) {
-=======
-        if (UserManager.getInstance().changeAccessPeriod(startDateCal, endDateCal))
-        {
->>>>>>> bf2a245d600a380455bd3087246eddd1bf5557f1
-            this.saveData();
-            return "Start date: " + sdf.format(startDateCal.getTime()) + "   " + "End date: " + sdf.format(endDateCal.getTime());
-        } else
-            return "Error in setting access period!";
+
+                this.saveData();
+                return "Start date: " + sdf.format(startDateCal.getTime()) + "   " + "End date: " + sdf.format(endDateCal.getTime());
+            } else
+                return "Error in setting access period!";
+
 
 
     }
@@ -411,14 +405,11 @@ public class STARS
                 tempStudent.addCourseIndex(Integer.parseInt(result[2]));
                 saveData();
 
-<<<<<<< HEAD
+
                 //TODO: Email the student that s/he has been added into the course
                 String courseId = courseManager.getCourseByIndexNo(indexNo).getCourseId();
                 String courseName = courseManager.getCourseByIndexNo(indexNo).getCourseName();
-=======
-                String courseId = CourseManager.getInstance().getCourseByIndexNo(indexNo).getCourseId();
-                String courseName = CourseManager.getInstance().getCourseByIndexNo(indexNo).getCourseName();
->>>>>>> bf2a245d600a380455bd3087246eddd1bf5557f1
+
                 String subject = "Succesfully enrolled into Index " + indexNo;
 
                 String message = "As a student has withdrawn from the index, you have been removed from the waitlist and enrolled into the Index " + indexNo
@@ -579,13 +570,9 @@ public class STARS
         if (course != null)
         {
             //Save after adding
-<<<<<<< HEAD
-            course.addlecTimeSlot(timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT);
-            courseManager.save();
-=======
             course.addLecTimeSlot(timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT);
-            CourseManager.getInstance().save();
->>>>>>> bf2a245d600a380455bd3087246eddd1bf5557f1
+            courseManager.save();
+
             return true;
         } else
         {
@@ -770,14 +757,11 @@ public class STARS
         String indexIsEmptyStr = "No student has enrolled to index yet.";
         String retStr = "";
         Student student;
-<<<<<<< HEAD
+
         Index index = courseManager.getIndexByIndexNo(indexNo);
         if(index == null)
-=======
-        Index index = CourseManager.getInstance().getIndexByIndexNo(indexNo);
-        if (index == null)
->>>>>>> bf2a245d600a380455bd3087246eddd1bf5557f1
             return indexNotFoundStr;
+
         List<String> indexList = index.getEnrolledStudentList();
         if (indexList.size() == 0)
             return indexIsEmptyStr;
@@ -965,13 +949,10 @@ public class STARS
         for (int i = 0; i < indexList.size(); ++i)
         {
             //Get Course by Index No will never return null as the indexList exists in some course
-<<<<<<< HEAD
+
 
             retStr += "Index: " + indexList.get(i) + " - " + courseManager.getCourseByIndexNo(indexList.get(i)).getCourseName() + "\n";
-=======
-            Course tempCourse = CourseManager.getInstance().getCourseByIndexNo(indexList.get(i));
-            retStr += "Index: " + indexList.get(i) + " - " + tempCourse.getCourseName() + "\n";
->>>>>>> bf2a245d600a380455bd3087246eddd1bf5557f1
+
         }
         return retStr;
     }
@@ -991,14 +972,12 @@ public class STARS
         courseManager.printAllIndexDetails();
 
         System.out.println("\n\n===============================");
-<<<<<<< HEAD
+
         List<Integer> indexList = userManager.getStudentByMatricNo("U1111111B").getCourseIndexList();
-        if(indexList.size()>0){
-=======
-        List<Integer> indexList = UserManager.getInstance().getStudentByMatricNo("U1111111B").getCourseIndexList();
+
         if (indexList.size() > 0)
         {
->>>>>>> bf2a245d600a380455bd3087246eddd1bf5557f1
+
             System.out.println("Index registered by Qinghui: ");
             for (int i = 0; i < indexList.size(); i++)
             {
@@ -1015,40 +994,40 @@ public class STARS
         userManager.addStudent("ron", "c160144@e.ntu.edu.sg", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
         userManager.addAdmin("doug", "doug@e.ntu", "doug123", "doug123");
 
-<<<<<<< HEAD
+
         courseManager.addCourse("CE2003", "DSD", "SCE");
         courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10042, 1);
         courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10043, 1);
-=======
+
 
         /*=============================
                 Create DSD course
          =============================*/
-        CourseManager.getInstance().addCourse("CE2003", "Digital System Design", "SCE");
-        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10042, 1);
-        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10043, 1);
->>>>>>> bf2a245d600a380455bd3087246eddd1bf5557f1
+        courseManager.addCourse("CE2003", "Digital System Design", "SCE");
+        courseManager.createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10042, 1);
+        courseManager.createIndex(CourseManager.getInstance().getCourseByCourseId("CE2003"), 10043, 1);
 
-        CourseManager.getInstance().addLecTimeSlot(CourseManager.getInstance().getCourseByIndexNo(10042), TimeSlot.DAY.MON, 14, 00, 15, 00, "LT4");
-        CourseManager.getInstance().getCourseByIndexNo(10042).getIndex(10042).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR45");
-        CourseManager.getInstance().getCourseByIndexNo(10042).getIndex(10042).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 2");
 
-        CourseManager.getInstance().getCourseByIndexNo(10043).getIndex(10043).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR30");
-        CourseManager.getInstance().getCourseByIndexNo(10043).getIndex(10043).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 1");
+        courseManager.addLecTimeSlot(CourseManager.getInstance().getCourseByIndexNo(10042), TimeSlot.DAY.MON, 14, 00, 15, 00, "LT4");
+        courseManager.getCourseByIndexNo(10042).getIndex(10042).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR45");
+        courseManager.getCourseByIndexNo(10042).getIndex(10042).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 2");
+
+        courseManager.getCourseByIndexNo(10043).getIndex(10043).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR30");
+        courseManager.getCourseByIndexNo(10043).getIndex(10043).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 1");
 
         /*=============================
                 Create OODP course
          =============================*/
-        CourseManager.getInstance().addCourse("CE2002", "Object Oriented Design & Programming", "SCE");
-        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2002"), 10052, 1);
-        CourseManager.getInstance().createIndex(CourseManager.getInstance().getCourseByCourseId("CE2002"), 10053, 1);
+        courseManager.addCourse("CE2002", "Object Oriented Design & Programming", "SCE");
+        courseManager.createIndex(CourseManager.getInstance().getCourseByCourseId("CE2002"), 10052, 1);
+        courseManager.createIndex(CourseManager.getInstance().getCourseByCourseId("CE2002"), 10053, 1);
 
-        CourseManager.getInstance().addLecTimeSlot(CourseManager.getInstance().getCourseByIndexNo(10052), TimeSlot.DAY.MON, 11, 00, 12, 00, "LT4");
-        CourseManager.getInstance().getCourseByIndexNo(10052).getIndex(10052).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR45");
-        CourseManager.getInstance().getCourseByIndexNo(10052).getIndex(10052).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 2");
+        courseManager.addLecTimeSlot(CourseManager.getInstance().getCourseByIndexNo(10052), TimeSlot.DAY.MON, 11, 00, 12, 00, "LT4");
+        courseManager.getCourseByIndexNo(10052).getIndex(10052).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR45");
+        courseManager.getCourseByIndexNo(10052).getIndex(10052).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 2");
 
-        CourseManager.getInstance().getCourseByIndexNo(10053).getIndex(10053).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR30");
-        CourseManager.getInstance().getCourseByIndexNo(10053).getIndex(10053).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 1");
+        courseManager.getCourseByIndexNo(10053).getIndex(10053).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR30");
+        courseManager.getCourseByIndexNo(10053).getIndex(10053).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 1");
 
 
         //Adds bob into CourseManager and UserManager
