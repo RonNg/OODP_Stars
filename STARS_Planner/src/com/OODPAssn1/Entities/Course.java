@@ -71,6 +71,15 @@ public class Course implements Serializable
         return indexList;
     }
 
+    public Index getIndex(int indexNum)
+    {
+        for(int n = 0; n < indexList.size(); n++){
+            if(indexList.get(n).getIndexNum() == indexNum)
+                return indexList.get(n);
+        }
+        return null;
+    }
+
     public boolean addIndex(int indexNum, int maxNumOfStudetns)
     {
         return indexList.add(new Index(indexNum, maxNumOfStudetns));
@@ -85,7 +94,7 @@ public class Course implements Serializable
 
     //-------Lecture time slot methods--------
 
-    public boolean addlecTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
+    public boolean addLecTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
     {
         return lecTimeSlotList.add(new TimeSlot(day, startH, startM, endH, endM, location, "LECT"));
     }
@@ -95,7 +104,7 @@ public class Course implements Serializable
         return lecTimeSlotList.remove(dTimeSlot);
     }
 
-    public List<TimeSlot> getlecTimeSlotList()
+    public List<TimeSlot> getLecTimeSlotList()
     {
         return lecTimeSlotList;
     }
