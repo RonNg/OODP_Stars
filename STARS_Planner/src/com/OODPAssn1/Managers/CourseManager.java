@@ -58,7 +58,9 @@ public class CourseManager extends DataManager
     public boolean addCourse (String courseId, String courseName, String faculty)//for admin
     {
         //Note that writing of new data into DB is not done here!
-        return courseList.add(new Course(courseId, courseName, faculty));
+        if(this.getCourseByCourseId(courseId) == null)
+            return courseList.add(new Course(courseId, courseName, faculty));
+        else return false;
     }
 
     public boolean deleteCourse(Course dCourse)
