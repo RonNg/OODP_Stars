@@ -172,11 +172,10 @@ public class STARS
         {
 
             //System.out.println(courseList.get(i).getCourseId());
-            if (courseList.get(i).getCourseId().equalsIgnoreCase(courseId))
-
+            if (courseList.get(i).getCourseId().equalsIgnoreCase(courseId)) {
                 return true;
+            }
         }
-
         return false;
     }
 
