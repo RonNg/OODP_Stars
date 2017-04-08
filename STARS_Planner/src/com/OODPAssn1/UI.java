@@ -6,6 +6,7 @@ import com.OODPAssn1.Entities.User;
 import com.OODPAssn1.Managers.CourseManager;
 
 import java.io.Console;
+import java.rmi.server.ExportException;
 import java.util.Scanner;
 
 
@@ -327,97 +328,14 @@ public class UI
             {
 
                 case 1://Edit student access period
-                    System.out.println("\n =============================================== " +
-                                       "\n            Changing Access Period            " +
-                                       "\n =============================================== ");
-                    System.out.println("\nCurrent Access period: ");
-                    System.out.println("------------------------");
-                    System.out.println(STARS.getInstance().getAccessPeriod() + "\n");
-
-                    String startDate;
-                    String endDate;
-
-                    while(true){
-                        System.out.print("Please input new start date(dd/mm/yyyy): ");
-                        startDate = getString();
-                        if(STARS.getInstance().checkDateFormat(startDate))
-                            break;
-                        else System.out.println("Please enter in the format as shown! e.g. 01/04/2017");
-                    }
-
-                    while(true){
-                        System.out.print("Please input new end date(dd/mm/yyyy): ");
-                        endDate = getString();
-                        if(STARS.getInstance().checkDateFormat(endDate))
-                            break;
-                        else System.out.println("Please enter in the format as shown! e.g. 30/04/2017");
-                    }
-
-
-
-                    System.out.println("Updated access period: ");
-                    System.out.println("--------------------------");
-                    System.out.println(STARS.getInstance().setAccessPeriod(startDate, endDate));
-
+                    admin_EditStudentAccessPeriod();
                     break;
-
-
-
                 case 2://Add a Student
-
-                    System.out.println("Please enter name of student:");
-                    String name = getString();
-                    System.out.println("Please enter email of student:");
-                    String email = getString();
-                    System.out.println("Please enter Matric no. of student: ");
-                    String matricNo = getString();
-                    System.out.println("Please enter conatct No. of student");
-                    int contact = getInt();
-                    System.out.println("Please enter gender of student(m for male, f for female): ");
-                    String genderStr = getString();
-                    System.out.println("Please enter nationality of student: ");
-                    String nationality = getString();
-                    System.out.println("Please enter username of student: ");
-                    String username = getString();
-                    System.out.println("Please enter password of student: ");
-                    String password = getString();
-                    /*Code to hide password. Only works in console not in IDE
-                      char[] passString = c.readPassword();
-                      String password = new String(passString );
-                    */
-                    if (genderStr.equals("m"))
-                        STARS.getInstance().admin_addStudent(name, email, matricNo,
-                                contact, Student.GENDER.MALE, nationality, username, password);
-                    else
-                        STARS.getInstance().admin_addStudent(name, email, matricNo,
-                                contact, Student.GENDER.FEMALE, nationality, username, password);
-
-                    //STARS.getInstance().admin_addStudent("dude", "dude@e.ntu.edu.sg", "U1625639G",
-                    //98245937, Student.GENDER.MALE, "SG", "dude123", "dude123");
+                    admin_AddStudent();
                     break;
-
-
                 case 3://Add a Course and proceed to add index after if user chooses so
-
-                    System.out.println("\n =============================================== " +
-                                       "\n                 Add new course             " +
-                                       "\n =============================================== ");
-
-                    String courseIdAdded = admin_AddCourse(); //Goes to the UI menu for adding course.
-
-                        String ans ="";
-                        while(!ans.equals("1") && !ans.equals("2")) {
-                            System.out.println("Do you want to continue to add Index for the Course you just added?");
-                            System.out.println("-------------------------------------------------------------------");
-                            System.out.println("1) Yes\n" +
-                                    "2) No");
-                            ans = getString();
-                        }
-                        if(ans.equals("1"))
-                            admin_AddIndex(courseIdAdded);
-
+                    admin_AddCourse(); //Goes to the UI menu for adding course.
                     break;
-
                 case 4://Update Course
 
                     System.out.println("\n =============================================== " +
@@ -521,9 +439,9 @@ public class UI
     /**
      * @return courseId if Course is successfully added into the system
      */
-    public static String admin_AddCourse()
+    public static void admin_AddCourse()
     {
-
+        printTitle("Add Course");
         String courseId;
         while(true) {
             System.out.println("Please enter Course ID");
@@ -540,7 +458,10 @@ public class UI
         String faculty = getString();
 
         //Adds the course and returns the course object so that we can use it to add the lecture time
-        STARS.getInstance().admin_AddCourse(courseId, courseName, faculty);
+        if(!STARS.getInstance().admin_AddCourse(courseId, courseName, faculty)){
+            System.out.println("Something went wrong. Course not added.Exiting.. ");
+            return;
+        }
 
         System.out.println("");
         System.out.println("Please enter the number of lectures per week for Course " + courseId);
@@ -549,114 +470,105 @@ public class UI
         //Add the lectures here
         for (int i = 1; i <= noOfLect; ++i)
         {
-            String lectureNo = null;
-            if (i == 1)
-                lectureNo = i + "st";
-            else if (i == 2)
-                lectureNo = i + "nd";
-            else if (i == 3)
-                lectureNo = i + "rd";
-            else
-                lectureNo = i + "th";
-
-            //lectureNo displays 1st, 2nd, 3rd, or 4th etc. etc. depending on the variable "i" in the loop
-
+            System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
+            System.out.println("Enter the day for the lecture:");
             TimeSlot.DAY timeSlotDay = null;
-            boolean validDay = false;
-            while (!validDay)
-            {
-                System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
-                System.out.println("Enter the day for the " + lectureNo + " of the week: ");
-
-                String day = getString();
-
-                switch (day)
-                {
-                    //Monday
-                    case "m":
-                    case "M":
-                        timeSlotDay = TimeSlot.DAY.MON;
-                        validDay = true;
-                        break;
-
-                    //Tuesday
-                    case "t":
-                    case "T":
-                        timeSlotDay = TimeSlot.DAY.TUE;
-                        validDay = true;
-                        break;
-
-                    //Wednesday
-                    case "w":
-                    case "W":
-                        timeSlotDay = TimeSlot.DAY.WED;
-                        validDay = true;
-                        break;
-
-                    //Thursday
-                    case "th":
-                    case "TH":
-                    case "Th":
-                    case "tH":
-                        timeSlotDay = TimeSlot.DAY.THU;
-                        validDay = true;
-                        break;
-
-                    //Friday
-                    case "f":
-                    case "F":
-                        timeSlotDay = TimeSlot.DAY.FRI;
-                        validDay = true;
-                        break;
-
-                    //Saturday
-                    case "s":
-                    case "S":
-                        timeSlotDay = TimeSlot.DAY.SAT;
-                        validDay = true;
-                        break;
-
-                    //Sunday
-                    case "su":
-                    case "SU":
-                    case "Su":
-                    case "sU":
-                        timeSlotDay = TimeSlot.DAY.SUN;
-                        validDay = true;
-                        break;
-
-                    default:
-                        System.out.println("Invalid day is entered please try again.");
-                        break;
-                }
-            } //while loop end for validDay
+            timeSlotDay = getDay();
 
             System.out.println("Enter the lecture START time in 24hrs format for " + timeSlotDay.name());
-            String time = getString();
-            int startTimeHH = Integer.parseInt(time.substring(0, time.length() / 2));
-            int startTimeMM = Integer.parseInt(time.substring(time.length() / 2));
+            int startTime = getTime();
 
             System.out.println("Enter the lecture END time in 24hrs format for " + timeSlotDay.name());
-            time = getString();
-            int endTimeHH = Integer.parseInt(time.substring(0, time.length() / 2));
-            int endTimeMM = Integer.parseInt(time.substring(time.length() / 2));
+            int endTime = getTime();
 
             System.out.println("Please enter the LT number for the Lecture  " + timeSlotDay.name());
             String locationLT = getString();
 
-            boolean success = STARS.getInstance().admin_AddLecTimeSlot(courseId, timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT);
+            boolean success = STARS.getInstance().admin_AddLecTimeSlot(courseId, timeSlotDay, startTime/100, startTime%100, endTime/100, endTime%100, locationLT);
 
             if (success)
-                System.out.println("Lecture on " + timeSlotDay.name() + " succesfully added!");
+                System.out.println("Lecture on " + timeSlotDay.name() + " successfully added!");
+            else
+                System.out.println("Lecture on " + timeSlotDay.name() + " failed to be added!");
 
         } //finish loop for entering Lecture
 
-        return courseId;
+        System.out.println("\nDo you want to continue to add Index for the Course you just added?");
+        System.out.println("-------------------------------------------------------------------");
+        if(getYesNo()){
+            admin_AddIndex(courseId);
+        }
+
+
+        return;
+    }
+
+    public static void admin_EditStudentAccessPeriod()
+    {
+        printTitle("Edit Access Period");
+        System.out.println("\nCurrent Access period: ");
+        System.out.println("------------------------");
+        System.out.println(STARS.getInstance().getAccessPeriod() + "\n");
+
+        String startDate;
+        String endDate;
+
+        while(true){
+            System.out.print("Please input new start date(dd/mm/yyyy): ");
+            startDate = getString();
+            if(STARS.getInstance().checkDateFormat(startDate))
+                break;
+            else System.out.println("Please enter in the format as shown! e.g. 01/04/2017");
+        }
+
+        while(true){
+            System.out.print("Please input new end date(dd/mm/yyyy): ");
+            endDate = getString();
+            if(STARS.getInstance().checkDateFormat(endDate))
+                break;
+            else System.out.println("Please enter in the format as shown! e.g. 30/04/2017");
+        }
+
+
+
+        System.out.println("Updated access period: ");
+        System.out.println("--------------------------");
+        System.out.println(STARS.getInstance().setAccessPeriod(startDate, endDate));
+    }
+
+    public static void admin_AddStudent()
+    {
+        printTitle("Add Student");
+        System.out.println("Please enter name of student:");
+        String name = getString();
+        System.out.println("Please enter email of student:");
+        String email = getString();
+        System.out.println("Please enter Matric no. of student: ");
+        String matricNo = getString();
+        System.out.println("Please enter conatct No. of student");
+        int contact = getInt();
+        System.out.println("Please enter gender of student(m for male, f for female): ");
+        String genderStr = getString();
+        System.out.println("Please enter nationality of student: ");
+        String nationality = getString();
+        System.out.println("Please enter username of student: ");
+        String username = getString();
+        System.out.println("Please enter password of student: ");
+        String password = getString();
+                    /*Code to hide password. Only works in console not in IDE
+                      char[] passString = c.readPassword();
+                      String password = new String(passString );
+                    */
+        if (genderStr.equals("m"))
+            STARS.getInstance().admin_addStudent(name, email, matricNo,
+                    contact, Student.GENDER.MALE, nationality, username, password);
+        else
+            STARS.getInstance().admin_addStudent(name, email, matricNo,
+                    contact, Student.GENDER.FEMALE, nationality, username, password);
+
     }
 
 //--------------------------------------Method to delete course from STARS----------------------------------------------
-
-
 
     public static void admin_DeleteCourse(String courseId)
     {
@@ -704,179 +616,47 @@ public class UI
                 continue;
             }
 
-            TimeSlot.DAY timeSlotDay = TimeSlot.DAY.SUN;
+            TimeSlot.DAY timeSlotDay = null;
+            int startTime;
+            int endTime;
 
             /*===================================
                           ADD LAB
             ====================================*/
-            boolean validDay = false;
-            while(!validDay)
-            {
-                System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
-                System.out.println("Enter the day for the LAB for Index " + indexNoToAdd + ":");
-                String day = getString();
 
-                switch (day)
-                {
-                    //Monday
-                    case "m":
-                    case "M":
-                        timeSlotDay = TimeSlot.DAY.MON;
-                        validDay = true;
-                        break;
-
-                    //Tuesday
-                    case "t":
-                    case "T":
-                        timeSlotDay = TimeSlot.DAY.TUE;
-                        validDay = true;
-                        break;
-
-                    //Wednesday
-                    case "w":
-                    case "W":
-                        timeSlotDay = TimeSlot.DAY.WED;
-                        validDay = true;
-                        break;
-
-                    //Thursday
-                    case "th":
-                    case "TH":
-                    case "Th":
-                    case "tH":
-                        timeSlotDay = TimeSlot.DAY.THU;
-                        validDay = true;
-                        break;
-
-                    //Friday
-                    case "f":
-                    case "F":
-                        timeSlotDay = TimeSlot.DAY.FRI;
-                        validDay = true;
-                        break;
-
-                    //Saturday
-                    case "s":
-                    case "S":
-                        timeSlotDay = TimeSlot.DAY.SAT;
-                        validDay = true;
-                        break;
-
-                    //Sunday
-                    case "su":
-                    case "SU":
-                    case "Su":
-                    case "sU":
-                        timeSlotDay = TimeSlot.DAY.SUN;
-                        validDay = true;
-                        break;
-
-                    default:
-                        System.out.println("Invalid day is entered please try again.");
-                        break;
-                }
-            } //while loop end for validDay
+            System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
+            System.out.println("Enter the day for the LAB for Index " + indexNoToAdd + ":");
+            timeSlotDay = getDay();
 
             System.out.println("Enter the LAB location for Index " + indexNoToAdd + ":");
             String labLocation = getString();
 
             System.out.println("Enter the LAB START time in 24hrs format(HHMM): ");
-            String time = getString();
-            int startTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
-            int startTimeMM = Integer.parseInt(time.substring(time.length()/2));
+            startTime = getTime();
 
             System.out.println("Enter the LAB END time in 24hrs format(HHMM): " );
-            time = getString();
-            int endTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
-            int endTimeMM = Integer.parseInt(time.substring(time.length()/2));
+            endTime = getTime();
 
-            STARS.getInstance().admin_AddIndexLabTimeSlot(indexNoToAdd, timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, labLocation );
+            STARS.getInstance().admin_AddIndexLabTimeSlot(indexNoToAdd, timeSlotDay, startTime/100, startTime%100, endTime/100, endTime%100, labLocation );
 
             /*===================================
                           ADD TUT
             ====================================*/
-            validDay = false;
-            while(!validDay)
-            {
-                System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
-                System.out.println("Enter the day for the TUT for Index " + indexNoToAdd + ":");
-                String day = getString();
 
-                switch (day)
-                {
-                    //Monday
-                    case "m":
-                    case "M":
-                        timeSlotDay = TimeSlot.DAY.MON;
-                        validDay = true;
-                        break;
-
-                    //Tuesday
-                    case "t":
-                    case "T":
-                        timeSlotDay = TimeSlot.DAY.TUE;
-                        validDay = true;
-                        break;
-
-                    //Wednesday
-                    case "w":
-                    case "W":
-                        timeSlotDay = TimeSlot.DAY.WED;
-                        validDay = true;
-                        break;
-
-                    //Thursday
-                    case "th":
-                    case "TH":
-                    case "Th":
-                    case "tH":
-                        timeSlotDay = TimeSlot.DAY.THU;
-                        validDay = true;
-                        break;
-
-                    //Friday
-                    case "f":
-                    case "F":
-                        timeSlotDay = TimeSlot.DAY.FRI;
-                        validDay = true;
-                        break;
-
-                    //Saturday
-                    case "s":
-                    case "S":
-                        timeSlotDay = TimeSlot.DAY.SAT;
-                        validDay = true;
-                        break;
-
-                    //Sunday
-                    case "su":
-                    case "SU":
-                    case "Su":
-                    case "sU":
-                        timeSlotDay = TimeSlot.DAY.SUN;
-                        validDay = true;
-                        break;
-
-                    default:
-                        System.out.println("Invalid day is entered please try again.");
-                        break;
-                }
-            } //while loop end for validDay
+            System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
+            System.out.println("Enter the day for the TUT for Index " + indexNoToAdd + ":");
+            timeSlotDay = getDay();
 
             System.out.println("Enter the TUT location for Index " + indexNoToAdd + ":");
             String tutLocation = getString();
 
             System.out.println("Enter the TUT START time in 24hrs format(HHMM): ");
-            time = getString();
-            startTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
-            startTimeMM = Integer.parseInt(time.substring(time.length()/2));
+            startTime = getTime();
 
             System.out.println("Enter the TUT END time in 24hrs format(HHMM): " );
-            time = getString();
-            endTimeHH = Integer.parseInt(time.substring(0, time.length()/2));
-            endTimeMM = Integer.parseInt(time.substring(time.length()/2));
+            endTime = getTime();
 
-            STARS.getInstance().admin_AddIndexTutTimeSlot(indexNoToAdd, timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, tutLocation);
+            STARS.getInstance().admin_AddIndexTutTimeSlot(indexNoToAdd, timeSlotDay, startTime/100, startTime%100, endTime/100, endTime%100, tutLocation );
 
         }//end of index list add
     }
@@ -914,21 +694,128 @@ public class UI
     }
 
     public static String getString(){
-        boolean inputCheck = false;;
+        boolean inputCheck = false;
         String input ="";
-        try{
-            input = s.nextLine();
-            inputCheck = true;
-        }catch(Exception e){
-            System.out.println("Invalid Input. Please try again.");
+        while (!inputCheck){
+            try{
+                input = s.nextLine();
+                inputCheck = true;
+            }catch(Exception e){
+                System.out.println("Invalid Input. Please try again.");
+            }
         }
         return input;
+    }
+
+    public static boolean getYesNo(){
+        String input;
+        while(true){
+            try{
+                input = s.nextLine();
+                switch (input.toUpperCase()){
+                    case "Y":
+                    case "YES":
+                        return true;
+                    case "N":
+                    case "NO":
+                        return false;
+                }
+                throw new Exception();
+            }catch(Exception e){
+                System.out.println("Invalid Input. Please try again.");
+            }
+        }
+    }
+
+    public static int getTime(){
+        boolean inputCheck = false;;
+        String input ="";
+        int output = 0;
+        while(inputCheck==false){
+            try{
+                input = s.nextLine();
+                input = input.replaceAll(":","");
+                input = input.replaceAll("-","");
+                output = Integer.parseInt(input);
+                inputCheck = true;
+                if(output > 2359 || output < 0000)
+                    throw new Exception();
+            }catch(Exception e){
+                System.out.println("Invalid Input. Please try again.");
+                inputCheck = false;
+            }
+        }
+        return output;
+    }
+
+    public static TimeSlot.DAY getDay(){
+        boolean inputCheck = false;;
+        String input ="";
+        TimeSlot.DAY output = null;
+        while(inputCheck==false){
+            try{
+                input = s.nextLine();
+                switch (input.trim().toUpperCase()){
+                    case "M":
+                    case "MON":
+                    case "MONDAY":
+                        output = TimeSlot.DAY.MON;
+                        inputCheck = true;
+                        break;
+                    case "T":
+                    case "TUE":
+                    case "TUES":
+                    case "TUESDAY":
+                        output = TimeSlot.DAY.TUE;
+                        inputCheck = true;
+                        break;
+                    case "W":
+                    case "WED":
+                    case "WEDNESDAY":
+                        output = TimeSlot.DAY.WED;
+                        inputCheck = true;
+                        break;
+                    case "TH":
+                    case "THUR":
+                    case "THURS":
+                    case "THURSDAY":
+                        output = TimeSlot.DAY.THU;
+                        inputCheck = true;
+                        break;
+                    case "F":
+                    case "FRI":
+                    case "FRIDAY":
+                        output = TimeSlot.DAY.FRI;
+                        inputCheck = true;
+                        break;
+                    case "S":
+                    case "SAT":
+                    case "SATURDAY":
+                        output = TimeSlot.DAY.SAT;
+                        inputCheck = true;
+                        break;
+                    case "SU":
+                    case "SUN":
+                    case "SUNDAY":
+                        output = TimeSlot.DAY.SUN;
+                        inputCheck = true;
+                        break;
+                }
+                if(inputCheck == false)
+                    throw new Exception();
+            }catch(Exception e){
+                System.out.println("Invalid Input. Please try again.");
+            }
+        }
+        return output;
     }
 
     public static void printTitle(String title){
         String seperator = "=======================================================";
         System.out.printf("%s%n%" + ((seperator.length()+title.length())/2) + "s%n%s%n%n",seperator,title,seperator);
     }
+
+
 
 
 }

@@ -95,10 +95,8 @@ public class STARS
 
     public boolean checkDateFormat(String date)
     {
-
         try
         {
-
             Date dateObj = new SimpleDateFormat("dd/MM/yyyy").parse(date);
 
         } catch (ParseException e)
@@ -545,10 +543,12 @@ public class STARS
 //------------------------Method for adding/updating of Course----------------------------------------------------------
 
 
-    public void admin_AddCourse(String courseId, String courseName, String faculty)
+    public boolean admin_AddCourse(String courseId, String courseName, String faculty)
     {
-        if (CourseManager.getInstance().addCourse(courseId, courseName, faculty))
+        boolean success = CourseManager.getInstance().addCourse(courseId, courseName, faculty);
+        if(success)
             CourseManager.getInstance().save(); //Save after adding
+        return success;
     }
 
     public boolean admin_AddLecTimeSlot(String courseId, TimeSlot.DAY timeSlotDay, int startTimeHH, int startTimeMM, int endTimeHH, int endTimeMM, String locationLT)
