@@ -71,7 +71,7 @@ public class STARS
         User user = UserManager.getInstance().authenticateUser(userName, password);
         if (user != null) //Login successful
         {
-            System.out.println(user.getType() + " " + user.getUsername() + " is now logged on to Stars!");
+            //System.out.println(user.getType() + " " + user.getUsername() + " is now logged on to Stars!");
             currentLogOnUser = user;
             return user.getType();
         }
@@ -140,7 +140,8 @@ public class STARS
 
 //----------------------------Method to get access period as formatted string-------------------------------------------
 
-    public String getAccessPeriod(){
+    public String getAccessPeriod()
+    {
 
         String rtrStr;
         AccessPeriod accessPeriod;
@@ -151,8 +152,6 @@ public class STARS
                  "End date: " + sdf.format(accessPeriod.getEndDate().getTime());
         return rtrStr;
     }
-
-
 
     public boolean doesCourseExist(String courseId)
     {
@@ -168,7 +167,6 @@ public class STARS
 
         return false;
     }
-
 
     public boolean doesIndexExist(int indexNo)
     {
@@ -733,12 +731,12 @@ public class STARS
     }
 
     /**
-     * This method is called when you want to receive a formatted string ocntaining currently registered indexes of the student for printing purposes.
+     * This method is called when you want to receive a formatted string containing timetable of the student for printing purposes.
      *
      * @param matricNo Matriculation number of the student. Leave empty if accessed by Student Menu
-     * @return formatted string containing currently registered indexes of the student
+     * @return formatted string containing currently registered timetable of the student
      */
-    public String getStudentRegisteredIndex(String matricNo)//For student
+    public String getStudentTimeTable(String matricNo)//For student
     {
         String retStr = "";
         StringBuilder retStrBuild = new StringBuilder();
@@ -778,12 +776,58 @@ public class STARS
 
             for(int n = 0; n < tempList.size(); n++){
                 TimeSlot tempTimeSlot = tempList.get(n);
-                formatter.format("%-10s | %-8d | %-5s | %-5s | %s-%-7s | %s %n",  tempCourse.getCourseId(), indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+                if(n == 0)
+                    formatter.format("%-10s | %-8d | %-5s | %-5s | %s-%-7s | %s %n",  tempCourse.getCourseId(), indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+                else
+                    formatter.format("%-10s | %-8d | %-5s | %-5s | %s-%-7s | %s %n",  " ", indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
             }
 
             //retStr += "Index: " + indexList.get(i) + " - " + CourseManager.getInstance().getCourseByIndexNo(indexList.get(i)).getCourseName() + "\n";
         }
         retStr += retStrBuild.toString();
+        return retStr;
+    }
+
+    /**
+     * This method is called when you want to receive a formatted string containing currently registered indexes of the student for printing purposes.
+     *
+     * @param matricNo Matriculation number of the student. Leave empty if accessed by Student Menu
+     * @return formatted string containing currently registered indexes of the student
+     */
+    public String getStudentRegisteredIndex(String matricNo)//For student
+    {
+        String retStr = "";
+        Student tempStud = null;
+
+        if (currentLogOnUser.getType() == User.USER_TYPE.STUDENT)
+        {
+            matricNo = ((Student) currentLogOnUser).getMatricNo();
+            tempStud = (Student) currentLogOnUser;
+        } else
+        {
+            tempStud = (Student) UserManager.getInstance().getStudentByMatricNo(matricNo);
+            //Only admin has to handle this. This error will not occur if logged in user is student
+            if (tempStud == null)
+            {
+                retStr = "ERROR";
+                return retStr;
+            }
+        }
+
+        List<Integer> indexList = tempStud.getCourseIndexList();
+
+        //Check to see if student has registered for any courses
+        if (indexList.size() <= 0)
+        {
+            retStr = "You are not registered in any course";
+        }
+
+        for (int i = 0; i < indexList.size(); ++i)
+        {
+            //Get Course by Index No will never return null as the indexList exists in some course
+            Course tempCourse = CourseManager.getInstance().getCourseByIndexNo(indexList.get(i));
+            retStr += "Index: " + indexList.get(i) + " - " + tempCourse.getCourseName() + "\n";
+        }
         return retStr;
     }
 
