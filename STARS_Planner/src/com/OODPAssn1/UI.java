@@ -234,7 +234,7 @@ public class UI
                     System.out.println("\n\n\nYou are already enrolled in Index " + indexToEnroll + "\n");
                     break;
 
-                //Already in the index of the waitlist
+                //Already in the waitlist of the index
                 case 3:
                     System.out.println("\n\n\nYou are already in the waitlist of Index " + indexToEnroll + "\n");
                     studentPosInWaitList = STARS.getInstance().student_getPositionInWaitlist(indexToEnroll); //Gets the student's position in the waitlist

@@ -180,7 +180,6 @@ public class CourseManager extends DataManager
         //Student already enrolled in this index
         if (tempIndex.checkIfStudentEnrolled(matricNo))
         {
-
             return 2;
         }
         else if (tempIndex.checkIfStudentInWaitList(matricNo)) //Check if student is in waitlist
