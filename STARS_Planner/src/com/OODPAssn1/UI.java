@@ -1,8 +1,8 @@
 package com.OODPAssn1;
 
-import com.OODPAssn1.Entities.Student;
-import com.OODPAssn1.Entities.TimeSlot;
-import com.OODPAssn1.Entities.User;
+
+
+
 
 import java.io.Console;
 import java.util.Scanner;
@@ -14,7 +14,12 @@ public class UI
     private static Scanner s = new Scanner(System.in);
     private static Console c = System.console();
     private static STARS stars = STARS.getInstance();
-    private static User.USER_TYPE loggedOnUserType = null;
+    private static int loggedOnUserType;
+    private enum DAY
+    {
+        MON, TUE, WED, THU, FRI, SAT, SUN
+    }
+    private enum GENDER { MALE, FEMALE }
 
     public static void main(String[] args)
     {
@@ -23,12 +28,12 @@ public class UI
         {//Main UI loop
 
             loggedOnUserType = loginScreen();
-            if (loggedOnUserType == User.USER_TYPE.ADMIN)
+            if (loggedOnUserType == 1)
                 adminMenu();
-            else if (loggedOnUserType == User.USER_TYPE.STUDENT)
+            else if (loggedOnUserType == 0)
                 studentMenu();
 
-            if (loggedOnUserType == null)//Quit STARS Program
+            if (loggedOnUserType == -2)//Quit STARS Program
                 return;
         }
 
@@ -38,25 +43,25 @@ public class UI
     }
 //----------------------------------------Method to display Login screen----------------------------------------------
 
-    public static User.USER_TYPE loginScreen()
+    public static int loginScreen()
     {
 
         String userName;
         String passWord;
-        User.USER_TYPE userType = null;
+        int userType = -1;
 
         System.out.println("Welcome to STARS! Login to continue.\n" +
                 "------------------------------------");
-        while (userType == null)
+        while (userType == -1)
         {//Loop for login
             System.out.print("Please enter Username: ");
             userName = getString();
             System.out.print("Please enter Password: ");
             passWord = getString();
-            /* Code to hide password. Only works in console not in IDE
+            //Code to hide password. Only works in console not in IDE
             //char[] passString = c.readPassword();
             //passWord = new String(passString );
-            */
+
 
             if (passWord.equals("debug"))
             {
@@ -147,7 +152,7 @@ public class UI
 
                 case 8://Save changes and quit program
                     stars.saveData();
-                    loggedOnUserType = null;
+                    loggedOnUserType = -2;
                     return;
 
                 default:
@@ -472,7 +477,7 @@ public class UI
 
                 case 9://Save changes and quit program
                     stars.saveData();
-                    loggedOnUserType = null;
+                    loggedOnUserType = -2;
                     return;
 
                 case 10://Use for debugging purposes
@@ -517,7 +522,7 @@ public class UI
         {
             System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
             System.out.println("Enter the day for the lecture:");
-            TimeSlot.DAY timeSlotDay = null;
+            DAY timeSlotDay = null;
             timeSlotDay = getDay();
 
             System.out.println("Enter the lecture START time in 24hrs format for " + timeSlotDay.name());
@@ -529,7 +534,7 @@ public class UI
             System.out.println("Please enter the LT number for the Lecture  " + timeSlotDay.name());
             String locationLT = getString();
 
-            boolean success = stars.admin_AddLecTimeSlot(courseId, timeSlotDay, startTime/100, startTime%100, endTime/100, endTime%100, locationLT);
+            boolean success = stars.admin_AddLecTimeSlot(courseId, timeSlotDay.toString(), startTime/100, startTime%100, endTime/100, endTime%100, locationLT);
 
             if (success)
                 System.out.println("Lecture on " + timeSlotDay.name() + " successfully added!");
@@ -610,7 +615,7 @@ public class UI
         int contact = getInt();
 
         System.out.println("Please enter gender of student(m for male, f for female): ");
-        Student.GENDER stGender;
+        GENDER stGender;
         stGender = getGender();
 
         System.out.println("Please enter nationality of student: ");
@@ -626,9 +631,9 @@ public class UI
                       char[] passString = c.readPassword();
                       String password = new String(passString );
                     */
-        boolean result = stars.admin_addStudent(name, email, matricNo, contact, stGender, nationality, username, password);
+        boolean result = stars.admin_addStudent(name, email, matricNo, contact, stGender.toString(), nationality, username, password);
         if(result)
-            System.out.println(name + "successfully added to STARS");
+            System.out.println(name + " successfully added to STARS");
         else {
             System.out.println("Another student with " + matricNo + " already exist in STARS!\nPlease re-enter another Matric No: ");
             matricNo = getString();
@@ -640,10 +645,10 @@ public class UI
     {
         printTitle("Update Course");
         System.out.println(stars.printCourseList()); //prints out all course for selection
-        System.out.println("\nEnter the Course ID for the course which you would you like to update: ");
+        System.out.println("\nEnter the Course ID for the course which you would you like to update(Enter -1 to quit): ");
         String courseId = getString();
 
-        if (stars.doesCourseExist(courseId) == false);
+        if (stars.doesCourseExist(courseId))
         {
 
             System.out.println("What would you like to edit for " + courseId + "?");
@@ -734,7 +739,7 @@ public class UI
                 continue;
             }
 
-            TimeSlot.DAY timeSlotDay = null;
+            DAY timeSlotDay = null;
             int startTime;
             int endTime;
 
@@ -755,7 +760,7 @@ public class UI
             System.out.println("Enter the LAB END time in 24hrs format(HHMM): " );
             endTime = getTime();
             
-            stars.admin_AddIndexLabTimeSlot(indexNoToAdd, timeSlotDay, startTime/100, startTime%100, endTime/100, endTime%100, labLocation );
+            stars.admin_AddIndexLabTimeSlot(indexNoToAdd, timeSlotDay.toString(), startTime/100, startTime%100, endTime/100, endTime%100, labLocation );
 
             /*===================================
                           ADD TUT
@@ -774,7 +779,7 @@ public class UI
             System.out.println("Enter the TUT END time in 24hrs format(HHMM): " );
             endTime = getTime();
             
-            stars.admin_AddIndexTutTimeSlot(indexNoToAdd, timeSlotDay, startTime/100, startTime%100, endTime/100, endTime%100, tutLocation );
+            stars.admin_AddIndexTutTimeSlot(indexNoToAdd, timeSlotDay.toString(), startTime/100, startTime%100, endTime/100, endTime%100, tutLocation );
 
         }//end of index list add
     }
@@ -911,10 +916,11 @@ public class UI
         return courseId;
     }
 
-    public static TimeSlot.DAY getDay(){
+    public static DAY getDay(){
         boolean inputCheck = false;
         String input ="";
-        TimeSlot.DAY output = null;
+
+        DAY output = null;
         while(inputCheck==false){
             try{
                 input = s.nextLine();
@@ -924,45 +930,45 @@ public class UI
                     case "M":
                     case "MON":
                     case "MONDAY":
-                        output = TimeSlot.DAY.MON;
+                        output = DAY.MON;
                         inputCheck = true;
                         break;
                     case "T":
                     case "TUE":
                     case "TUES":
                     case "TUESDAY":
-                        output = TimeSlot.DAY.TUE;
+                        output = DAY.TUE;
                         inputCheck = true;
                         break;
                     case "W":
                     case "WED":
                     case "WEDNESDAY":
-                        output = TimeSlot.DAY.WED;
+                        output = DAY.WED;
                         inputCheck = true;
                         break;
                     case "TH":
                     case "THUR":
                     case "THURS":
                     case "THURSDAY":
-                        output = TimeSlot.DAY.THU;
+                        output = DAY.THU;
                         inputCheck = true;
                         break;
                     case "F":
                     case "FRI":
                     case "FRIDAY":
-                        output = TimeSlot.DAY.FRI;
+                        output = DAY.FRI;
                         inputCheck = true;
                         break;
                     case "S":
                     case "SAT":
                     case "SATURDAY":
-                        output = TimeSlot.DAY.SAT;
+                        output = DAY.SAT;
                         inputCheck = true;
                         break;
                     case "SU":
                     case "SUN":
                     case "SUNDAY":
-                        output = TimeSlot.DAY.SUN;
+                        output = DAY.SUN;
                         inputCheck = true;
                         break;
                 }
@@ -975,7 +981,7 @@ public class UI
         return output;
     }
 
-    public static Student.GENDER getGender(){
+    public static GENDER getGender(){
         String input;
         while(true){
             try{
@@ -985,9 +991,9 @@ public class UI
                 if(input.length()!=1)
                     throw new Exception();
                 if(input.toUpperCase().charAt(0) == 'M')
-                    return Student.GENDER.MALE;
+                    return GENDER.MALE;
                 if(input.toUpperCase().charAt(0) == 'F')
-                    return Student.GENDER.FEMALE;
+                    return GENDER.FEMALE;
                 throw new Exception();
             }catch(Exception e){
                 System.out.println("Invalid Input. Please try again.");
