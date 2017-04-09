@@ -64,14 +64,14 @@ public class STARS
 
 //--------------------------Method for login to Stars---------------------------------------
 /*
-  - Return the logged-on User type enum to UI class to facilitate displaying of
+  - Return 1 for student and 0 for admin to facilitate displaying of
     corresponding menu.
-  - Return null if User not found in database or failed authentication
+  - Return -1 if User not found in database or failed authentication
   - Invoke authenticateUser method in UserManager class for authentication process
   - Receive and store the logged-on User object to keep track of logged-on user identity
 */
 
-    public User.USER_TYPE loginToStars(String userName, String password)
+    public int loginToStars(String userName, String password)
     {
 
         User user = userManager.authenticateUser(userName, password);
@@ -79,9 +79,12 @@ public class STARS
         {
             //System.out.println(user.getType() + " " + user.getUsername() + " is now logged on to Stars!");
             currentLogOnUser = user;
-            return user.getType();
+            if(user.getType()== User.USER_TYPE.STUDENT)
+                return 0;
+            else
+                return 1;
         }
-        return null;
+        return -1;
     }
 
     public String validateStudentLogin (String username, String password)
@@ -746,9 +749,10 @@ public class STARS
         return success;
     }
 
-    public boolean admin_AddLecTimeSlot(String courseId, TimeSlot.DAY timeSlotDay, int startTimeHH, int startTimeMM, int endTimeHH, int endTimeMM, String locationLT)
+    public boolean admin_AddLecTimeSlot(String courseId, String timeSlotDayStr, int startTimeHH, int startTimeMM, int endTimeHH, int endTimeMM, String locationLT)
     {
         Course course = courseManager.getCourseByCourseId(courseId);
+        TimeSlot.DAY timeSlotDay = TimeSlot.DAY.valueOf(timeSlotDayStr);
 
         if (course != null)
         {
@@ -855,13 +859,13 @@ public class STARS
         return rtrStr;
     }
 
-    public boolean admin_AddIndexLabTimeSlot(int indexNo, TimeSlot.DAY day, int startH, int startM, int endH, int endM, String labLocation)
+    public boolean admin_AddIndexLabTimeSlot(int indexNo, String dayStr, int startH, int startM, int endH, int endM, String labLocation)
     {
         Index tempIndex = courseManager.getIndexByIndexNo(indexNo);
         //Can't find the index
         if (tempIndex == null)
             return false;
-
+        TimeSlot.DAY day = TimeSlot.DAY.valueOf(dayStr);
         boolean success = tempIndex.addLabTimeSlot(day, startH, startM, endH, endM, labLocation);
 
         if (success)
@@ -873,13 +877,13 @@ public class STARS
         return true;
     }
 
-    public boolean admin_AddIndexTutTimeSlot(int indexNo, TimeSlot.DAY day, int startH, int startM, int endH, int endM, String tutLocation)
+    public boolean admin_AddIndexTutTimeSlot(int indexNo, String dayStr, int startH, int startM, int endH, int endM, String tutLocation)
     {
         Index tempIndex = courseManager.getIndexByIndexNo(indexNo);
         //Can't find the index
         if (tempIndex == null)
             return false;
-
+        TimeSlot.DAY day = TimeSlot.DAY.valueOf(dayStr);
         boolean success = tempIndex.addTutTimeSlot(day, startH, startM, endH, endM, tutLocation);
 
         if (success)
@@ -896,9 +900,9 @@ public class STARS
 //This method will make use of UserManager to create student and write it into database.
 
     public boolean admin_addStudent(String name, String email, String matricNo,
-                                 int contact, Student.GENDER gender, String nationality,
+                                 int contact, String genderStr, String nationality,
                                  String username, String password) {
-
+        Student.GENDER gender = Student.GENDER.valueOf(genderStr);
         return userManager.addStudent(name, email, matricNo, contact, gender,
                 nationality, username, password);
 

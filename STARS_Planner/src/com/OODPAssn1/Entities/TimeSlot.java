@@ -10,7 +10,7 @@ public class TimeSlot implements Serializable
     public enum DAY
     {
         MON, TUE, WED, THU, FRI, SAT, SUN
-    };
+    }
 
     private DAY day; //
     private LocalTime startTime;

@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="STARS_Planner:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/STARS_Planner_jar</output-path>
+    <root id="archive" name="STARS_Planner.jar">
+      <element id="module-output" name="STARS_Planner" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/STARS_Planner/JAR Dependency files/javax.mail.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
