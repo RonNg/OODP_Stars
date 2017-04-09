@@ -28,12 +28,12 @@ public class STARS
     private Notification studentNotification;
 
 
-    private STARS(int i)
+    private STARS (int i)
     {
         init();
     }//Not sure why constructor require argument for it to be recognize
 
-    public static STARS getInstance()
+    public static STARS getInstance ()
     {
         if (instance == null)
         {
@@ -43,14 +43,13 @@ public class STARS
         return instance;
     }
 
-    public int init()
+    public int init ()
     {
         if (isInitAlready)
         {
             System.out.println("STARS is being reinitialised again!");
             return -1;
         }
-
 
 
         userManager = UserManager.getInstance();
@@ -71,7 +70,7 @@ public class STARS
   - Receive and store the logged-on User object to keep track of logged-on user identity
 */
 
-    public User.USER_TYPE loginToStars(String userName, String password)
+    public User.USER_TYPE loginToStars (String userName, String password)
     {
 
         User user = userManager.authenticateUser(userName, password);
@@ -87,9 +86,9 @@ public class STARS
     public String validateStudentLogin (String username, String password)
     {
         User user = userManager.authenticateUser(username, password);
-        if (user != null && user instanceof  Student) //Login successful
+        if (user != null && user instanceof Student) //Login successful
         {
-            return ((Student)user).getMatricNo();
+            return ((Student) user).getMatricNo();
         }
         else
             return null;
@@ -97,7 +96,7 @@ public class STARS
 
 //------------------------Method to check current date is within access period-----------------------------
 
-    public boolean checkAccessPeriod()
+    public boolean checkAccessPeriod ()
     {
 
         //SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
@@ -110,15 +109,14 @@ public class STARS
     }
 //----------------------------Method to check valid Date format---------------------------------------------------------
 
-    public boolean checkDateFormat(String date)
+    public boolean checkDateFormat (String date)
     {
 
         try
         {
             Date dateObj = new SimpleDateFormat("dd/MM/yyyy").parse(date);
-            if(Integer.parseInt(date.substring(0,2)) > 31 || Integer.parseInt(date.substring(3,5)) > 12)
+            if (Integer.parseInt(date.substring(0, 2)) > 31 || Integer.parseInt(date.substring(3, 5)) > 12)
                 return false;
-
 
 
         } catch (ParseException e)
@@ -128,7 +126,8 @@ public class STARS
         return true;
     }
 
-    public boolean checkStartDateCompatibility(String start){
+    public boolean checkStartDateCompatibility (String start)
+    {
 
         Date startDate;
         Date currentDate = new Date();
@@ -138,7 +137,6 @@ public class STARS
             startDate = new SimpleDateFormat("dd/MM/yyyy").parse(start);
 
 
-
         } catch (ParseException e)
         {
             return false;
@@ -146,7 +144,8 @@ public class STARS
         return startDate.after(currentDate);
     }
 
-    public boolean checkEndDateCompatibility(String start, String end){
+    public boolean checkEndDateCompatibility (String start, String end)
+    {
 
         Date startDate;
         Date endDate;
@@ -164,7 +163,7 @@ public class STARS
 
 //----------------------------Method to set access period---------------------------------------------------------------
 
-    public String setAccessPeriod(String start, String end)
+    public String setAccessPeriod (String start, String end)
     {
 
         Date startDateObj, endDateObj;
@@ -189,20 +188,21 @@ public class STARS
         }
 
 
-        if(userManager.changeAccessPeriod(startDateCal, endDateCal)) {
+        if (userManager.changeAccessPeriod(startDateCal, endDateCal))
+        {
 
-                this.saveData();
-                return "Start date: " + sdf.format(startDateCal.getTime()) + "   " + "End date: " + sdf.format(endDateCal.getTime());
-            } else
-                return "Error in setting access period!";
-
+            this.saveData();
+            return "Start date: " + sdf.format(startDateCal.getTime()) + "   " + "End date: " + sdf.format(endDateCal.getTime());
+        }
+        else
+            return "Error in setting access period!";
 
 
     }
 
 //----------------------------Method to get access period as formatted string-------------------------------------------
 
-    public String getAccessPeriod()
+    public String getAccessPeriod ()
     {
 
         String rtrStr;
@@ -211,25 +211,26 @@ public class STARS
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
 
         rtrStr = "Start date: " + sdf.format(accessPeriod.getStartDate().getTime()) + "   " +
-                 "End date: " + sdf.format(accessPeriod.getEndDate().getTime());
+                "End date: " + sdf.format(accessPeriod.getEndDate().getTime());
         return rtrStr;
     }
 
-    public boolean doesCourseExist(String courseId)
+    public boolean doesCourseExist (String courseId)
     {
         List<Course> courseList = courseManager.getCourseList();
         for (int i = 0; i < courseList.size(); ++i)
         {
 
             //System.out.println(courseList.get(i).getCourseId());
-            if (courseList.get(i).getCourseId().equalsIgnoreCase(courseId)) {
+            if (courseList.get(i).getCourseId().equalsIgnoreCase(courseId))
+            {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean doesIndexExist(int indexNo)
+    public boolean doesIndexExist (int indexNo)
     {
         List<Course> courseList = courseManager.getCourseList();
         for (int i = 0; i < courseList.size(); ++i)
@@ -248,7 +249,7 @@ public class STARS
 
     }
 
-    public String checkIfIndexClash(Index index1, Index index2)
+    public String checkIfIndexClash (Index index1, Index index2)
     {
         //Check Lecture clash
         Course course1 = courseManager.getCourseByIndexNo(index1.getIndexNum());
@@ -325,12 +326,11 @@ public class STARS
 
 
     /**
-     *
      * @param indexNo  Index number to check
      * @param matricNo Leave empty if matric no to check is the current user's matric no
      * @return -1 Error <br>
-     *          0 if student is not enrolled in this index <br>
-     *          1 if student is enrolled in this index
+     * 0 if student is not enrolled in this index <br>
+     * 1 if student is enrolled in this index
      */
     public int checkIfEnrolled (int indexNo, String matricNo)
     {
@@ -363,7 +363,7 @@ public class STARS
 
     }
 
-    public boolean checkIfIndexExists(int indexNo)
+    public boolean checkIfIndexExists (int indexNo)
     {
         if (courseManager.getIndexByIndexNo(indexNo) != null)
             return true;
@@ -392,7 +392,7 @@ public class STARS
      * The first value in the array is the Student's position in the waitlist
      * The second value in the array is the total number of Students in the waitlist
      */
-    public int[] student_getPositionInWaitlist(int indexNo)
+    public int[] student_getPositionInWaitlist (int indexNo)
     {
         if (doesIndexExist(indexNo) == false || currentLogOnUser.getType() != User.USER_TYPE.STUDENT)
             return null;
@@ -419,59 +419,74 @@ public class STARS
      * Added into waitlist -> -1 <br>
      * Successfully enrolled into index -> 1 <br>
      * Already enrolled in index -> 2 <br>
-     * Already in waitlist of the index -> 3
-     * Index Clash -> 4
-     * Already in another index of the same course -> 5
+     * Already in waitlist of the index -> 3 <br>
+     * Index Clash -> 4 <br>
+     * Already in another index of the same course -> 5 <br>
+     * Succesfully switched index -> 6 <br>
+     * Switched index but added into waitlist of the target index -> 7
      */
-    public int student_EnrolIndex(int indexNo)
+    public int student_EnrolIndex (int indexNo)
     {
         if (currentLogOnUser.getType() != User.USER_TYPE.STUDENT) //only students can enroll into indexes
             return 0;
 
         Student tempStud = (Student) currentLogOnUser;
 
-        //This code chunk checks for Index Clash
-        List<Integer> currentUserIndexList = tempStud.getCourseIndexList();
 
+        //Check if we can switch index
         Index indexToJoin = courseManager.getIndexByIndexNo(indexNo);
+        Index indexInSameCourse = null;
 
-
-        /*===============================
-                  SWITCH INDEX
-         ================================*/
+        //Is the current student trying ot switch from waitlist (of another index) to indexToJoin (i.e. waitlist switch to index)
+        boolean switchInWaitList = false;
         Course courseOfIndexToJoin = courseManager.getCourseByIndexNo(indexToJoin.getIndexNum());
 
-        //Code will only execute if joining same course
-        //loop through every index to see if you are in a waitlist of one of them
-        for(int i = 0; i < courseOfIndexToJoin.getIndexList().size(); ++ i)
+        //Loops through to find if student is enrolled or in waitlist in the same CourseID of the index he wants to join
+        for (int i = 0; i < courseOfIndexToJoin.getIndexList().size(); ++i)
         {
-            //If you are already in the wiatlist of the index to join, return error.
-            if(courseOfIndexToJoin.getIndexList().get(i).getIndexNum() == indexToJoin.getIndexNum())
-            {
-                if(indexToJoin.checkIfStudentInWaitList(tempStud.getMatricNo()))
-                    return 111; //TODO: you're already in the waitlist, cannot join again
-            }
-            else //compare different indexes only
-            {
-                //Check if you're already in the waitlist in diff index but same course
-                if (courseOfIndexToJoin.getIndexList().get(i).checkIfStudentInWaitList(tempStud.getMatricNo()))
-                {
-                    //Remove yourself from the other waitlist
-                    courseOfIndexToJoin.getIndexList().get(i).removeStudentFromWaitlist(tempStud.getMatricNo());
-                    //enrol to the index to join
-                    int result = courseManager.enrolInIndex(tempStud.getMatricNo(), indexNo);
+            Index tempIndex = courseOfIndexToJoin.getIndexList().get(i);
 
-                    if (result == 1)// if succesfully enrolled (not waitlist)
-                    {
-                        tempStud.addCourseIndex(indexNo);
-                        saveData();
-                        return 112;
-                    }
-                    return result;
-                }
+            if (indexToJoin.getIndexNum() == tempIndex.getIndexNum())
+            {
+                //You're attempting to join the same index
+                if (indexToJoin.checkIfStudentInWaitList(tempStud.getMatricNo()))
+                    return 111; //You are attempting to join the same wailist
+                else if( indexToJoin.checkIfStudentEnrolled(tempStud.getMatricNo()))
+                    return 2; //Already enrolled in the index
             }
-        }//If you are trying to join index of same course, it won't get past this line
 
+            if (tempIndex.checkIfStudentEnrolled(tempStud.getMatricNo()))
+            {
+                indexInSameCourse = tempIndex;
+            }
+            else if (tempIndex.checkIfStudentInWaitList(tempStud.getMatricNo()))
+            {
+                indexInSameCourse = tempIndex;
+                switchInWaitList = true;
+            }
+        }
+
+
+        //Detect if student is joining another index of the same course
+        if (indexInSameCourse != null)
+        {
+            int switchResult = student_SwitchIndex(indexInSameCourse.getIndexNum(), indexToJoin.getIndexNum(), switchInWaitList);
+            switch (switchResult)
+            {
+                case 1:
+                    saveData();
+                    return 6;
+                case -1:
+                    saveData();
+                    return 7;
+                default:
+                    return switchResult;
+            }
+        }
+
+
+        //This code chunk checks for Index Clash
+        List<Integer> currentUserIndexList = tempStud.getCourseIndexList();
 
         /*===================================
                     CHECK CLASH
@@ -486,7 +501,7 @@ public class STARS
             String result = checkIfIndexClash(currUserIndex, indexToJoin);
             if (result.equals("NO CLASH") == false)
             {
-                if(result.equals("SAME COURSE"))
+                if (result.equals("SAME COURSE"))
                     return 5; //Changed to 5************************************ QYQYQYQYQYQYQYQY
 
                 return 4; //Index clashes
@@ -526,7 +541,7 @@ public class STARS
      * @return returns 1 if index succesfully dropped <br>
      * returns 0 if error occured
      */
-    public int student_DropIndex(int indexNo)
+    public int student_DropIndex (int indexNo)
     {
         if (currentLogOnUser.getType() != User.USER_TYPE.STUDENT) //only students can enroll into indexes
             return 0;
@@ -575,24 +590,24 @@ public class STARS
         return 0;
     }
 
-    public int student_SwapIndex(int firstIndex, String secondMatric, int secondIndex)
+    public int student_SwapIndex (int firstIndex, String secondMatric, int secondIndex)
     {
-        String firstMatric = ((Student)currentLogOnUser).getMatricNo();
+        String firstMatric = ((Student) currentLogOnUser).getMatricNo();
 
         //We need to do some evil stuff and bypass waitlist handling
         courseManager.dropFromIndex(firstMatric, firstIndex, true);
-        userManager.getStudentByMatricNo(firstMatric).getCourseIndexList().remove((Integer)firstIndex);
+        userManager.getStudentByMatricNo(firstMatric).getCourseIndexList().remove((Integer) firstIndex);
 
         courseManager.dropFromIndex(secondMatric, secondIndex, true);
-        userManager.getStudentByMatricNo(secondMatric).getCourseIndexList().remove((Integer)secondIndex);
+        userManager.getStudentByMatricNo(secondMatric).getCourseIndexList().remove((Integer) secondIndex);
 
         //SWAPPED!
         if (courseManager.enrolInIndex(firstMatric, secondIndex) == 1)
         {
-            userManager.getStudentByMatricNo(firstMatric).getCourseIndexList().add((Integer)secondIndex);
-            if(courseManager.enrolInIndex(secondMatric, firstIndex) == 1)
+            userManager.getStudentByMatricNo(firstMatric).getCourseIndexList().add((Integer) secondIndex);
+            if (courseManager.enrolInIndex(secondMatric, firstIndex) == 1)
             {
-                userManager.getStudentByMatricNo(secondMatric).getCourseIndexList().add((Integer)firstIndex);
+                userManager.getStudentByMatricNo(secondMatric).getCourseIndexList().add((Integer) firstIndex);
                 saveData();
                 return 1;
             }
@@ -600,6 +615,42 @@ public class STARS
 
         return 0; //Failed to swap index
 
+    }
+
+    public int student_SwitchIndex (int currentIndexNo, int targetIndexNo, boolean switchInWaitList)
+    {
+        Index currentIndex = courseManager.getIndexByIndexNo(currentIndexNo);
+        Index targetIndex = courseManager.getIndexByIndexNo(targetIndexNo);
+        String currentUserMatric = ((Student) currentLogOnUser).getMatricNo();
+
+
+        //If there is a vacancy, we switch between indexs
+        //Waitlist to target index
+
+
+        int result = courseManager.enrolInIndex(currentUserMatric, targetIndexNo);
+
+        if(result == 0)
+            return 0;
+
+        if (switchInWaitList)
+            currentIndex.getWaitList().remove(currentUserMatric); //Remove current student from waitlist
+        else
+            currentIndex.withdrawStudent(currentUserMatric, false);
+
+        switch (result) //If added into index
+        {
+            case 1: //Succesfully added
+                ((Student) currentLogOnUser).getCourseIndexList().remove((Integer)currentIndexNo); //Removes the currentIndex
+                ((Student) currentLogOnUser).addCourseIndex(targetIndexNo); //Adds the target index
+                //Do for coursemanager side
+                return 1;
+
+            case -1: //added into waitlist
+                return -1;
+        }
+
+        return 0; //error occured
     }
 
 
@@ -627,7 +678,7 @@ public class STARS
  */
 
 
-    public String printStudentsInCourse(String courseId)
+    public String printStudentsInCourse (String courseId)
     {
 
 
@@ -678,7 +729,7 @@ public class STARS
         return retStr;
     }
 
-    public String deleteCourseViaCourseId(String cId)
+    public String deleteCourseViaCourseId (String cId)
     {
 
         String retStr = "";
@@ -738,15 +789,15 @@ public class STARS
 //------------------------Method for adding/updating of Course----------------------------------------------------------
 
 
-    public boolean admin_AddCourse(String courseId, String courseName, String faculty)
+    public boolean admin_AddCourse (String courseId, String courseName, String faculty)
     {
         boolean success = courseManager.addCourse(courseId, courseName, faculty);
-        if(success)
+        if (success)
             courseManager.save(); //Save after adding
         return success;
     }
 
-    public boolean admin_AddLecTimeSlot(String courseId, TimeSlot.DAY timeSlotDay, int startTimeHH, int startTimeMM, int endTimeHH, int endTimeMM, String locationLT)
+    public boolean admin_AddLecTimeSlot (String courseId, TimeSlot.DAY timeSlotDay, int startTimeHH, int startTimeMM, int endTimeHH, int endTimeMM, String locationLT)
     {
         Course course = courseManager.getCourseByCourseId(courseId);
 
@@ -757,14 +808,15 @@ public class STARS
             courseManager.save();
 
             return true;
-        } else
+        }
+        else
         {
             System.out.println("STARS: admin_AddLecTimeSlot CourseID not found");
             return false;
         }
     }
 
-    public boolean admin_AddIndex(String courseId, int indexNoToAdd, int maxStudent)
+    public boolean admin_AddIndex (String courseId, int indexNoToAdd, int maxStudent)
     {
         boolean alreadyExists = false;
         Course tempCourse = courseManager.getCourseByCourseId(courseId);
@@ -805,7 +857,7 @@ public class STARS
     - Save changes
 4) Return string that contain names of student that are de-enrolled due to deletion
  */
-    public String deleteIndexFromCourse(int indexNo)
+    public String deleteIndexFromCourse (int indexNo)
     {
         String rtrStr = "";
         String indexNotFoundStr = "Error! Index not found in STARS!";
@@ -843,7 +895,7 @@ public class STARS
 
 //------------------------------------Method to check vacancy of index--------------------------------------------------
 
-    public String checkIndexVacancy(int indexNo)
+    public String checkIndexVacancy (int indexNo)
     {
 
         String rtrStr = "";
@@ -855,7 +907,7 @@ public class STARS
         return rtrStr;
     }
 
-    public boolean admin_AddIndexLabTimeSlot(int indexNo, TimeSlot.DAY day, int startH, int startM, int endH, int endM, String labLocation)
+    public boolean admin_AddIndexLabTimeSlot (int indexNo, TimeSlot.DAY day, int startH, int startM, int endH, int endM, String labLocation)
     {
         Index tempIndex = courseManager.getIndexByIndexNo(indexNo);
         //Can't find the index
@@ -873,7 +925,7 @@ public class STARS
         return true;
     }
 
-    public boolean admin_AddIndexTutTimeSlot(int indexNo, TimeSlot.DAY day, int startH, int startM, int endH, int endM, String tutLocation)
+    public boolean admin_AddIndexTutTimeSlot (int indexNo, TimeSlot.DAY day, int startH, int startM, int endH, int endM, String tutLocation)
     {
         Index tempIndex = courseManager.getIndexByIndexNo(indexNo);
         //Can't find the index
@@ -895,17 +947,19 @@ public class STARS
 //-------------------------------Method for enrolling of Student into STARS---------------------------------------------
 //This method will make use of UserManager to create student and write it into database.
 
-    public boolean admin_addStudent(String name, String email, String matricNo,
-                                 int contact, Student.GENDER gender, String nationality,
-                                 String username, String password) {
+    public boolean admin_addStudent (String name, String email, String matricNo,
+                                     int contact, Student.GENDER gender, String nationality,
+                                     String username, String password)
+    {
 
         return userManager.addStudent(name, email, matricNo, contact, gender,
                 nationality, username, password);
 
     }
 
-    public boolean checkStudentExist(String matricNo){
-        if(userManager.getStudentByMatricNo(matricNo)==null)
+    public boolean checkStudentExist (String matricNo)
+    {
+        if (userManager.getStudentByMatricNo(matricNo) == null)
             return false;
         return true;
     }
@@ -913,18 +967,19 @@ public class STARS
 
 //-------------------------------Method to write all list back to database----------------------------------------------
 
-    public boolean saveData()
+    public boolean saveData ()
     {
         if (userManager.save() && courseManager.save())
         {
             //When we save the data of UserManager, the password is encrypted again. We need to decrypt it for login to work again.
             return true;
-        } else
+        }
+        else
             return false;
     }
 //------------------------------Method to print all course available for registration-----------------------------------
 
-    public String printCourseList()
+    public String printCourseList ()
     {
         String output = "";
         StringBuilder outputBuild;
@@ -939,17 +994,17 @@ public class STARS
             temp = courseList.get(i);
             outputBuild = new StringBuilder();
             Formatter formatter = new Formatter(outputBuild, Locale.ENGLISH);
-            formatter.format("%-8s | %-50s | Indexes: ",temp.getCourseId(),temp.getCourseName());
-            output+=outputBuild.toString();
+            formatter.format("%-8s | %-50s | Indexes: ", temp.getCourseId(), temp.getCourseName());
+            output += outputBuild.toString();
             List<Index> indexList = temp.getIndexList();
-            for(int j = 0; indexList != null && j < indexList.size(); j++)
+            for (int j = 0; indexList != null && j < indexList.size(); j++)
             {
-                if(j < 1)
-                    output+=Integer.toString(indexList.get(j).getIndexNum());
+                if (j < 1)
+                    output += Integer.toString(indexList.get(j).getIndexNum());
                 else
-                    output+=", " + Integer.toString(indexList.get(j).getIndexNum());
+                    output += ", " + Integer.toString(indexList.get(j).getIndexNum());
             }
-            output+="\n";
+            output += "\n";
         }
         return output;
     }
@@ -963,7 +1018,7 @@ public class STARS
 
 //------------------------Method to print list of students enrolled in index--------------------------------------------
 
-    public String getStudentsInIndex(int indexNo)
+    public String getStudentsInIndex (int indexNo)
     {
 
         String indexNotFoundStr = "Error! Index not found in system!";
@@ -972,7 +1027,7 @@ public class STARS
         Student student;
 
         Index index = courseManager.getIndexByIndexNo(indexNo);
-        if(index == null)
+        if (index == null)
             return indexNotFoundStr;
 
         List<String> indexList = index.getEnrolledStudentList();
@@ -994,7 +1049,7 @@ public class STARS
 
 //------------------------Method to print list of students enrolled in course-------------------------------------------
 
-    public String getStudentsInCourse(String courseId)
+    public String getStudentsInCourse (String courseId)
     {
 
         String courseNotFoundStr = "Error! Course not found in system!";
@@ -1032,13 +1087,15 @@ public class STARS
 
 
             }
-        } else
+        }
+        else
             retStr = CourseIsEmptyStr;
 
         return retStr;
     }
 
-    public String formatStudentInfoRtrStr(Student s, String retStr ){
+    public String formatStudentInfoRtrStr (Student s, String retStr)
+    {
 
         return retStr = retStr + "Name: " + s.getName() + "  Gender: " + s.getGender() +
                 "  Nationality: " + s.getNationality() + "\n";
@@ -1051,7 +1108,7 @@ public class STARS
      *
      * @param courseId courseId to print index
      */
-    public String getIndexListOfCourse(String courseId)
+    public String getIndexListOfCourse (String courseId)
     {
         String retStr = "";
         StringBuilder retStrBuild;
@@ -1061,15 +1118,18 @@ public class STARS
         for (int i = 0; i < indexList.size(); ++i)
         {
             Index tempIndex = indexList.get(i);
-            List<TimeSlot> tempList  = tempIndex.getTutLabTimeSlotList();
+            List<TimeSlot> tempList = tempIndex.getTutLabTimeSlotList();
             for (int n = 0; n < tempList.size(); n++)
             {
                 TimeSlot tempTimeSlot = tempList.get(n);
                 retStrBuild = new StringBuilder();
                 formatter = new Formatter(retStrBuild, Locale.ENGLISH);
-                if(n==0){
+                if (n == 0)
+                {
                     formatter.format("%-8d | %-5s | %-5s | %s-%-7s | %s %n", indexList.get(i).getIndexNum(), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
-                }else{
+                }
+                else
+                {
                     formatter.format("%-8s | %-5s | %-5s | %s-%-7s | %s %n", "", tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
                 }
 
@@ -1086,7 +1146,7 @@ public class STARS
      * @param matricNo Matriculation number of the student. Leave empty if accessed by Student Menu
      * @return formatted string containing currently registered timetable of the student
      */
-    public String getStudentTimeTable(String matricNo)//For student
+    public String getStudentTimeTable (String matricNo)//For student
     {
         String retStr = "";
         StringBuilder retStrBuild;
@@ -1097,7 +1157,8 @@ public class STARS
         {
             matricNo = ((Student) currentLogOnUser).getMatricNo();
             tempStud = (Student) currentLogOnUser;
-        } else
+        }
+        else
         {
             tempStud = (Student) UserManager.getInstance().getStudentByMatricNo(matricNo);
             //Only admin has to handle this. This error will not occur if logged in user is student
@@ -1141,7 +1202,7 @@ public class STARS
                 TimeSlot tempTimeSlot = tempList.get(n);
                 retStrBuild = new StringBuilder();
                 formatter = new Formatter(retStrBuild, Locale.ENGLISH);
-                if (lecTimeSlotSize==0)
+                if (lecTimeSlotSize == 0)
                     formatter.format("%-8s | %-8d | %-5s | %-5s | %s-%-7s | %s %n", tempCourse.getCourseId(), indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
                 else
                     formatter.format("%-8s | %-8d | %-5s | %-5s | %s-%-7s | %s %n", "", indexList.get(i), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
@@ -1159,7 +1220,7 @@ public class STARS
      * @param matricNo Matriculation number of the student. Leave empty if accessed by Student Menu
      * @return formatted string containing currently registered indexes of the student
      */
-    public String getStudentRegisteredIndex(String matricNo)//For student
+    public String getStudentRegisteredIndex (String matricNo)//For student
     {
         String retStr = "";
         Student tempStud = null;
@@ -1168,7 +1229,8 @@ public class STARS
         {
             matricNo = ((Student) currentLogOnUser).getMatricNo();
             tempStud = (Student) currentLogOnUser;
-        } else
+        }
+        else
         {
             tempStud = (Student) userManager.getStudentByMatricNo(matricNo);
             //Only admin has to handle this. This error will not occur if logged in user is student
@@ -1201,7 +1263,7 @@ public class STARS
 //----------------Methods for debugging purposes only, remove for production-------------------------------------------
 //Remember to remove import statements for Student and Admin when ready for production
 
-    public void printAllList()
+    public void printAllList ()
     {
         System.out.println("===============================");
         userManager.printAllUser();
@@ -1216,7 +1278,7 @@ public class STARS
 
     }
 
-    public void populateTestWaitlist()
+    public void populateTestWaitlist ()
     {
         userManager.addStudent("qinghui", "qlai002@e.ntu.edu.sg", "U1111111B", 93874270, Student.GENDER.MALE, "Singaporean", "qinghui", "password");
         userManager.addStudent("ron", "c160144@e.ntu.edu.sg", "U333333B", 93874270, Student.GENDER.MALE, "Singaporean", "c160144", "password");
@@ -1231,25 +1293,29 @@ public class STARS
         /*=============================
                 Create DSD course
          =============================*/
-        if(courseManager.addCourse("CE2003", "Digital System Design", "SCE")){
+        if (courseManager.addCourse("CE2003", "Digital System Design", "SCE"))
+        {
 
-        courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10042, 1);
-        courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10043, 1);
+            courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10042, 1);
+            courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10043, 1);
 
 
-        courseManager.addLecTimeSlot(courseManager.getCourseByIndexNo(10042), TimeSlot.DAY.MON, 14, 00, 15, 00, "LT4");
-        courseManager.getCourseByIndexNo(10042).getIndex(10042).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR45");
-        courseManager.getCourseByIndexNo(10042).getIndex(10042).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 2");
+            courseManager.addLecTimeSlot(courseManager.getCourseByIndexNo(10042), TimeSlot.DAY.MON, 14, 00, 15, 00, "LT4");
+            courseManager.getCourseByIndexNo(10042).getIndex(10042).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR45");
+            courseManager.getCourseByIndexNo(10042).getIndex(10042).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 2");
 
-        courseManager.getCourseByIndexNo(10043).getIndex(10043).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR30");
-        courseManager.getCourseByIndexNo(10043).getIndex(10043).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 1");
-    }   else System.out.println("Course already exist");
+            courseManager.getCourseByIndexNo(10043).getIndex(10043).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR30");
+            courseManager.getCourseByIndexNo(10043).getIndex(10043).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 1");
+        }
+        else
+            System.out.println("Course already exist");
 
 
         /*=============================
                 Create OODP course
          =============================*/
-        if(courseManager.addCourse("CE2002", "Object Oriented Design & Programming", "SCE")){
+        if (courseManager.addCourse("CE2002", "Object Oriented Design & Programming", "SCE"))
+        {
             courseManager.createIndex(courseManager.getCourseByCourseId("CE2002"), 10052, 1);
             courseManager.createIndex(courseManager.getCourseByCourseId("CE2002"), 10053, 1);
             courseManager.addLecTimeSlot(courseManager.getCourseByIndexNo(10052), TimeSlot.DAY.MON, 11, 00, 12, 00, "LT4");
@@ -1258,7 +1324,9 @@ public class STARS
             courseManager.getCourseByIndexNo(10053).getIndex(10053).addTutTimeSlot(TimeSlot.DAY.THU, 11, 00, 13, 00, "TR30");
             courseManager.getCourseByIndexNo(10053).getIndex(10053).addLabTimeSlot(TimeSlot.DAY.WED, 11, 00, 15, 00, "LAB 1");
 
-        } else System.out.println("Course already exist");
+        }
+        else
+            System.out.println("Course already exist");
 
 
         //Adds bob into CourseManager and UserManager
@@ -1272,36 +1340,39 @@ public class STARS
         saveData();
     }
 
-    public void populateDatabase()
+    public void populateDatabase ()
     {
         String name = "Student";
         String nation = "Nation ";
-        List<String> emailList = Arrays.asList("c160144@e.ntu.edu.sg","qhu003@e.ntu.edu.sg","qlai002@e.ntu.edu.sg");
+        List<String> emailList = Arrays.asList("c160144@e.ntu.edu.sg", "qhu003@e.ntu.edu.sg", "qlai002@e.ntu.edu.sg");
         List<Student.GENDER> genderList = Arrays.asList(Student.GENDER.FEMALE, Student.GENDER.MALE);
-        for(int n = 1; n <= 15; n++){
-            userManager.addStudent(name+n, emailList.get((n%3)),Integer.toString(n),n,genderList.get(n%2),nation+n, name+n, name+n);
+        for (int n = 1; n <= 15; n++)
+        {
+            userManager.addStudent(name + n, emailList.get((n % 3)), Integer.toString(n), n, genderList.get(n % 2), nation + n, name + n, name + n);
         }
 
         userManager.addAdmin("admin", "admin@e.ntu", "admin", "admin");
 
         Course temphold;
 
-        if(courseManager.addCourse("CE2003", "Digital Systems Design", "SCE")){
+        if (courseManager.addCourse("CE2003", "Digital Systems Design", "SCE"))
+        {
             temphold = courseManager.getCourseByCourseId("CE2003");
             courseManager.addLecTimeSlot(temphold, TimeSlot.DAY.FRI, 10, 30, 11, 30, "LT11");
             courseManager.addLecTimeSlot(temphold, TimeSlot.DAY.TUE, 15, 30, 16, 30, "LT11");
 
-            courseManager.createIndex(temphold, 10041, 10);
-            courseManager.getIndexByIndexNo(10041).addTutTimeSlot(TimeSlot.DAY.THU,9,30,10,30,"TR+16");
-            courseManager.getIndexByIndexNo(10041).addLabTimeSlot(TimeSlot.DAY.TUE,8,30,10,30,"HWLAB3");
+            courseManager.createIndex(temphold, 10041, 1);
+            courseManager.getIndexByIndexNo(10041).addTutTimeSlot(TimeSlot.DAY.THU, 9, 30, 10, 30, "TR+16");
+            courseManager.getIndexByIndexNo(10041).addLabTimeSlot(TimeSlot.DAY.TUE, 8, 30, 10, 30, "HWLAB3");
 
-            courseManager.createIndex(temphold, 10042, 10);
-            courseManager.getIndexByIndexNo(10042).addTutTimeSlot(TimeSlot.DAY.THU,13,30,14,30,"TR+15");
-            courseManager.getIndexByIndexNo(10042).addLabTimeSlot(TimeSlot.DAY.WED,14,30,16,30,"HWLAB3");
+            courseManager.createIndex(temphold, 10042, 1);
+            courseManager.getIndexByIndexNo(10042).addTutTimeSlot(TimeSlot.DAY.THU, 13, 30, 14, 30, "TR+15");
+            courseManager.getIndexByIndexNo(10042).addLabTimeSlot(TimeSlot.DAY.WED, 14, 30, 16, 30, "HWLAB3");
 
         }
 
-        if(courseManager.addCourse("CE2002", "Object Oriented Design and Programming", "SCE")) {
+        if (courseManager.addCourse("CE2002", "Object Oriented Design and Programming", "SCE"))
+        {
             temphold = courseManager.getCourseByCourseId("CE2002");
             courseManager.addLecTimeSlot(temphold, TimeSlot.DAY.THU, 8, 30, 9, 30, "LT2A");
             courseManager.addLecTimeSlot(temphold, TimeSlot.DAY.TUE, 14, 30, 15, 30, "LT2A");
@@ -1315,7 +1386,8 @@ public class STARS
             courseManager.getIndexByIndexNo(10032).addLabTimeSlot(TimeSlot.DAY.WED, 14, 30, 16, 30, "SWLAB2");
         }
 
-        if(courseManager.addCourse("MH1812", "Discrete Mathematics", "SPMS")) {
+        if (courseManager.addCourse("MH1812", "Discrete Mathematics", "SPMS"))
+        {
             temphold = courseManager.getCourseByCourseId("MH1812");
             courseManager.addLecTimeSlot(temphold, TimeSlot.DAY.WED, 9, 30, 10, 30, "LT4");
             courseManager.addLecTimeSlot(temphold, TimeSlot.DAY.THU, 16, 30, 17, 30, "LT4");
@@ -1329,7 +1401,8 @@ public class STARS
             courseManager.getIndexByIndexNo(10163).addLabTimeSlot(TimeSlot.DAY.WED, 14, 30, 16, 30, "TR+15");
         }
 
-        if(courseManager.addCourse("HW0188", "Engineering Communication I", "HSS")) {
+        if (courseManager.addCourse("HW0188", "Engineering Communication I", "HSS"))
+        {
             temphold = courseManager.getCourseByCourseId("HW0188");
 
             courseManager.createIndex(temphold, 15171, 10);

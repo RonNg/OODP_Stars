@@ -17,8 +17,7 @@ public class Index implements Serializable
 
     private List<String> studentsEnrolledList; // Stores matric number
     private List<TimeSlot> tutLabTimeSlotList; // Stores class times
-    private List<String> studentWaitList; // Stores wait list
-
+    private List<String> studentWaitList; // Stores student matriculaton number
 
     public Index(int indexNum, int maxNumberOfStudent)
     {

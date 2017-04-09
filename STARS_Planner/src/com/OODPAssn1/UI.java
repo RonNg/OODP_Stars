@@ -222,7 +222,16 @@ public class UI
                 case 112://Succesfull switched index
                     System.out.println("\n\n\nYou have successfully switched to Index " + indexToEnroll);
                     break;
+               /*======================================
+                     SUCCESSFUL 1-2, SWITCH!
+               =======================================*/
+                case 6:
+                    System.out.println("\n\n\nYou have succesfully... Switched! your index to Index " + indexToEnroll);
+                    break;
 
+                case 7:
+                    System.out.println("\n\n\nYou have succesfully... Switched! But you have been placed into the waitlist of Index" + indexToEnroll);
+                    break;
 
                /*======================================
                    FAIL TO BE ADDED INTO INDEX/WAITLIST
@@ -245,6 +254,9 @@ public class UI
                     break;
                 case 5:
                     System.out.println("You are already in another Index of this course");
+                    break;
+                default:
+                    System.out.println("AN ERROR OCCURED");
                     break;
 
             }
