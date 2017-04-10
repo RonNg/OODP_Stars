@@ -9,9 +9,6 @@ import java.util.Properties;
 /**
  * The Notification class contains methods to send email blasts and SMSes to specified email addresses
  * and numbers.
- *
- * @author Ron Ng Jian Ying
- *
  */
 public class Notification
 {

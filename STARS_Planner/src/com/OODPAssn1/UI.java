@@ -111,7 +111,7 @@ public class UI
                     "2) Drop Course Index\n" +//done
                     "3) Check/Print Courses Registered\n" +//done
                     "4) Check Vacancies Available\n" +//done
-                    "5) Change Index Number of Course\n" +
+                    "5) Switch Indexes in the Same Course\n" +
                     "6) Swap Index Number with Another Student\n" +
                     "7) Log out and save all changes\n" +//done
                     "8) Quit STARS and save all changes");//done
@@ -138,8 +138,7 @@ public class UI
                     student_checkVacancies();
                     break;
 
-                case 5://Change Index Number of Course
-
+                case 5://Switch Index Number of Course
                     break;
 
                 case 6://Swap Index Number with Another Student
@@ -396,7 +395,6 @@ public class UI
 
     }
 
-
 //------------------------------------Method to display Admin's menu--------------------------------------------------
 
     public static void adminMenu()
@@ -490,7 +488,6 @@ public class UI
 
         }//end of while loop
     }
-
 
 
     /**
@@ -1158,8 +1155,4 @@ public class UI
         String seperator = "=======================================================";
         System.out.printf("%s%n%" + ((seperator.length()+title.length())/2) + "s%n%s%n%n",seperator,title,seperator);
     }
-
-
-
-
 }
