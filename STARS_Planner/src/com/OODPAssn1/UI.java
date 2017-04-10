@@ -131,14 +131,15 @@ public class UI
                     break;
 
                 case 3://Check/Print Courses Registered
-                    student_printCourseRegistered();
+                    student_PrintCourseRegistered();
                     break;
 
                 case 4://Check Vacancies Available
-                    student_checkVacancies();
+                    student_CheckVacancies();
                     break;
 
                 case 5://Switch Index Number of Course
+                    student_SwitchIndex();
                     break;
 
                 case 6://Swap Index Number with Another Student
@@ -209,11 +210,39 @@ public class UI
             //Enrols student into index
             int result = stars.student_EnrolIndex(indexToEnroll);
             int[] studentPosInWaitList;
-            switch (result)
+            switch (result){
+                case 0:
+                    System.out.println("AN ERROR OCCURED");
+                    break;
+                case 1:
+                    System.out.println("You have successfully enrolled into the Index");
+                    break;
+                case 2:
+                    studentPosInWaitList = stars.student_getPositionInWaitlist(indexToEnroll); //Gets the student's position in the waitlist
+                    System.out.println("You have been placed into the wait list of this Index");
+                    System.out.println("You are currently position " + studentPosInWaitList[0] + " out of " + studentPosInWaitList[1] + " in the waitlist");
+                    break;
+                case 3:
+                    System.out.println("You are already enrolled in this Index");
+                    break;
+                case 4:
+                    System.out.println("You are already in the waitlist of this Index");
+                    break;
+                case 5:
+                    System.out.println("You are already enrolled in another Index of this course");
+                    break;
+                case 6:
+                    System.out.println("You are already in the waitlist of another Index of this course");
+                    break;
+                default:
+                    System.out.println("AN ERROR OCCURED");
+                    break;
+            }
+            /*switch (result)
             {
                /*======================================
                    SUCCESSFULLY ADDED INTO INDEX/WAITLIST
-               =======================================*/
+               =======================================*//*
                 case 1: //Succesfull enrolled into index
                     System.out.println("\n\n\nYou have successfully enrolled into the Index " + indexToEnroll);
                     break;
@@ -228,7 +257,7 @@ public class UI
                     break;
                /*======================================
                      SUCCESSFUL 1-2, SWITCH!
-               =======================================*/
+               =======================================*//*
                 case 6:
                     System.out.println("\n\n\nYou have succesfully... Switched! your index to Index " + indexToEnroll);
                     break;
@@ -239,7 +268,7 @@ public class UI
 
                /*======================================
                    FAIL TO BE ADDED INTO INDEX/WAITLIST
-               =======================================*/
+               =======================================*//*
                 //Already enrolled in Index
                 case 2:
                     System.out.println("\n\n\nYou are already enrolled in Index " + indexToEnroll + "\n");
@@ -263,9 +292,10 @@ public class UI
                     System.out.println("AN ERROR OCCURED");
                     break;
 
-            }
+            }*/
             addFinish = true;
         }
+        return;
     }
 
     public static void student_DropIndex()
@@ -310,19 +340,83 @@ public class UI
         }
     }
 
-    public static void student_printCourseRegistered()
+    public static void student_PrintCourseRegistered()
     {
         printTitle("Course Registered");
         String toPrint = stars.getStudentTimeTable("");
         System.out.println(toPrint);
     }
 
-    public static void student_checkVacancies()
+    public static void student_CheckVacancies()
     {
         printTitle("Check Vacancies of Index");
         System.out.print("Please enter index no. that you wish to check: ");
         int indexNo = getInt();
         admin_CheckVacancy(indexNo);
+    }
+
+    public static void student_SwitchIndex(){
+
+        int indexToSwitch = -1, indexToSwitchTo = -1;
+        boolean loopCheck = false;
+
+        printTitle("Switch Index");
+        System.out.println(stars.getStudentTimeTable(""));
+        System.out.println("Please enter current Index to switch(-1 to quit): ");
+        while(loopCheck == false){
+            indexToSwitch = getInt();
+            if(indexToSwitch == -1)
+                return;
+            switch (stars.checkIfEnrolled(indexToSwitch,"")){
+                case 0:
+                    if(stars.checkIfInWaitList(indexToSwitch,"") == 1){
+                        loopCheck = true;
+                    }else{
+                        System.out.println("You are not enrolled in the index");
+                    }
+                    break;
+                case 1:
+                    loopCheck = true;
+                    break;
+                default:
+                    System.out.println("Invalid Input. Try again.");
+                    break;
+            }
+        }
+        loopCheck = false;
+        System.out.println("Please enter Index to switch to(-1 to quit): ");
+        while (!loopCheck){
+            indexToSwitchTo = getInt();
+            if(indexToSwitchTo == -1)
+                return;
+            if(stars.checkIfIndexExists(indexToSwitchTo)) {
+                if (stars.checkIfIndexIsInCourse(indexToSwitchTo, stars.getCourseOfIndex(indexToSwitch)))
+                    loopCheck = true;
+                else
+                    System.out.println("The Index is not from the same course as your Index.");
+            }else {
+                System.out.println("Please enter a valid Index.");
+            }
+        }
+        switch (stars.student_SwitchIndex(indexToSwitch,indexToSwitchTo)){
+            case -1:
+                System.out.println("Critical Error Has Occurred.");
+                break;
+            case 0:
+                System.out.println("Failed to switch Index");
+                break;
+            case 1:
+                System.out.println("Successfully switched Index");
+                break;
+            case 2:
+                System.out.println("Successfully switched Index. You are placed in the waitlist of Index " + indexToSwitchTo + ".");
+                break;
+            default:
+                System.out.println("Failed to switch Index");
+                break;
+        }
+
+
     }
 
     public static void student_SwapIndex ()

@@ -1,19 +1,24 @@
 package com.OODPAssn1.Entities;
 
 
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
 
 import java.util.List;
 
+/**
+ * <i>Student</i> is a serializable class containing student information such as matriculation number, email, contact number
+ */
 public class Student extends User implements Serializable
 {
     //SerialVersionUID of this Class used to deconflict serialisation
     static final long serialVersionUID = 1L;
 
-    public enum GENDER { MALE, FEMALE }
+    public enum GENDER
+    {
+        MALE, FEMALE
+    }
 
     private String matricNo;
     protected String name;
@@ -23,12 +28,16 @@ public class Student extends User implements Serializable
 
     private List<Integer> courseIndexList; //Stores the courses that this student is taking
 
-    public Student(String name, String email, String matricNo,
-				   int contact, GENDER gender, String nationality,
-				   String username, String password)
+    public Student (String name, String email, String matricNo,
+                    int contact, GENDER gender, String nationality,
+                    String username, String password)
     {
-        this.name = name; this.email = email; this.matricNo = matricNo;
-        this.contact = contact; this.gender = gender; this.nationality = nationality;
+        this.name = name;
+        this.email = email;
+        this.matricNo = matricNo;
+        this.contact = contact;
+        this.gender = gender;
+        this.nationality = nationality;
 
         this.username = username;
         this.password = password;
@@ -38,28 +47,77 @@ public class Student extends User implements Serializable
         courseIndexList = new ArrayList<Integer>();
     }
 
-    //Accessors
-    public String getName(){return this.name;}
-    public String getMatricNo(){return this.matricNo;}
-    public String getGender(){return this.gender.toString();}
-    public String getNationality(){return this.nationality;}
-    public List<Integer> getCourseIndexList() { return courseIndexList; }
+    /*=====================
+           ACCESSOR
+    =======================*/
+
+    /**
+     * @return Name of student
+     */
+    public String getName ()
+    {
+        return this.name;
+    }
+
+    /**
+     * @return Matriculation number of student
+     */
+    public String getMatricNo ()
+    {
+        return this.matricNo;
+    }
+
+    /**
+     * @return Gender of student
+     */
+    public String getGender ()
+    {
+        return this.gender.toString();
+    }
+
+    /**
+     * @return Nationality of student
+     */
+    public String getNationality ()
+    {
+        return this.nationality;
+    }
+
+    /**
+     * @return returns the list of indexes this student is enrolled in
+     */
+    public List<Integer> getCourseIndexList ()
+    {
+        return courseIndexList;
+    }
 
 
-    //Mutator
-    public void addCourseIndex(int courseIndex)
+    /*=====================
+            MUTATOR
+    =======================*/
+
+    /**
+     * @param courseIndex index to add to this student's list of enrolled indexes
+     */
+    public void addCourseIndex (int courseIndex)
     {
         courseIndexList.add(courseIndex);
     }
 
-
-    public void deEnrollCourseIndex(int indexNo)
+    /**
+     * @param indexNo index number to remove from this student's index list
+     */
+    public boolean removeCourseIndex (int indexNo)
     {
         for (int j = 0; j < courseIndexList.size(); j++)
         {
 
             if (courseIndexList.get(j) == indexNo)
+            {
                 courseIndexList.remove(j);
+                return true;
+            }
         }
+        return false;
     }
 }
