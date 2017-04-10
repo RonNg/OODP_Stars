@@ -1104,6 +1104,22 @@ public class STARS
 		return tempIndex.deleteTutLabTimeSlot(tempIndex.getTutLabTimeSlotList().get(choice));
 	}
 
+	public String admin_GetStudentList(){
+		List<Student> temp = userManager.getAllStudent();
+		String output = "";
+		StringBuilder sb = new StringBuilder();
+		Formatter formatter = new Formatter(sb,Locale.ENGLISH);
+		for (int n = 0; n < temp.size(); n++)
+		{
+			Student hold = temp.get(n);
+			sb = new StringBuilder();
+			formatter = new Formatter(sb, Locale.ENGLISH);
+			formatter.format("%-20s | %-20s | %-8s | %-20s | %-20s | %-25s%n", hold.getUsername(), hold.getName(), hold.getGender(), hold.getMatricNo(), hold.getNationality(), hold.getEmail());
+			output += sb.toString();
+		}
+		return output;
+	}
+
 
 	//------------------------------------Method to delete index from course------------------------------------------------
 /*
@@ -1525,6 +1541,11 @@ public class STARS
 
 //----------------Methods for debugging purposes only, remove for production-------------------------------------------
 //Remember to remove import statements for Student and Admin when ready for production
+
+
+	public boolean doesUserNameExist(String usrName){
+		return userManager.doesUserExist(usrName);
+	}
 
 	public void printAllList ()
 	{

@@ -357,7 +357,7 @@ public class UI
         printTitle("Check Vacancies of Index");
         System.out.print("Please enter index no. that you wish to check: ");
         int indexNo = getInt();
-        admin_CheckVacancy(indexNo);
+        admin_CheckVacancy();
     }
 
     public static void student_SwitchIndex(){
@@ -514,9 +514,10 @@ public class UI
                     "5) Check available slot for an index number (vacancy in a class)\n" +//done
                     "6) Print student list by index number.\n" +//done
                     "7) Print student list by course (all students registered for the selected course).\n" +//done
-                    "8) Log out and save all changes\n" +//done
-                    "9) Quit STARS and save all changes\n" +//done
-                    "10) Debug");
+                    "8) Print all student.\n" +
+                    "9) Log out and save all changes\n" +//done
+                    "10) Quit STARS and save all changes\n" +//done
+                    "11) Debug");
 
 
             choice = getInt();
@@ -537,18 +538,11 @@ public class UI
                    break;
 
                 case 5://Check available slot for an index number (vacancy in a class)
-                    System.out.println("\n =============================================== " +
-                                       "\n               Check Vacancy of Index             " +
-                                       "\n =============================================== ");
-                    System.out.print("Please enter index no. that you wish to check: ");
-                    int indexNo = getInt();
-                    admin_CheckVacancy(indexNo);
+                    admin_CheckVacancy();
                     break;
 
                 case 6://Print student list by index number
-                    System.out.println("\n =============================================== " +
-                                       "\n        Print student list by Index Number             " +
-                                       "\n =============================================== ");
+                    printTitle("Print student list by index");
                     System.out.println("Please enter Index No. for printing: " );
                     int ino = getInt();
                     System.out.println("Student registered in index " + ino + ":");
@@ -557,9 +551,7 @@ public class UI
                     break;
 
                 case 7://Print student list by course (all students registered for the selected course)
-                    System.out.println("\n =============================================== " +
-                            "\n                 Print student list by course            " +
-                            "\n =============================================== ");
+                    printTitle("Print student list by course");
                     System.out.println("Please enter course ID for printing: " );
                     String cId = getString();
                     System.out.println("Student registered in course " + cId + ":");
@@ -567,17 +559,20 @@ public class UI
                     String outputStr = stars.getStudentsInCourse(cId);
                     System.out.println(outputStr);
                     break;
-
-                case 8://Save changes and return to login menu
+                case 8:
+                    printTitle("Print all student");
+                    System.out.println(stars.admin_GetStudentList());
+                    break;
+                case 9://Save changes and return to login menu
                     stars.saveData();
                     return;
 
-                case 9://Save changes and quit program
+                case 10://Save changes and quit program
                     stars.saveData();
                     loggedOnUserType = -2;
                     return;
 
-                case 10://Use for debugging purposes
+                case 11://Use for debugging purposes
                     stars.printAllList();
                     break;
                 default:
@@ -680,13 +675,12 @@ public class UI
             }
         }
 
-
         System.out.println("Please enter Matric no. of student: ");
         String matricNo;
         while(true){
             matricNo = getString();
             if(stars.checkStudentExist(matricNo))
-                System.out.println("Matic no. already taken. Please enter other matric no.");
+                System.out.println("Matric no. already taken. Please enter other matric no.");
             else
                 break;
         }
@@ -702,7 +696,13 @@ public class UI
         String nationality = getString();
 
         System.out.println("Please enter username of student: ");
-        String username = getString();
+        boolean userNameCheck = false;
+        String username = "";
+        while (userNameCheck == false){
+            username = getString();
+            if(!stars.doesUserNameExist(username))
+                userNameCheck = true;
+        }
 
         System.out.println("Please enter password of student: ");
         String password = getString();
@@ -714,8 +714,10 @@ public class UI
         boolean result = false;
         while (!result){
             result = stars.admin_addStudent(name, email, matricNo, contact, stGender.toString(), nationality, username, password);
-            if(result)
+            if(result){
                 System.out.println(name + " successfully added to STARS");
+                System.out.println(stars.admin_GetStudentList());
+            }
             else {
                 System.out.println("Another student with " + matricNo + " already exist in STARS!\nPlease re-enter another Matric No: ");
                 matricNo = getString();
@@ -813,8 +815,10 @@ public class UI
 
 //--------------------------------------Method to check vacancy in a index----------------------------------------------
 
-    public static void admin_CheckVacancy(int indexNo){
-
+    public static void admin_CheckVacancy(){
+        printTitle("Check vacancy by Index number");
+        System.out.print("Please enter index no. that you wish to check: ");
+        int indexNo = getInt();
         System.out.println(stars.checkIndexVacancy(indexNo));
 
     }
