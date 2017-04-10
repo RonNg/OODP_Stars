@@ -236,6 +236,8 @@ public class UI
                 case 6:
                     System.out.println("You are already in the waitlist of another Index of this course");
                     break;
+                case 7:
+                    System.out.println("Cannot enrol in Index. Class timing clash with your other Indexes.");
                 default:
                     System.out.println("AN ERROR OCCURED");
                     break;

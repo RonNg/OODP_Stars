@@ -230,7 +230,7 @@ public class CourseManager extends DataManager {
             retStrArr[0] = "ERROR";
             return retStrArr;
         }
-        //If the student MatricNo was found and succesfully removed from the index
+        //If the student MatricNo was found and successfully removed from the index
         if (tempIndex.withdrawStudent(matricNo, bypassWaitlist) == true) {
             //CHECK IF NEED TO HANDLE WAITLIST
             if (tempIndex.checkIfHandleWaitlist() == true) {
