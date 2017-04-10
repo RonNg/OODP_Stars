@@ -4,10 +4,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by Tweakisher on 6/4/2017.
+ * The <code>MD5Hasher</code> class provides methods for one way hashing of plaintext <code>String</code> variables.
  */
 public class MD5Hasher
 {
+    /**
+     * Does a one way hash of plaintext passwords
+     * @param plaintText String to hash
+     * @return hashed plainText string. <code>null</code> if failed to hash.
+     */
     public static String hash (String plaintText)
     {
        try
@@ -29,9 +34,7 @@ public class MD5Hasher
        {
            e.printStackTrace();
        }
-
        return null;
-
     }
 
 }
