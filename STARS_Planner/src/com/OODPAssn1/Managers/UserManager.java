@@ -201,8 +201,7 @@ public class UserManager extends DataManager
         return acccessPeriod;
     }
 
-    public boolean changeAccessPeriod(Calendar start, Calendar end)
-    {
+    public boolean changeAccessPeriod(Calendar start, Calendar end){
         return acccessPeriod.setAccessPeriod(start, end);
 
     }

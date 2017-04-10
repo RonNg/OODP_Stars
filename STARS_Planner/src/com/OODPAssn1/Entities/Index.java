@@ -20,7 +20,7 @@ public class Index implements Serializable
     private List<TimeSlot> tutLabTimeSlotList; // Stores class times
     private List<String> studentWaitList; // Stores student matriculaton number
 
-    public Index(int indexNum, int maxNumberOfStudent)
+    public Index (int indexNum, int maxNumberOfStudent)
     {
 
         this.indexNum = indexNum;
@@ -35,18 +35,127 @@ public class Index implements Serializable
 
     }
 
-    //-------Index number methods--------
+    /*=====================
+             ACCESSORS
+    =======================*/
 
-    public void setIndexNumber(int indexNum)
+    /**
+     * @return number of enrolled students in this index
+     */
+    public int getNumberOfEnrolledStudent ()
+    {
+        return numberOfStudent;
+    }
+
+    /**
+     * @return List of tutorial and lab {@link TimeSlot} in this index
+     */
+    public List<TimeSlot> getTutLabTimeSlotList ()
+    {
+        return tutLabTimeSlotList;
+    }
+
+    /**
+     * @return gets the index number of this index
+     */
+    public int getIndexNum ()
+    {
+        return indexNum;
+    }
+
+    /**
+     * @return get maximum numbers of student this index can accomodate
+     */
+    public int getMaxNumberOfStudent ()
+    {
+        return maxNumberOfStudent;
+    }
+
+    /**
+     * @return number of vacancies available in this index
+     */
+    public int getNumberOfVacancy ()
+    {
+        return maxNumberOfStudent - numberOfStudent;
+    }
+
+    /**
+     * @return true if waitlist must be handled
+     */
+    public boolean checkIfHandleWaitlist ()
+    {
+        return handleWaitList;
+    }
+
+    /**
+     * @return List of students in waitlist
+     */
+    public List getWaitList ()
+    {
+        return studentWaitList;
+    }
+
+    /**
+     * @return get list of enrolled students in the index
+     */
+    public List<String> getEnrolledStudentList ()
+    {
+        return studentsEnrolledList;
+    }
+
+    /**
+     * @param matricNo Matriculation number to check
+     * @return true if student is enrolled int his index
+     */
+    public boolean checkIfStudentEnrolled (String matricNo)
+    {
+        for (int n = 0; n < studentsEnrolledList.size(); n++)
+        {
+            if (studentsEnrolledList.get(n).equalsIgnoreCase(matricNo))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * @param matricNo Matriculation number to check
+     * @return true if student is in the list <br>
+     * false if student is not in the list
+     */
+    public boolean checkIfStudentInWaitList (String matricNo)
+    {
+        //TODO: Check if student in waitlist
+        for (int i = 0; i < studentWaitList.size(); ++i)
+        {
+            if (studentWaitList.get(i).equalsIgnoreCase(matricNo))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /*=====================
+           MUTATORS
+    =======================*/
+
+    /**
+     * @param indexNum Index number to set
+     */
+    public void setIndexNumber (int indexNum)
     {
         this.indexNum = indexNum;
     }
 
-
-
-    //-------number of students methods--------
-
-    public boolean setMaxNumberOfStudent(int maxNumberOfStudent)
+    /**
+     * @param maxNumberOfStudent set the maximum number of students that are able to enroll in this index
+     * @return true if succesfully set
+     */
+    public boolean setMaxNumberOfStudent (int maxNumberOfStudent)
     {
         if (maxNumberOfStudent < numberOfStudent)
         {
@@ -56,23 +165,32 @@ public class Index implements Serializable
         return true;
     }
 
-
-
-    //-------Time slot methods--------
-
-
-
-    public boolean deleteTutLabTimeSlot(TimeSlot dTimeSlot)
+    /**
+     * @param dTimeSlot timeslot to delete
+     * @return true if succesful
+     */
+    public boolean deleteTutLabTimeSlot (TimeSlot dTimeSlot)
     {
         return tutLabTimeSlotList.remove(dTimeSlot);
     }
 
-    //-------Tutorial time slot methods--------
-
-    public boolean addTutTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
+    /**
+     * Tutorial timeslot to delete in thie index
+     * @param day       Day of the tutorial
+     * @param startH    Start time (hour) (in 24 hours) of this tutorial
+     * @param startM    Start time (minutes) of this tutorial
+     * @param endH      End time (hour) (in 24 hours) of this tutorial
+     * @param endM      End time (minutes) of this tutorial
+     * @param location  Location of the tutorial
+     * @return true if lecture is successfully added
+     * @return
+     */
+    public boolean addTutTimeSlot (TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
     {
-        for(int i = 0; i < tutLabTimeSlotList.size(); i++){
-            if(tutLabTimeSlotList.get(i).getDay() == day) {
+        for (int i = 0; i < tutLabTimeSlotList.size(); i++)
+        {
+            if (tutLabTimeSlotList.get(i).getDay() == day)
+            {
                 if (tutLabTimeSlotList.get(i).getStartTime().equals(LocalTime.of(startH, startM).toString()))
                     return false;
             }
@@ -81,12 +199,23 @@ public class Index implements Serializable
         return tutLabTimeSlotList.add(new TimeSlot(day, startH, startM, endH, endM, location, "TUT"));
     }
 
-    //-------Lab time slot methods--------
-
-    public boolean addLabTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
+    /**
+     * Lab timeslot to delete in thie index
+     * @param day       Day of the tutorial
+     * @param startH    Start time (hour) (in 24 hours) of this lab
+     * @param startM    Start time (minutes) of this lab
+     * @param endH      End time (hour) (in 24 hours) of this lab
+     * @param endM      End time (minutes) of this lab
+     * @param location  Location of the lab
+     * @return true if lecture is successfully added
+     * @return
+     */
+    public boolean addLabTimeSlot (TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
     {
-        for(int i = 0; i < tutLabTimeSlotList.size(); i++){
-            if(tutLabTimeSlotList.get(i).getDay() == day) {
+        for (int i = 0; i < tutLabTimeSlotList.size(); i++)
+        {
+            if (tutLabTimeSlotList.get(i).getDay() == day)
+            {
                 if (tutLabTimeSlotList.get(i).getStartTime().equals(LocalTime.of(startH, startM).toString()))
                     return false;
             }
@@ -94,17 +223,13 @@ public class Index implements Serializable
         return tutLabTimeSlotList.add(new TimeSlot(day, startH, startM, endH, endM, location, "LAB"));
     }
 
-    //-------Student registered methods--------
-
-
     /**
-     *
      * @param matricNo Enrolling Student's matriculation number
      * @return Added into waitlist - -1 <br>
-     *         Successfully enrolled into index - 1 <br>
-     *         Error occured - 0
+     * Successfully enrolled into index - 1 <br>
+     * Error occured - 0
      */
-    public int enrolStudent(String matricNo)
+    public int enrolStudent (String matricNo)
     {
         if (numberOfStudent >= maxNumberOfStudent)
         {
@@ -123,7 +248,6 @@ public class Index implements Serializable
     }
 
     /**
-     *
      * @param matricNo
      * @param bypassWaitlist pass in FALSE if we want to handle the waitlist.
      * @return
@@ -132,10 +256,10 @@ public class Index implements Serializable
     {
         boolean success = studentsEnrolledList.remove(matricNo);
 
-        if(success)
+        if (success)
         {
-            -- numberOfStudent;
-            if(getNumberOfVacancy() == 1 && !bypassWaitlist) //if when withdrawing from this index, the number of vacancies is exactly 1, it means it was previously full. Handle waitlist
+            --numberOfStudent;
+            if (getNumberOfVacancy() == 1 && !bypassWaitlist) //if when withdrawing from this index, the number of vacancies is exactly 1, it means it was previously full. Handle waitlist
             {
                 //TODO: Handle waitlist here
                 //Flag for handling waitlist. For Coursemanager use
@@ -145,67 +269,14 @@ public class Index implements Serializable
         return success;
     }
 
-
-    public boolean removeStudentFromWaitlist ( String matricNo )
+    /**
+     * @param matricNo matriculation number of the student to remove from the waitlist
+     * @return true if succesfully removed
+     */
+    public boolean removeStudentFromWaitlist (String matricNo)
     {
         return studentWaitList.remove(matricNo);
     }
 
-    public boolean checkIfStudentEnrolled(String matricNo)
-    {
-        for (int n = 0; n < studentsEnrolledList.size(); n++)
-        {
-            if (studentsEnrolledList.get(n).equalsIgnoreCase(matricNo))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     *
-     * @param matricNo Matriculation number to check
-     * @return true if student is in the list <br>
-     *         false if student is not in the list
-     */
-    public boolean checkIfStudentInWaitList ( String matricNo )
-    {
-        //TODO: Check if student in waitlist
-        for(int i = 0; i < studentWaitList.size(); ++ i)
-        {
-            if(studentWaitList.get(i).equalsIgnoreCase(matricNo))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //Accessors
-    public int getNumberOfEnrolledStudent()
-    {
-        return numberOfStudent;
-    }
-    public List<TimeSlot> getTutLabTimeSlotList()
-    {
-        return tutLabTimeSlotList;
-    }
-    public int getIndexNum()
-    {
-        return indexNum;
-    }
-    public int getMaxNumberOfStudent()
-    {
-        return maxNumberOfStudent;
-    }
-    public int getNumberOfVacancy()
-    {
-        return maxNumberOfStudent - numberOfStudent;
-    }
-    public boolean checkIfHandleWaitlist () { return handleWaitList; }
-
-    public List getWaitList(){return studentWaitList;}
-    public List<String> getEnrolledStudentList(){return studentsEnrolledList;}
 
 }

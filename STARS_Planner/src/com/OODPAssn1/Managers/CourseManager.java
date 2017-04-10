@@ -8,16 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by jonah on 15/3/2017.
+ * <i>CourseManager</i> handles every {@link Course } object and by extension the list of {@link Index} in each Course object. <br><br>
+ *
+ * <i>CourseManager</i> is a <b>Singleton</b> class and hence to access it you must call the {@link #getInstance()} function.
+ *
  */
-public class CourseManager extends DataManager {
-
+public class CourseManager extends DataManager
+{
     private static CourseManager cMInstance;
 
     public static final String COURSE_PATH = "course.dat";
     private List<Course> courseList = null;
 
-    private CourseManager() {
+
+    /**
+     * Constructor for CourseManager. When CourseManager is first instantiated, it reads the list of courses from the database and stores it in an {@alink ArrayList}
+     */
+    private CourseManager ()
+    {
         super(COURSE_PATH);
 
         courseList = (ArrayList<Course>) this.read(COURSE_PATH);
@@ -26,71 +34,58 @@ public class CourseManager extends DataManager {
             courseList = new ArrayList<Course>();
     }
 
-    public static CourseManager getInstance() {
-        if (cMInstance == null) {
+    /**
+     * Gets an instance of CourseManager
+     * @return CourseManager instance
+     */
+    public static CourseManager getInstance ()
+    {
+        if (cMInstance == null)
+        {
             cMInstance = new CourseManager();
             return cMInstance;
         }
         return cMInstance;
     }
 
-    public boolean save() {
+    /**
+     * Writes the {@link #courseList} into the database
+     * @return
+     */
+    public boolean save ()
+    {
         return this.write(courseList, COURSE_PATH);
     }
 
-    //---------Course methods---------
 
-    public List getCourseList() {
+    /*=================================
+                 ACCESSORS
+     ==================================*/
+
+    /**
+     * @return All courses available for students to enroll in
+     */
+    public List getCourseList ()
+    {
         return courseList;
     }
 
-    public boolean addCourse(String courseId, String courseName, String faculty)//for admin
+    /**
+     * @param courseId Gets the {@link Course} object by it's ID
+     * @return {@link Course} object. <br>
+     *          null if not found
+     */
+    public Course getCourseByCourseId (String courseId)
     {
-        //Note that writing of new data into DB is not done here!
-        if (this.getCourseByCourseId(courseId) == null)
-            if (courseList.add(new Course(courseId, courseName, faculty))) {
-                save();
-                return true;
-            }
-        return false;
-    }
-
-    public boolean deleteCourse(Course dCourse) {
-        if (courseList.remove(dCourse)) {
-            save();
-            return true;
-        }
-        return false;
-    }
-
-    public boolean addLecTimeSlot(Course course, TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location) {
-        if (courseList.get(courseList.indexOf(course)).addLecTimeSlot(day, startH, startM, endH, endM, location)) {
-            save();
-            return true;
-        }
-        return false;
-    }
-
-    public boolean deleteLecTimeSlot(Course course, TimeSlot timeSlot) {
-        return course.deleteLectTimeSlot(timeSlot);
-    }
-
-    public List<TimeSlot> getLecTimeSlot(Course course){
-        return course.getLecTimeSlotList();
-    }
-
-
-
-
-
-    public Course getCourseByCourseId(String courseId) {
-        if (courseList == null) {
+        if (courseList == null)
+        {
             System.out.println("printAll(): List is empty");
             return null;
         }
         //System.out.println("indexList.size(): " + indexList.size());
         Course temp = null;
-        for (int i = 0; i < courseList.size(); ++i) {
+        for (int i = 0; i < courseList.size(); ++i)
+        {
 
             temp = courseList.get(i);
             if (temp.getCourseId().equalsIgnoreCase(courseId))
@@ -101,15 +96,24 @@ public class CourseManager extends DataManager {
 
     }
 
-    public Course getCourseByIndexNo(int indexNo) {
-        if (courseList == null) {
+    /**
+     * @param indexNo Gets the {@link Course} object by the index number it contains
+     * @return {@link Course} object. <br>
+     *          null if not found
+     */
+    public Course getCourseByIndexNo (int indexNo)
+    {
+        if (courseList == null)
+        {
             System.out.println("printAll(): List is empty");
             return null;
         }
         Course temp;
-        for (int i = 0; i < courseList.size(); ++i) {
+        for (int i = 0; i < courseList.size(); ++i)
+        {
             temp = courseList.get(i);
-            for (int j = 0; j < temp.getIndexList().size(); j++) {
+            for (int j = 0; j < temp.getIndexList().size(); j++)
+            {
 
                 if (temp.getIndexList().get(j).getIndexNum() == indexNo)
                     return temp;
@@ -118,17 +122,18 @@ public class CourseManager extends DataManager {
         return null;
     }
 
-
-    //---------Index methods---------
-
-    public List<Index> getIndexList(Course course) {
-        return courseList.get(courseList.indexOf(course)).getIndexList();
-    }
-
-    public Index getIndexByIndexNo(int indexNo) {
-        for (int i = 0; i < courseList.size(); ++i) {
+    /**
+     * @param indexNo Gets the {@link Index} object by its index number
+     * @return {@link Index} object. <br>
+     *          null if not found
+     */
+    public Index getIndexByIndexNo (int indexNo)
+    {
+        for (int i = 0; i < courseList.size(); ++i)
+        {
             List<Index> tempIndexList = courseList.get(i).getIndexList();
-            for (int j = 0; j < tempIndexList.size(); ++j) {
+            for (int j = 0; j < tempIndexList.size(); ++j)
+            {
                 if (indexNo == tempIndexList.get(j).getIndexNum())
                     return tempIndexList.get(j); //found
             }
@@ -136,24 +141,29 @@ public class CourseManager extends DataManager {
         return null; //can't find
     }
 
-
-    public boolean createIndex(Course course, int indexNum, int maxNumOfStudetns) {
-        Course tempCourse = courseList.get(courseList.indexOf(course));
-        if (tempCourse.addIndex(indexNum, maxNumOfStudetns)) {
-            save();
-            return true;
-        }
-        return false;
+    /**
+     * Gets the lecture timeslots of the Course specified
+     * @param course Course to retrieve the timeslots for
+     * @return List of lecture {@link TimeSlot} for the course
+     */
+    public List<TimeSlot> getLecTimeSlot (Course course)
+    {
+        return course.getLecTimeSlotList();
     }
 
-    public boolean deleteIndex(Course course, Index index) {
-        if (courseList.get(courseList.indexOf(course)).deleteIndex(index)) {
-            save();
-            return true;
-        }
-        return false;
+    /**
+     * Get the list of indexes for the specified course
+     * @param course Course to get the list of indexes for
+     * @return List of {@link Index} in the course
+     */
+    public List<Index> getIndexList (Course course)
+    {
+        return courseList.get(courseList.indexOf(course)).getIndexList();
     }
 
+    /*=================================
+                 MUTATORS
+     ==================================*/
 
     /**
      * @param matricNo Matriculation number of the student who is enrolling into this index
@@ -164,7 +174,8 @@ public class CourseManager extends DataManager {
      * Already enrolled in index -> 2 <br>
      * Already in waitlist of the index -> 3
      */
-    public int enrolInIndex(String matricNo, int indexNo) {
+    public int enrolInIndex (String matricNo, int indexNo)
+    {
         //-1 - index full
         // 0 - something wrong
         // 1 - success
@@ -176,9 +187,11 @@ public class CourseManager extends DataManager {
             return 0;
 
         //Student already enrolled in this index
-        if (tempIndex.checkIfStudentEnrolled(matricNo)) {
+        if (tempIndex.checkIfStudentEnrolled(matricNo))
+        {
             return 2;
-        } else if (tempIndex.checkIfStudentInWaitList(matricNo)) //Check if student is in waitlist
+        }
+        else if (tempIndex.checkIfStudentInWaitList(matricNo)) //Check if student is in waitlist
         {
 
             return 3;
@@ -190,17 +203,122 @@ public class CourseManager extends DataManager {
 
     }
 
-    public String enrolFirstStudentInWaitlist(String matricNo, int indexNo) {
+    /**
+     * Adds a course into the database
+     * @param courseId Unique Course ID number
+     * @param courseName Course name
+     * @param faculty Faculty in which the course is held
+     * @return true if succesfully added
+     */
+    public boolean addCourse (String courseId, String courseName, String faculty)//for admin
+    {
+        //Note that writing of new data into DB is not done here!
+        if (this.getCourseByCourseId(courseId) == null)
+            if (courseList.add(new Course(courseId, courseName, faculty)))
+            {
+                save();
+                return true;
+            }
+        return false;
+    }
+
+    /**
+     * Adds a lecture time slot into this Course
+     * @param day       Day of the lecture
+     * @param startH    Start time (hour) (in 24 hours) of this lecture
+     * @param startM    Start time (minutes) of this lecture
+     * @param endH      End time (hour) (in 24 hours) of this lecture
+     * @param endM      End time (minutes) of this lecture
+     * @param location  Location of the lecture
+     * @return true if lecture is successfully added
+     */
+    public boolean addLecTimeSlot (Course course, TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
+    {
+        if (courseList.get(courseList.indexOf(course)).addLecTimeSlot(day, startH, startM, endH, endM, location))
+        {
+            save();
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * @param dCourse course to delete
+     * @return true if successful
+     */
+    public boolean deleteCourse (Course dCourse)
+    {
+        if (courseList.remove(dCourse))
+        {
+            save();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param course course to delete the lecture from
+     * @param timeSlot timeslot of the lecture to delete
+     * @return true if suceessful
+     */
+    public boolean deleteLecTimeSlot (Course course, TimeSlot timeSlot)
+    {
+        return course.deleteLectTimeSlot(timeSlot);
+    }
+
+    /**
+     * @param course course to add the index to
+     * @param indexNum index to create
+     * @param maxNumOfStudetns maximum number of students the index can accomodate
+     * @return true if successful
+     */
+    public boolean createIndex (Course course, int indexNum, int maxNumOfStudetns)
+    {
+        Course tempCourse = courseList.get(courseList.indexOf(course));
+        if (tempCourse.addIndex(indexNum, maxNumOfStudetns))
+        {
+            save();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param course course to delete the index from
+     * @param index index number to delete
+     * @return true if successful
+     */
+    public boolean deleteIndex (Course course, Index index)
+    {
+        if (courseList.get(courseList.indexOf(course)).deleteIndex(index))
+        {
+            save();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Enrols the first student in waitlist
+     * @param indexNo index number containing the waitlist
+     * @return matriculation number of the student that was enrolled
+     *         <i>null</i> if not successful
+     */
+    public String enrolFirstStudentInWaitlist (int indexNo)
+    {
         Index tempIndex = getIndexByIndexNo(indexNo);
 
         if (tempIndex == null)
             return null;
 
         //If the first student in waitlist matches the matric no passed in
-        if (tempIndex.getWaitList().get(0) == matricNo) {
 
-            String tempMatricNo = (String) tempIndex.getWaitList().get(0);
 
+        String tempMatricNo = (String) tempIndex.getWaitList().get(0);
+
+        if(tempMatricNo != null)
+        {
             //remove student from waitlist
             tempIndex.getWaitList().remove(0);
 
@@ -208,8 +326,8 @@ public class CourseManager extends DataManager {
 
             return tempMatricNo; //Returns the matricNo of the student added into the index to STARS
         }
-
-        return null;
+        else
+            return null;
     }
 
     /**
@@ -220,30 +338,36 @@ public class CourseManager extends DataManager {
      * second index - contains student's matriculation number to add into index <br><br>
      * third index - contains the index number to add the student matriculation number (specified in second index) to.
      */
-    public String[] dropFromIndex(String matricNo, int indexNo, boolean bypassWaitlist) {
+    public String[] dropFromIndex (String matricNo, int indexNo, boolean bypassWaitlist)
+    {
         Index tempIndex = getIndexByIndexNo(indexNo);
 
         String[] retStrArr = new String[3];
 
         //Index wasn't found
-        if (tempIndex == null) {
+        if (tempIndex == null)
+        {
             retStrArr[0] = "ERROR";
             return retStrArr;
         }
         //If the student MatricNo was found and succesfully removed from the index
-        if (tempIndex.withdrawStudent(matricNo, bypassWaitlist) == true) {
+        if (tempIndex.withdrawStudent(matricNo, bypassWaitlist) == true)
+        {
             //CHECK IF NEED TO HANDLE WAITLIST
-            if (tempIndex.checkIfHandleWaitlist() == true) {
+            if (tempIndex.checkIfHandleWaitlist() == true)
+            {
                 List<String> studentWaitList = tempIndex.getWaitList();
 
                 //Check if studentWaitlist 1 or more. 0 means no students in waitlist to push to index
                 //Enrol student at the front of the waitlist. enrolInIndex returns 1 if successful
-                if (studentWaitList.size() >= 1) {
+                if (studentWaitList.size() >= 1)
+                {
 
-                    String studentMatricNoFromWaitlist = enrolFirstStudentInWaitlist(studentWaitList.get(0), indexNo);
+                    String studentMatricNoFromWaitlist = enrolFirstStudentInWaitlist(indexNo);
 
 
-                    if (studentMatricNoFromWaitlist == null) {
+                    if (studentMatricNoFromWaitlist == null)
+                    {
                         retStrArr[0] = "ERROR";
                         return retStrArr;
                     }
@@ -264,28 +388,34 @@ public class CourseManager extends DataManager {
         return retStrArr;
     }
 
-//----------------------------------Method for debugging purposes. Remove for production--------------------------------
-
-    public int printAllIndexDetails() {
+    /**
+     * Print the details of all the indexes
+     * @return
+     */
+    public void printAllIndexDetails ()
+    {
         Index temp = null;
-        for (int i = 0; i < courseList.size(); ++i) {
+        for (int i = 0; i < courseList.size(); ++i)
+        {
             printIndexDetails(courseList.get(i).getCourseId());
         }
-        return 1;
     }
 
     /**
      * Prints all index details of a specific course Id
-     *
-     * @return
+     * @param courseId courseId details to print
+     * @return 1 if successful <br>
+     *        -1 if not successful
      */
-    public int printIndexDetails(String courseId) {
+    public int printIndexDetails (String courseId)
+    {
         Course tempCourse = getCourseByCourseId(courseId);
         if (tempCourse == null)
             return -1;
 
         List<Index> currentIndexList = tempCourse.getIndexList();
-        for (int j = 0; j < currentIndexList.size(); ++j) {
+        for (int j = 0; j < currentIndexList.size(); ++j)
+        {
             Index tempIndex = currentIndexList.get(j);
 
             //Prints index number of current course and enrolled list
@@ -293,7 +423,8 @@ public class CourseManager extends DataManager {
 
             //Print Lab and Tut Details of the current Index
             List<TimeSlot> timeSlotList = tempIndex.getTutLabTimeSlotList();
-            for (int x = 0; timeSlotList != null && x < timeSlotList.size(); ++x) {
+            for (int x = 0; timeSlotList != null && x < timeSlotList.size(); ++x)
+            {
                 //LAB: 1400-1500hrs LOCATION
 
                 System.out.println(timeSlotList.get(x).getType() + ": " + timeSlotList.get(x).getDay().toString() + " "
