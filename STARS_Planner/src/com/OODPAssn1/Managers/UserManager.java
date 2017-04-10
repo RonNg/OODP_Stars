@@ -27,7 +27,7 @@ public class UserManager extends DataManager
 
     private boolean isInitAlready = false;
 
-    private UserManager()
+    private UserManager ()
     {
         //super(USER_PATH);
         super(USER_PATH, ACCESS_Period_PATH);
@@ -43,7 +43,7 @@ public class UserManager extends DataManager
             acccessPeriod = new AccessPeriod();
     }
 
-    public static UserManager getInstance()
+    public static UserManager getInstance ()
     {
         if (instance == null)
         {
@@ -55,47 +55,12 @@ public class UserManager extends DataManager
     }
 
     /**
-     * Prints information of every Student in the {@link #userList}
-     *
-     * @return returns 0 if List is empty a
-     * <p>returns 1 if print successful</p>
-     */
-    public int print()
-    {
-        if (userList == null)
-        {
-            System.out.println("printAll(): List is empty");
-            return 0;
-        }
-        System.out.println("userList.size(): " + userList.size());
-        Student temp = null;
-        for (int i = 0; i < userList.size(); ++i)
-        {
-
-            if (userList.get(i).getType() == User.USER_TYPE.STUDENT)
-            {
-
-                temp = (Student) userList.get(i);
-                System.out.println("Name: " + temp.getName() + "   Password: " + temp.getPassword());
-            }
-        }
-
-        return 1;
-    }
-
-    public boolean save()
-    {//Return true if save succeed
-        return (this.write(userList, USER_PATH) && this.write(acccessPeriod, ACCESS_Period_PATH));
-    }
-
-
-    /**
      * Searches {@link List} for {@link Student} by name and returns the {@link List} index if matched
      *
      * @return index of the student if found in List.
      * <p>returns -1 if student could not be found</p>
      */
-    public int getStudentByName(String name)
+    public int getStudentByName (String name)
     {
         Student temp = null;
         for (int i = 0; i < userList.size(); ++i)
@@ -111,9 +76,11 @@ public class UserManager extends DataManager
         return -1;
     }
 
-//------------------------------Method to get Student Object for printing of details------------------------------------
-
-    public Student getStudentByMatricNo(String matricNumber)
+    /**
+     * @param matricNumber matriculation number of the
+     * @return
+     */
+    public Student getStudentByMatricNo (String matricNumber)
     {
 
         for (int i = 0; i < userList.size(); i++)
@@ -127,11 +94,7 @@ public class UserManager extends DataManager
         return null;
     }
 
-//---------------------------------Method for authentication into STARS-------------------------------------------------
-// - Return the logged-on user if authentication succeeds
-// - Return null if authentication fail or User not found in DB
-
-    public User authenticateUser(String userName, String password)
+    public User authenticateUser (String userName, String password)
     {
         password = MD5Hasher.hash(password); //Need to hash the user input password as we are comparing hashes and not plaintext password
         User user;
@@ -144,7 +107,8 @@ public class UserManager extends DataManager
                 {
                     System.out.println("Password incorrect!");
                     return null;
-                } else
+                }
+                else
                     return user;
             }
         }
@@ -153,16 +117,24 @@ public class UserManager extends DataManager
 
     }
 
-//-------------------Method to add student into UserList-------------------------------
-//Note that writing of new data into DB is not done here!
+    public AccessPeriod getAccessPeriod ()
+    {
+        return acccessPeriod;
+    }
 
 
-    public boolean addStudent(String name, String email, String matricNo,
-                           int contact, Student.GENDER gender, String nationality,
-                           String username, String password)
+    public boolean save ()
+    {//Return true if save succeed
+        return (this.write(userList, USER_PATH) && this.write(acccessPeriod, ACCESS_Period_PATH));
+    }
+
+    public boolean addStudent (String name, String email, String matricNo,
+                               int contact, Student.GENDER gender, String nationality,
+                               String username, String password)
     {
 
-        if(this.getStudentByMatricNo(matricNo) != null){
+        if (this.getStudentByMatricNo(matricNo) != null)
+        {
             return false;
         }
 
@@ -180,8 +152,7 @@ public class UserManager extends DataManager
         return true;
     }
 
-
-    public boolean addAdmin(final String name, final String email, final String username, final String password)
+    public boolean addAdmin (final String name, final String email, final String username, final String password)
     {
         try
         {
@@ -197,19 +168,17 @@ public class UserManager extends DataManager
 
     }
 
-    public AccessPeriod getAccessPeriod(){
-        return acccessPeriod;
-    }
-
-    public boolean changeAccessPeriod(Calendar start, Calendar end){
+    public boolean changeAccessPeriod (Calendar start, Calendar end)
+    {
         return acccessPeriod.setAccessPeriod(start, end);
 
     }
 
 
-//----------------------Methods for debugging purpose only. Remove for production--------------------------------------
-
-    public int printAllUser()
+    /*=====================
+             DEBUG
+     ======================*/
+    public int printAllUser ()
     {
         if (userList == null)
         {
@@ -223,7 +192,34 @@ public class UserManager extends DataManager
 
             temp = userList.get(i);
             System.out.println("Name: " + temp.getUsername() + "   Password: " + temp.getPassword());
+        }
+        return 1;
+    }
 
+    /**
+     * Prints information of every Student in the {@link #userList}
+     *
+     * @return returns 0 if List is empty a
+     * <p>returns 1 if print successful</p>
+     */
+    public int print ()
+    {
+        if (userList == null)
+        {
+            System.out.println("printAll(): List is empty");
+            return 0;
+        }
+        System.out.println("userList.size(): " + userList.size());
+        Student temp = null;
+        for (int i = 0; i < userList.size(); ++i)
+        {
+
+            if (userList.get(i).getType() == User.USER_TYPE.STUDENT)
+            {
+
+                temp = (Student) userList.get(i);
+                System.out.println("Name: " + temp.getName() + "   Password: " + temp.getPassword());
+            }
         }
 
         return 1;

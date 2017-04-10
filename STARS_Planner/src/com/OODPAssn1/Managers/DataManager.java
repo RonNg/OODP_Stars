@@ -3,11 +3,11 @@ package com.OODPAssn1.Managers;
 import com.OODPAssn1.Entities.AccessPeriod;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by jonah on 15/3/2017.
+ * <i>DataManager</i> is a base class for any classes that wants to handle and manipulate data stored in a .dat file <br>
+ * It stores and reads {@link Serializable} objects
  */
 public class DataManager
 {
@@ -15,7 +15,16 @@ public class DataManager
     //private static final String cFilePath = System.getProperty("user.dir") + "\\database\\"; // To specify location to store database files
 
 
-    public DataManager(final String filepath)
+     /*=================================
+                 ACCESSORS
+     ==================================*/
+
+    /**
+     * Initialises the DataManager object which creates a "database" folder in the root directory of the application. <br>
+     * In addition, a database file is created  in that folder based on the String passed into the constructor.
+     * @param filename The filename e.g. user.dat
+     */
+    public DataManager(final String filename)
     {
         File directory = new File(cFilePath);
 
@@ -37,7 +46,7 @@ public class DataManager
         }
 
         //Creates the file if none exists
-        File file = new File(cFilePath + filepath);
+        File file = new File(cFilePath + filename);
         if (!file.exists())
         { // Checks if file already exist
             try
@@ -46,10 +55,10 @@ public class DataManager
                 //false if exists already
                 if (file.createNewFile()) // Creates file if not available
                 {
-                    System.out.println(filepath + " database was created");
+                    System.out.println(filename + " database was created");
                 } else
                 {
-                    System.out.println(filepath + " database already exists");
+                    System.out.println(filename + " database already exists");
                 }
             } catch (IOException e)
             {
@@ -58,6 +67,12 @@ public class DataManager
         }
     }
 
+    /**
+     * Initialises the DataManager object which creates a "database" folder in the root directory of the application. <br>
+     * In addition, a two database files isare created in that folder based on the Strings passed into the constructor.
+     * @param filepath1 first filename
+     * @param filepath2 second filename
+     */
     public DataManager(final String filepath1, final String filepath2)//Constructor for two files
     {
         File directory = new File(cFilePath);
@@ -120,12 +135,16 @@ public class DataManager
         }
     }
 
-    protected Object read(String filepath)
+    /**
+     * @param filename filename to open and load the Serializable objects from
+     * @return {@link Serializable} objects. Objects should be downcasted into the correct derived objects and stored into an ArrayList
+     */
+    protected Object read(String filename)
     {
-        File file = new File(cFilePath + filepath);
+        File file = new File(cFilePath + filename);
         if ((!file.exists()))
         { // Check if file exist
-            System.out.println("File not exist in: " + cFilePath + filepath);
+            System.out.println("File not exist in: " + cFilePath + filename);
             return null; // return null if file does not exist
         }
 
@@ -134,7 +153,7 @@ public class DataManager
         ObjectInputStream in;
         try
         {
-            fis = new FileInputStream(cFilePath + filepath);
+            fis = new FileInputStream(cFilePath + filename);
             in = new ObjectInputStream(fis);
             pDetails =  in.readObject();
             in.close();
@@ -147,10 +166,15 @@ public class DataManager
         return null; // return null by default if error occurred
     }
 
-    protected boolean write(List list, String filepath)
+    /**
+     * @param list List of objects to write into the database file
+     * @param filename name of the database file
+     * @return true if successful
+     */
+    protected boolean write(List list, String filename)
     {
         File directory = new File(cFilePath);
-        File file = new File(cFilePath + filepath);
+        File file = new File(cFilePath + filename);
         if (!directory.exists())
         { // Checks if directory already exist
             if (!directory.mkdir()) // Creates directory if not available
@@ -174,7 +198,7 @@ public class DataManager
             ObjectOutputStream out = null;
             try
             {
-                fos = new FileOutputStream(cFilePath + filepath);
+                fos = new FileOutputStream(cFilePath + filename);
                 out = new ObjectOutputStream(fos);
                 out.writeObject(list); // Write entire list into file
                 out.close();
@@ -187,10 +211,15 @@ public class DataManager
         return false; // return false by default
     }
 
-    protected boolean write(AccessPeriod aP, String filepath)
+    /**
+     * @param aP the AccessPeriod object to write into the database file
+     * @param filename name of the database file
+     * @return true if successful
+     */
+    protected boolean write(AccessPeriod aP, String filename)
     {
         File directory = new File(cFilePath);
-        File file = new File(cFilePath + filepath);
+        File file = new File(cFilePath + filename);
         if (!directory.exists())
         { // Checks if directory already exist
             if (!directory.mkdir()) // Creates directory if not available
@@ -214,7 +243,7 @@ public class DataManager
             ObjectOutputStream out = null;
             try
             {
-                fos = new FileOutputStream(cFilePath + filepath);
+                fos = new FileOutputStream(cFilePath + filename);
                 out = new ObjectOutputStream(fos);
                 out.writeObject(aP); // Write entire obj into file
                 out.close();
