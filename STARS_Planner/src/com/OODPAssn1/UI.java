@@ -880,7 +880,7 @@ public class UI
             startTime = getTime();
 
             System.out.println("Enter LAB" + n + " END time in 24hrs format(HHMM): " );
-            endTime = getTime();
+            endTime = getTime(startTime);
             stars.admin_AddIndexLabTimeSlot(index, timeSlotDay.toString(), startTime/100, startTime%100, endTime/100, endTime%100, labLocation );
 
         }
@@ -954,9 +954,13 @@ public class UI
             startTime = getTime();
 
             System.out.println("Enter TUT" + n + " END time in 24hrs format(HHMM): " );
-            endTime = getTime();
+            endTime = getTime(startTime);
 
-            stars.admin_AddIndexTutTimeSlot(index, timeSlotDay.toString(), startTime/100, startTime%100, endTime/100, endTime%100, tutLocation );
+            if(!stars.admin_AddIndexTutTimeSlot(index, timeSlotDay.toString(), startTime/100, startTime%100, endTime/100, endTime%100, tutLocation )){
+
+                System.out.println("TimeSlot for " + index + " on " + timeSlotDay.toString() + ", " + startTime + "-" + endTime + " failed to be added!");
+                System.out.println("Please check there is no other tut/lab happening during that time slot!");
+            }
         }
     }
 
@@ -976,7 +980,7 @@ public class UI
             int startTime = getTime();
 
             System.out.println("Enter the lecture END time in 24hrs format for " + timeSlotDay.name());
-            int endTime = getTime();
+            int endTime = getTime(startTime);
 
             System.out.println("Please enter the LT number for the Lecture  " + timeSlotDay.name());
             String locationLT = getString();
@@ -985,8 +989,10 @@ public class UI
 
             if (success)
                 System.out.println("Lecture on " + timeSlotDay.name() + " successfully added!");
-            else
+            else {
                 System.out.println("Lecture on " + timeSlotDay.name() + " failed to be added!");
+                System.out.println("Please ensure there is no lectures starting at the same time!");
+            }
 
         } //finish loop for entering Lecture
     }
@@ -1083,6 +1089,31 @@ public class UI
                 output = Integer.parseInt(input);
                 inputCheck = true;
                 if(output > 2359 || output < 0000)
+                    throw new Exception();
+            }catch(Exception e){
+                System.out.println("Invalid Input. Please try again.");
+                inputCheck = false;
+            }
+        }
+        return output;
+    }
+
+    public static int getTime(int startTime){
+        boolean inputCheck = false;
+        String input;
+        int output = 0;
+        while(inputCheck==false){
+            try{
+                input = s.nextLine();
+                if(input.length() == 0)
+                    continue;
+                input = input.replaceAll(":","");
+                input = input.replaceAll("-","");
+                output = Integer.parseInt(input);
+                inputCheck = true;
+                if(output > 2359 || output < 0000)
+                    throw new Exception();
+                if(output < startTime)
                     throw new Exception();
             }catch(Exception e){
                 System.out.println("Invalid Input. Please try again.");

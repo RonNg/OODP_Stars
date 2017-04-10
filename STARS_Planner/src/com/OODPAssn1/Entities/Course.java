@@ -1,6 +1,7 @@
 package com.OODPAssn1.Entities;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,6 +120,12 @@ public class Course implements Serializable
 
     public boolean addLecTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
     {
+        for(int i = 0; i < lecTimeSlotList.size(); i++){
+            if(lecTimeSlotList.get(i).getDay() == day) {
+                if (lecTimeSlotList.get(i).getStartTime().equals(LocalTime.of(startH, startM).toString()))
+                    return false;
+            }
+        }
         return lecTimeSlotList.add(new TimeSlot(day, startH, startM, endH, endM, location, "LEC"));
     }
 

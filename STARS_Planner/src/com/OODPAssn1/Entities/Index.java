@@ -1,6 +1,7 @@
 package com.OODPAssn1.Entities;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +71,13 @@ public class Index implements Serializable
 
     public boolean addTutTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
     {
+        for(int i = 0; i < tutLabTimeSlotList.size(); i++){
+            if(tutLabTimeSlotList.get(i).getDay() == day) {
+                if (tutLabTimeSlotList.get(i).getStartTime().equals(LocalTime.of(startH, startM).toString()))
+                    return false;
+            }
+        }
+
         return tutLabTimeSlotList.add(new TimeSlot(day, startH, startM, endH, endM, location, "TUT"));
     }
 
@@ -77,6 +85,12 @@ public class Index implements Serializable
 
     public boolean addLabTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
     {
+        for(int i = 0; i < tutLabTimeSlotList.size(); i++){
+            if(tutLabTimeSlotList.get(i).getDay() == day) {
+                if (tutLabTimeSlotList.get(i).getStartTime().equals(LocalTime.of(startH, startM).toString()))
+                    return false;
+            }
+        }
         return tutLabTimeSlotList.add(new TimeSlot(day, startH, startM, endH, endM, location, "LAB"));
     }
 
