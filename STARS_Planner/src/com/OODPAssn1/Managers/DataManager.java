@@ -11,8 +11,7 @@ import java.util.List;
  */
 public class DataManager
 {
-    //private static final String cFilePath = System.getProperty("user.dSir") + "\\STARS_Planner\\database\\"; // To specify location to store database files
-    private static final String cFilePath = "C:\\Users\\jonah\\Desktop\\STARS_Planner\\database\\"; // To specify location to store database files
+    private static final String cFilePath = System.getProperty("user.dSir") + "\\STARS_Planner\\database\\"; // To specify location to store database files
     //private static final String cFilePath = System.getProperty("user.dir") + "\\database\\"; // To specify location to store database files
 
 
