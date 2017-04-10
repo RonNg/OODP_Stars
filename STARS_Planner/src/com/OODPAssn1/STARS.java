@@ -714,7 +714,7 @@ public class STARS
 					{
 						matricNo = index.getEnrolledStudentList().get(j);
 						student = userManager.getStudentByMatricNo(matricNo);
-						student.deEnrollCourseIndex(index.getIndexNum());
+						student.removeCourseIndex(index.getIndexNum());
 						retStr = retStr + "Matric no.: " + matricNo + "    Name:" + student.getName() +
 								"    From Index: " + index.getIndexNum() + "\n";
 					}
@@ -761,7 +761,7 @@ public class STARS
 					{
 						matricNo = index.getEnrolledStudentList().get(j);
 						student = userManager.getStudentByMatricNo(matricNo);
-						student.deEnrollCourseIndex(index.getIndexNum());
+						student.removeCourseIndex(index.getIndexNum());
 						retStr = retStr + "Matric no.: " + matricNo + "    Name:" + student.getName() +
 								"    From Index: " + index.getIndexNum() + "\n";
 					}
@@ -970,7 +970,7 @@ public class STARS
 			{
 				matricNo = index.getEnrolledStudentList().get(j);
 				student = userManager.getStudentByMatricNo(matricNo);
-				student.deEnrollCourseIndex(index.getIndexNum());
+				student.removeCourseIndex(index.getIndexNum());
 				rtrStr = rtrStr + "Matric no.: " + matricNo + "    Name:" + student.getName() +
 						"    From Index: " + index.getIndexNum() + "\n";
 			}

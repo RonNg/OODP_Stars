@@ -18,6 +18,10 @@ public class Course implements Serializable
     private List<TimeSlot> lecTimeSlotList;
     private List<Index> indexList = null;
 
+    /*=====================
+           ACCESSORS
+    =======================*/
+
     /**
      * Constructor that creates a <i>Course</i> object, requiring the Course ID, the Course Name and faculty of the Course
      * @param courseId Course ID number
@@ -74,59 +78,99 @@ public class Course implements Serializable
         return null;
     }
 
+    /**
+     * Get the list of lecture timeslots in this {@link Course}
+     * @return {@link List} of TimeSlot objects of this {@link Course}
+     */
     public List<TimeSlot> getLecTimeSlotList()
     {
         return lecTimeSlotList;
     }
 
+
+    /**
+     * Get the faculty of this Course
+     * @return Faculty in which this Course belongs to
+     */
     public String getFaculty()
     {
         return faculty;
     }
 
 
+    /*=====================
+           MUTATORS
+    =======================*/
 
-
-    //TODO = modify lecture time slot
-
-
-
-    //Mutators
+    /**
+     * Sets the Course name
+     * @param cName Course name
+     */
     public void setCourseName(String cName)
     {
         courseName = cName;
     }
 
+    /**
+     * Sets the Course ID
+     * @param cId Course ID
+     */
     public void setCourseId(String cId)
     {
         courseId = cId;
     }
 
 
-    public boolean addIndex(int indexNum, int maxNumOfStudetns)
+    /**
+     * Adds an index to this Course
+     * @param indexNum Unique index number of the index
+     * @param maxNumOfStudents Maximum number of students that this index can accomodate
+     * @return true if index is added
+     */
+    public boolean addIndex(int indexNum, int maxNumOfStudents)
     {
-        return indexList.add(new Index(indexNum, maxNumOfStudetns));
+        return indexList.add(new Index(indexNum, maxNumOfStudents));
     }
 
+    /**
+     * Deletes an index from this Course
+     * @param index {@link Index} object to remove
+     * @return true if index is removed
+     */
     public boolean deleteIndex(Index index)
     {
         return indexList.remove(index);
     }
 
-    //TODO = modify index
-
-    //-------Lecture time slot methods--------
-
+    /**
+     * Adds a lecture time slot into this Course
+     * @param day       Day of the lecture
+     * @param startH    Start time (hour) (in 24 hours) of this lecture
+     * @param startM    Start time (minutes) of this lecture
+     * @param endH      End time (hour) (in 24 hours) of this lecture
+     * @param endM      End time (minutes) of this lecture
+     * @param location  Location of the lecture
+     * @return true if lecture is successfully added
+     */
     public boolean addLecTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location)
     {
         return lecTimeSlotList.add(new TimeSlot(day, startH, startM, endH, endM, location, "LEC"));
     }
 
+    /**
+     * Deletes the lecture occupying the specified timeslot
+     * @param dTimeSlot Timeslot of the lecture to delete
+     * @return true if succesfully deleted
+     */
     public boolean deleteLectTimeSlot(TimeSlot dTimeSlot)
     {
         return lecTimeSlotList.remove(dTimeSlot);
     }
 
+    /**
+     * Sets faculty name of this Course
+     * @param f Faculty name
+     */
     public void setFaculty(String f)
     {
         faculty = f;

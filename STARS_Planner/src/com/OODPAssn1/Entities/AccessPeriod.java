@@ -5,18 +5,15 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * <class>AccessPeriod</class> is a <class>Serializable</class> class that acts as a
- * container for the access period start and end date variables. The start and end dates are
- * declared constructed using the <class>Calendar </class> class
+ * AccessPeriod is a Serializable class that acts as a container for the
+ * Start and End dates of the access period
  */
 public class AccessPeriod implements Serializable
 {
-
     //SerialVersionUID of this Class used to deconflict serialisation
     static final long serialVersionUID = 1L;
     private Calendar startDate;
     Calendar endDate;
-
 
     /**
      * Initialises start and end date to default values that should be overwritten.
