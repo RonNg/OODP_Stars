@@ -1089,7 +1089,7 @@ public class UI
                 System.out.println("Lecture on " + timeSlotDay.name() + " successfully added!");
             else {
                 System.out.println("Lecture on " + timeSlotDay.name() + " failed to be added!");
-                System.out.println("Please ensure there is no lectures starting at the same time!");
+                System.out.println("Please ensure there is no lec/tut/lab starting at the same time!");
             }
 
         } //finish loop for entering Lecture

@@ -129,7 +129,7 @@ public class STARS
 
 		Date startDate;
 		Date currentDate = new Date();
-
+		SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
 
 		try
 		{
@@ -141,7 +141,7 @@ public class STARS
 			return false;
 		}
 
-		return (startDate.after(currentDate));
+		return (startDate.after(currentDate) || fmt.format(currentDate).equals(fmt.format(startDate)));
 	}
 
 	public boolean checkEndDateCompatibility (String start, String end)
@@ -958,10 +958,19 @@ public class STARS
 	{
 		Course course = courseManager.getCourseByCourseId(courseId);
 		TimeSlot.DAY timeSlotDay = TimeSlot.DAY.valueOf(timeSlotDayStr);
-
+		List<TimeSlot> tempTutLabList;
 		if (course != null)
 		{
 			//Save after adding
+			for(int i = 0; i < course.getIndexList().size(); i++){
+
+				tempTutLabList = course.getIndexList().get(i).getTutLabTimeSlotList();
+				for(int j = 0; j < tempTutLabList.size(); j++) {
+					if (tempTutLabList.get(j).getDay() == timeSlotDay)
+						if(tempTutLabList.get(j).getStartTime().equals(LocalTime.of(startTimeHH, startTimeMM).toString()))
+						return false;
+				}
+			}
 
 			if(course.addLecTimeSlot(timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT)) {
 				courseManager.save();
