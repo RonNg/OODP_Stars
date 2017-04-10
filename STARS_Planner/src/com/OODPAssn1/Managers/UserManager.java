@@ -175,10 +175,27 @@ public class UserManager extends DataManager
     }
 
 
-    /*=====================
-             DEBUG
-     ======================*/
-    public int printAllUser ()
+//----------------------Methods for debugging purpose only. Remove for production--------------------------------------
+
+    public List<Student> getAllStudent(){
+        List<Student> stList = new ArrayList<>();
+        for(int n = 0; n < userList.size(); n++){
+            if(userList.get(n).getType() == User.USER_TYPE.STUDENT){
+                stList.add((Student)userList.get(n));
+            }
+        }
+        return stList;
+    }
+
+    public boolean doesUserExist(String usrName){
+        for(int n = 0; n < userList.size(); n++){
+           if(userList.get(n).getUsername().equals(usrName))
+               return true;
+        }
+        return false;
+    }
+
+    public int printAllUser()
     {
         if (userList == null)
         {

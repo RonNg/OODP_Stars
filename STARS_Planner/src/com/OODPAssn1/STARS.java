@@ -129,7 +129,7 @@ public class STARS
 
 		Date startDate;
 		Date currentDate = new Date();
-
+		SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
 
 		try
 		{
@@ -141,7 +141,7 @@ public class STARS
 			return false;
 		}
 
-		return (startDate.after(currentDate));
+		return (startDate.after(currentDate) || fmt.format(currentDate).equals(fmt.format(startDate)));
 	}
 
 	public boolean checkEndDateCompatibility (String start, String end)
@@ -472,14 +472,18 @@ public class STARS
 	 * Failed(Already in Index waitlist) = 4
 	 * Failed(Already in another Index of the same course) = 5
 	 * Failed(Already in wait list of another Index of the same course) = 6
+	 * Failed(Clash timing) = 7
 
 	 */
-	public int student_EnrolIndex (int indexNo)
+	public int student_EnrolIndex (int indexNo, String matricNo)
 	{
-		if (currentLogOnUser.getType() != User.USER_TYPE.STUDENT) //only students can enroll into indexes
-			return 0;
-
-		Student tempStud = (Student) currentLogOnUser;
+		Student tempStud;
+		if(matricNo == ""){
+			if (currentLogOnUser.getType() != User.USER_TYPE.STUDENT) //only students can enroll into indexes
+				return 0;
+			tempStud = (Student) currentLogOnUser;
+		}
+		tempStud = userManager.getStudentByMatricNo(matricNo);
 
 
 		//Check if we can switch index
@@ -511,11 +515,24 @@ public class STARS
 			Index toCheck = indexOfCourseToJoinList.get(n);
 			if(toCheck.checkIfStudentInWaitList(tempStud.getMatricNo())){
 				if(toCheck.equals(indexToJoin)){
-					return 4; // If student in waitlist of index return 111
-				}else{ // In waitlist of another index of the same course
-					return 6;
+					return 4; // If student in waitlist of index return 4
+				}else{
+					return 6; // If student in waitlist of another index of the same course return 6
 				}
 			}
+		}
+
+		for (int i = 0; i < studEnrolledIndexList.size(); ++i) {
+			Index currUserIndex = courseManager.getIndexByIndexNo(studEnrolledIndexList.get(i));
+
+			String result = checkIfIndexClash(currUserIndex, indexToJoin);
+			if (result.equals("NO CLASH") == false)
+			{
+				if (result.equals("SAME COURSE"))
+					return 3; // If student enrolled in the index return 3
+				return 7; // If timing clash with other index of the student return 7
+			}
+
 		}
 
 		switch(courseManager.enrolInIndex(tempStud.getMatricNo(),indexNo)){
@@ -663,19 +680,31 @@ public class STARS
 			{
 				Student tempStudent = userManager.getStudentByMatricNo(result[1]);
 				tempStudent.addCourseIndex(Integer.parseInt(result[2]));
-				saveData();
 
-
-				//TODO: Email the student that s/he has been added into the course
 				String courseId = courseManager.getCourseByIndexNo(indexNo).getCourseId();
 				String courseName = courseManager.getCourseByIndexNo(indexNo).getCourseName();
-
-				String subject = "Succesfully enrolled into Index " + indexNo;
-
+				String subject = "Successfully enrolled into Index " + indexNo;
 				String message = "Dear " + tempStudent.getName() + ",\n\nAs a student has withdrawn from the index, you have been removed from the waitlist and enrolled into the Index " + indexNo
 						+ " for " + courseId + " - " + courseName;
+
+				List<Integer> sEnrollIndex = tempStudent.getCourseIndexList();
+				Index indexJoined = courseManager.getIndexByIndexNo(indexNo);
+				for (int i = 0; i < sEnrollIndex.size(); ++i) {
+					Index currUserIndex = courseManager.getIndexByIndexNo(sEnrollIndex.get(i));
+					String cClash = checkIfIndexClash(currUserIndex, indexJoined);
+					if (!result.equals("NO CLASH"))
+					{
+						if (!result.equals("SAME COURSE")){
+							student_DropIndex(indexNo);
+							subject = "Failed to enrol into Index " + indexNo;
+							message = "Dear " + tempStudent.getName() + ",\n\nAlthough a student has withdrawn from the index, you have not enrolled into Index " + indexNo + " for " + courseId +
+									" as the timing clashed with your current registered Indexes.\nYou have been removed from the waitlist. Please enroll to the Index again.";
+						}
+					}
+				}
+
 				studentNotification.sendMessage(tempStudent.getEmail(), subject, message);
-				System.out.println("STARS: Student " + tempStudent.getName() + " has been removed from waitlist and enrolled in Index" + indexNo+". Email has been sent to the student.");
+				saveData();
 				return 1;
 			}
 		}
@@ -725,16 +754,16 @@ public class STARS
 		Index targetIndex = courseManager.getIndexByIndexNo(targetIndexNo);
 		String currentUserMatric = ((Student) currentLogOnUser).getMatricNo();
 
-		int result = student_EnrolIndex(targetIndexNo);
+		int result = student_EnrolIndex(targetIndexNo,"");
 		switch (result){
 			case 1:
 			case 2:
 				return -1;
 			case 5:
 				if(student_DropIndex(currentIndexNo)==1){
-					switch (student_EnrolIndex(targetIndexNo)) {
+					switch (student_EnrolIndex(targetIndexNo,"")) {
 						case 0:
-							switch (student_EnrolIndex(currentIndexNo)) {
+							switch (student_EnrolIndex(currentIndexNo,"")) {
 								case 1:
 									return 0;
 								case 2:
@@ -748,7 +777,7 @@ public class STARS
 				}
 			case 6:
 				if(currentIndex.removeStudentFromWaitlist(currentUserMatric)){
-					switch (student_EnrolIndex(currentIndexNo)){
+					switch (student_EnrolIndex(currentIndexNo,"")){
 						case 1:
 							return 1;
 						case 2:
@@ -929,10 +958,19 @@ public class STARS
 	{
 		Course course = courseManager.getCourseByCourseId(courseId);
 		TimeSlot.DAY timeSlotDay = TimeSlot.DAY.valueOf(timeSlotDayStr);
-
+		List<TimeSlot> tempTutLabList;
 		if (course != null)
 		{
 			//Save after adding
+			for(int i = 0; i < course.getIndexList().size(); i++){
+
+				tempTutLabList = course.getIndexList().get(i).getTutLabTimeSlotList();
+				for(int j = 0; j < tempTutLabList.size(); j++) {
+					if (tempTutLabList.get(j).getDay() == timeSlotDay)
+						if(tempTutLabList.get(j).getStartTime().equals(LocalTime.of(startTimeHH, startTimeMM).toString()))
+						return false;
+				}
+			}
 
 			if(course.addLecTimeSlot(timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT)) {
 				courseManager.save();
@@ -1076,6 +1114,22 @@ public class STARS
 		Course tempCourse = courseManager.getCourseByCourseId(courseId);
 		Index tempIndex = tempCourse.getIndex(indexToGet);
 		return tempIndex.deleteTutLabTimeSlot(tempIndex.getTutLabTimeSlotList().get(choice));
+	}
+
+	public String admin_GetStudentList(){
+		List<Student> temp = userManager.getAllStudent();
+		String output = "";
+		StringBuilder sb = new StringBuilder();
+		Formatter formatter = new Formatter(sb,Locale.ENGLISH);
+		for (int n = 0; n < temp.size(); n++)
+		{
+			Student hold = temp.get(n);
+			sb = new StringBuilder();
+			formatter = new Formatter(sb, Locale.ENGLISH);
+			formatter.format("%-20s | %-20s | %-8s | %-20s | %-20s | %-25s%n", hold.getUsername(), hold.getName(), hold.getGender(), hold.getMatricNo(), hold.getNationality(), hold.getEmail());
+			output += sb.toString();
+		}
+		return output;
 	}
 
 
@@ -1499,6 +1553,12 @@ public class STARS
 
 //----------------Methods for debugging purposes only, remove for production-------------------------------------------
 //Remember to remove import statements for Student and Admin when ready for production
+
+
+	public boolean doesUserNameExist(String usrName){
+		return userManager.doesUserExist(usrName);
+	}
+
 
 	public void printAllList ()
 	{

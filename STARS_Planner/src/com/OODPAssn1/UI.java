@@ -4,6 +4,8 @@ package com.OODPAssn1;
 
 
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.io.Console;
 import java.util.Scanner;
 
@@ -208,7 +210,7 @@ public class UI
 
 
             //Enrols student into index
-            int result = stars.student_EnrolIndex(indexToEnroll);
+            int result = stars.student_EnrolIndex(indexToEnroll,"");
             int[] studentPosInWaitList;
             switch (result){
                 case 0:
@@ -234,8 +236,11 @@ public class UI
                 case 6:
                     System.out.println("You are already in the waitlist of another Index of this course");
                     break;
+                case 7:
+                    System.out.println("Cannot enrol in Index. Class timing clash with your other Indexes");
+                    break;
                 default:
-                    System.out.println("AN ERROR OCCURED");
+                    System.out.println("AN ERROR OCCURRED");
                     break;
             }
             /*switch (result)
@@ -352,7 +357,7 @@ public class UI
         printTitle("Check Vacancies of Index");
         System.out.print("Please enter index no. that you wish to check: ");
         int indexNo = getInt();
-        admin_CheckVacancy(indexNo);
+        admin_CheckVacancy();
     }
 
     public static void student_SwitchIndex(){
@@ -506,12 +511,14 @@ public class UI
                     "2) Add a student\n" +//done
                     "3) Add a course\n" +//done
                     "4) Update a course\n" +//done
-                    "5) Check available slot for an index number (vacancy in a class)\n" +//done
-                    "6) Print student list by index number.\n" +//done
-                    "7) Print student list by course (all students registered for the selected course).\n" +//done
-                    "8) Log out and save all changes\n" +//done
-                    "9) Quit STARS and save all changes\n" +//done
-                    "10) Debug");
+                    "5) Enrol student to Index\n" +
+                    "6) Check available slot for an index number (vacancy in a class)\n" +//done
+                    "7) Print student list by index number.\n" +//done
+                    "8) Print student list by course (all students registered for the selected course).\n" +//done
+                    "9) Print all student.\n" +
+                    "10) Log out and save all changes\n" +//done
+                    "11) Quit STARS and save all changes\n" +//done
+                    "12) Debug");
 
 
             choice = getInt();
@@ -530,20 +537,15 @@ public class UI
                 case 4://Update Course
                     admin_UpdateCourse();
                    break;
-
-                case 5://Check available slot for an index number (vacancy in a class)
-                    System.out.println("\n =============================================== " +
-                                       "\n               Check Vacancy of Index             " +
-                                       "\n =============================================== ");
-                    System.out.print("Please enter index no. that you wish to check: ");
-                    int indexNo = getInt();
-                    admin_CheckVacancy(indexNo);
+                case 5: //Enrol student to index
+                    admin_EnrolStudent();
+                    break;
+                case 6://Check available slot for an index number (vacancy in a class)
+                    admin_CheckVacancy();
                     break;
 
-                case 6://Print student list by index number
-                    System.out.println("\n =============================================== " +
-                                       "\n        Print student list by Index Number             " +
-                                       "\n =============================================== ");
+                case 7://Print student list by index number
+                    printTitle("Print student list by index");
                     System.out.println("Please enter Index No. for printing: " );
                     int ino = getInt();
                     System.out.println("Student registered in index " + ino + ":");
@@ -551,10 +553,8 @@ public class UI
                     System.out.println(stars.getStudentsInIndex(ino));
                     break;
 
-                case 7://Print student list by course (all students registered for the selected course)
-                    System.out.println("\n =============================================== " +
-                            "\n                 Print student list by course            " +
-                            "\n =============================================== ");
+                case 8://Print student list by course (all students registered for the selected course)
+                    printTitle("Print student list by course");
                     System.out.println("Please enter course ID for printing: " );
                     String cId = getString();
                     System.out.println("Student registered in course " + cId + ":");
@@ -562,17 +562,20 @@ public class UI
                     String outputStr = stars.getStudentsInCourse(cId);
                     System.out.println(outputStr);
                     break;
-
-                case 8://Save changes and return to login menu
+                case 9: //Print all student
+                    printTitle("Print all student");
+                    System.out.println(stars.admin_GetStudentList());
+                    break;
+                case 10://Save changes and return to login menu
                     stars.saveData();
                     return;
 
-                case 9://Save changes and quit program
+                case 11://Save changes and quit program
                     stars.saveData();
                     loggedOnUserType = -2;
                     return;
 
-                case 10://Use for debugging purposes
+                case 12://Use for debugging purposes
                     stars.printAllList();
                     break;
                 default:
@@ -583,6 +586,66 @@ public class UI
         }//end of while loop
     }
 
+
+    public static void admin_EnrolStudent(){
+        String student = "";
+        int index = -1;
+        printTitle("Enrol Student");
+        System.out.println("Please enter Index to enrol student(-1 to exit): ");
+        boolean indexCheck = false;
+        while(indexCheck == false){
+            index = getInt();
+            if(index == -1)
+                return;
+            if(stars.checkIfIndexExists(index))
+                indexCheck = true;
+            else
+                System.out.println("Invalid Index. Please try again.");
+        }
+        System.out.println("Please enter Matric no of student to enroll(-1 to exit): ");
+        boolean studentCheck = false;
+        while(studentCheck==false){
+            student = getString();
+            if(student.equals("-1"))
+                return;
+            if(stars.checkStudentExist(student))
+                studentCheck = true;
+            else
+                System.out.println("Invalid Matric No. Please try again.");
+        }
+        switch (stars.student_EnrolIndex(index, student)){
+            case 0:
+                System.out.println("AN ERROR OCCURED");
+                break;
+            case 1:
+                System.out.println("Student have successfully enrolled into the Index");
+                break;
+            case 2:
+                int[] studentPosInWaitList = stars.student_getPositionInWaitlist(index); //Gets the student's position in the waitlist
+                System.out.println("Student have been placed into the wait list of this Index");
+                System.out.println("Student current position is " + studentPosInWaitList[0] + " out of " + studentPosInWaitList[1] + " in the waitlist");
+                break;
+            case 3:
+                System.out.println("Student already enrolled in this Index");
+                break;
+            case 4:
+                System.out.println("Student already in the waitlist of this Index");
+                break;
+            case 5:
+                System.out.println("Student already enrolled in another Index of this course");
+                break;
+            case 6:
+                System.out.println("Student already in the waitlist of another Index of this course");
+                break;
+            case 7:
+                System.out.println("Cannot enrol in Index. Class timing clash with other Indexes of the student");
+                break;
+            default:
+                System.out.println("AN ERROR OCCURRED");
+                break;
+        }
+
+    }
 
     /**
      * @return courseId if Course is successfully added into the system
@@ -663,14 +726,24 @@ public class UI
         String name = getString();
 
         System.out.println("Please enter email of student:");
-        String email = getString();
+        String email = "";
+        boolean emailCheck = false;
+        while (!emailCheck){
+            try{
+                email = getString();
+                new InternetAddress(email).validate();
+                emailCheck = true;
+            }catch (AddressException e){
+                System.out.println("Invalid email format. Please try again.");
+            }
+        }
 
         System.out.println("Please enter Matric no. of student: ");
         String matricNo;
         while(true){
             matricNo = getString();
             if(stars.checkStudentExist(matricNo))
-                System.out.println("Matic no. already taken. Please enter other matric no.");
+                System.out.println("Matric no. already taken. Please enter other matric no.");
             else
                 break;
         }
@@ -686,7 +759,15 @@ public class UI
         String nationality = getString();
 
         System.out.println("Please enter username of student: ");
-        String username = getString();
+        boolean userNameCheck = false;
+        String username = "";
+        while (userNameCheck == false){
+            username = getString();
+            if(!stars.doesUserNameExist(username))
+                userNameCheck = true;
+            else
+                System.out.println("User Name already exist. Please enter other user name.");
+        }
 
         System.out.println("Please enter password of student: ");
         String password = getString();
@@ -695,12 +776,17 @@ public class UI
                       char[] passString = c.readPassword();
                       String password = new String(passString );
                     */
-        boolean result = stars.admin_addStudent(name, email, matricNo, contact, stGender.toString(), nationality, username, password);
-        if(result)
-            System.out.println(name + " successfully added to STARS");
-        else {
-            System.out.println("Another student with " + matricNo + " already exist in STARS!\nPlease re-enter another Matric No: ");
-            matricNo = getString();
+        boolean result = false;
+        while (!result){
+            result = stars.admin_addStudent(name, email, matricNo, contact, stGender.toString(), nationality, username, password);
+            if(result){
+                System.out.println(name + " successfully added to STARS");
+                System.out.println(stars.admin_GetStudentList());
+            }
+            else {
+                System.out.println("Another student with " + matricNo + " already exist in STARS!\nPlease re-enter another Matric No: ");
+                matricNo = getString();
+            }
         }
 
     }
@@ -794,8 +880,10 @@ public class UI
 
 //--------------------------------------Method to check vacancy in a index----------------------------------------------
 
-    public static void admin_CheckVacancy(int indexNo){
-
+    public static void admin_CheckVacancy(){
+        printTitle("Check vacancy by Index number");
+        System.out.print("Please enter index no. that you wish to check: ");
+        int indexNo = getInt();
         System.out.println(stars.checkIndexVacancy(indexNo));
 
     }
@@ -1001,7 +1089,7 @@ public class UI
                 System.out.println("Lecture on " + timeSlotDay.name() + " successfully added!");
             else {
                 System.out.println("Lecture on " + timeSlotDay.name() + " failed to be added!");
-                System.out.println("Please ensure there is no lectures starting at the same time!");
+                System.out.println("Please ensure there is no lec/tut/lab starting at the same time!");
             }
 
         } //finish loop for entering Lecture
