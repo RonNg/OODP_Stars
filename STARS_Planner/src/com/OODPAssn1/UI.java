@@ -514,34 +514,7 @@ public class UI
         }
         
         System.out.println("");
-        System.out.println("Please enter the number of lectures per week for Course " + courseId);
-        int noOfLect = getInt();
-
-        //Add the lectures here
-        for (int i = 1; i <= noOfLect; ++i)
-        {
-            System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
-            System.out.println("Enter the day for the lecture:");
-            DAY timeSlotDay = null;
-            timeSlotDay = getDay();
-
-            System.out.println("Enter the lecture START time in 24hrs format for " + timeSlotDay.name());
-            int startTime = getTime();
-
-            System.out.println("Enter the lecture END time in 24hrs format for " + timeSlotDay.name());
-            int endTime = getTime();
-
-            System.out.println("Please enter the LT number for the Lecture  " + timeSlotDay.name());
-            String locationLT = getString();
-
-            boolean success = stars.admin_AddLecTimeSlot(courseId, timeSlotDay.toString(), startTime/100, startTime%100, endTime/100, endTime%100, locationLT);
-
-            if (success)
-                System.out.println("Lecture on " + timeSlotDay.name() + " successfully added!");
-            else
-                System.out.println("Lecture on " + timeSlotDay.name() + " failed to be added!");
-
-        } //finish loop for entering Lecture
+        admin_AddLecture(courseId);
 
         System.out.println("\nDo you want to continue to add Index for the Course you just added?");
         System.out.println("-------------------------------------------------------------------");
@@ -571,7 +544,7 @@ public class UI
             if(stars.checkDateFormat(startDate) && stars.checkStartDateCompatibility(startDate))
                 break;
             else System.out.println("Please enter in the format as shown! e.g. 01/04/2017 " +
-                                    "and make sure start date entered is after today!");
+                                    "and make sure start date entered is today or after today!");
         }
 
         while(true){
@@ -650,31 +623,53 @@ public class UI
 
         if (stars.doesCourseExist(courseId))
         {
-
+            System.out.println(stars.printCourseDetails(courseId));
             System.out.println("What would you like to edit for " + courseId + "?");
 
-            System.out.println("1) Add Index To Course\n"
+            System.out.println("1) Add Index to Course\n"
                     +   "2) Delete Index from Course\n"
-                    +   "3) Delete Course" );
+                    +   "3) Add Lecture to Index\n"
+                    +   "4) Remove Lecture from Index\n"
+                    +   "5) Add Tutorial to Index\n"
+                    +   "6) Add Lab to Index\n"
+                    +   "7) Remove Lab or Tutorial from Index\n"
+                    +   "8) Delete Course\n"
+                    +   "-1 = Quit");
 
             int updateChoice = getInt();
 
             switch(updateChoice)
             {
-                //Add Index to Course
-                case 1:
+                case -1: //quit
+                    return;
+                case 1://Add Index to Course
                     admin_AddIndex(courseId);
                     break;
 
-                case 2:
-                    System.out.println("Please input the index no. that you wish to remove from course: " );
-                    int indexNo = getInt();
-
-                    admin_DeleteIndex(indexNo);
+                case 2://Delete index from course
+                    admin_DeleteIndex();
                     break;
 
-                //Delete Course
-                case 3:
+                case 3://add Lecture to course
+                    admin_AddLecture(courseId);
+                    break;
+
+                case 4: //remove lecture from course
+                    admin_DeleteLecture(courseId);
+                    break;
+
+                case 5: //Add Tutorial to index
+                    admin_AddTut(courseId,null);
+                    break;
+                case 6: //Add Lab to index
+                    admin_AddLab(courseId,null);
+                    break;
+
+                case 7: //Remove Lab from index
+                    admin_DeleteLabTuT(courseId);
+                    break;
+
+                case 8: //Delete course
                     admin_DeleteCourse(courseId);
                     break;
 
@@ -729,7 +724,7 @@ public class UI
                 indexNoToAdd = getInt();
             }
 
-            System.out.println("Please enter the maximum number of students per class: " );
+            System.out.println("Please enter the maximum number of students for index " + indexNoToAdd +": " );
             int maxStudent = getInt();
 
             if(stars.admin_AddIndex(courseId, indexNoToAdd, maxStudent) == false ) //Failed to add
@@ -738,55 +733,16 @@ public class UI
                 -- i;  //Start the loop again while preserving the current iteration. since continue makes the loop go to the next iteration, --i cancels out ++i
                 continue;
             }
+            admin_AddLab(courseId, indexNoToAdd);
+            admin_AddTut(courseId, indexNoToAdd);
 
-            DAY timeSlotDay = null;
-            int startTime;
-            int endTime;
-
-            /*===================================
-                          ADD LAB
-            ====================================*/
-
-            System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
-            System.out.println("Enter the day for the LAB for Index " + indexNoToAdd + ":");
-            timeSlotDay = getDay();
-
-            System.out.println("Enter the LAB location for Index " + indexNoToAdd + ":");
-            String labLocation = getString();
-
-            System.out.println("Enter the LAB START time in 24hrs format(HHMM): ");
-            startTime = getTime();
-
-            System.out.println("Enter the LAB END time in 24hrs format(HHMM): " );
-            endTime = getTime();
-            
-            stars.admin_AddIndexLabTimeSlot(indexNoToAdd, timeSlotDay.toString(), startTime/100, startTime%100, endTime/100, endTime%100, labLocation );
-
-            /*===================================
-                          ADD TUT
-            ====================================*/
-
-            System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
-            System.out.println("Enter the day for the TUT for Index " + indexNoToAdd + ":");
-            timeSlotDay = getDay();
-
-            System.out.println("Enter the TUT location for Index " + indexNoToAdd + ":");
-            String tutLocation = getString();
-
-            System.out.println("Enter the TUT START time in 24hrs format(HHMM): ");
-            startTime = getTime();
-
-            System.out.println("Enter the TUT END time in 24hrs format(HHMM): " );
-            endTime = getTime();
-            
-            stars.admin_AddIndexTutTimeSlot(indexNoToAdd, timeSlotDay.toString(), startTime/100, startTime%100, endTime/100, endTime%100, tutLocation );
 
         }//end of index list add
     }
 
-    private static void admin_DeleteIndex(int indexNo) {
-
-
+    private static void admin_DeleteIndex() {
+        System.out.println("Please input the index no. that you wish to remove from course: " );
+        int indexNo = getInt();
         String toBePrint = stars.deleteIndexFromCourse(indexNo);
         if(!toBePrint.equals("Error! Index not found!") && !toBePrint.equals("Error occured while deleting index!")) {
             System.out.println("\nCourse " + indexNo + " deletion is successful!");
@@ -797,6 +753,172 @@ public class UI
         System.out.println("--------------------------------------------------------------");
 
     }
+
+    private static void admin_AddLab(String courseId, Integer indexToAdd){
+        int index = 0;
+        if(indexToAdd==null){
+            System.out.println("Please enter index to add lecture");
+            boolean inputCheck = false;
+            while (!inputCheck){
+                index = getInt();
+                if(stars.checkIfIndexExists(index) && stars.checkIfIndexIsInCourse(index,courseId))
+                    inputCheck = true;
+                else
+                    System.out.println("Index does not exist. Please try again");
+            }
+        }else{
+            index = indexToAdd;
+        }
+
+        int noOfLabs = 0;
+        String labLocation;
+        DAY timeSlotDay = null;
+        int startTime;
+        int endTime;
+        System.out.println("How many Labs to add for " + index + "?: ");
+        noOfLabs = getInt();
+        for(int n = 1;noOfLabs!=0;n++, noOfLabs--){
+            System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
+            System.out.println("Enter the day for LAB" + n + ": ");
+            timeSlotDay = getDay();
+
+            System.out.println("Enter LAB" + n + " location: ");
+            labLocation = getString();
+
+            System.out.println("Enter LAB" + n + " START time in 24hrs format(HHMM): ");
+            startTime = getTime();
+
+            System.out.println("Enter LAB" + n + " END time in 24hrs format(HHMM): " );
+            endTime = getTime();
+            stars.admin_AddIndexLabTimeSlot(index, timeSlotDay.toString(), startTime/100, startTime%100, endTime/100, endTime%100, labLocation );
+
+        }
+    }
+
+    private static void admin_DeleteLabTuT(String courseId){
+
+        int indexToGet = -1;
+        int choice = -1;
+        boolean success = false;
+        boolean inputCheck = false;
+
+        System.out.println("Which Index is the Lab/Tutorial from: ");
+        while (!inputCheck){
+            indexToGet = getInt();
+            if(stars.checkIfIndexExists(indexToGet) && stars.checkIfIndexIsInCourse(indexToGet,courseId))
+                inputCheck = true;
+            else
+                System.out.println("Index does not exist. Please try again");
+        }
+        System.out.println(stars.admin_GetLabTutList(courseId,indexToGet));
+        System.out.println("\nPlease select which lab/tutorial to delete (1,2...) or type -1 to exit: ");
+        while (!success) {
+            choice = getInt();
+            if(choice == -1)
+                return;
+            if(stars.admin_DeleteLabTutTimeSlot(courseId,indexToGet,choice)){
+                success = true;
+                System.out.println("Tutorial/Lab successfully deleted");
+            }else{
+                System.out.println("Invalid Input. Try again.");
+            }
+        }
+
+    }
+
+    private static void admin_AddTut(String courseId, Integer indexToAdd){
+        int index = 0;
+        if(indexToAdd==null){
+            System.out.println("Please enter index to add tutorial");
+            boolean inputCheck = false;
+            while (!inputCheck){
+                index = getInt();
+                if(stars.checkIfIndexExists(index) && stars.checkIfIndexIsInCourse(index,courseId))
+                    inputCheck = true;
+                else
+                    System.out.println("Index does not exist. Please try again");
+            }
+        }else{
+            index = indexToAdd;
+        }
+
+        int noOfTuts = 0;
+        String tutLocation;
+        DAY timeSlotDay = null;
+        int startTime;
+        int endTime;
+
+        System.out.println("How many Tutorials to add for " + index + "?: ");
+        noOfTuts = getInt();
+
+        for(int n = 1; noOfTuts!=0; n++, noOfTuts--){
+            System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
+            System.out.println("Enter the day for the TUT" + n +  ": ");
+            timeSlotDay = getDay();
+
+            System.out.println("Enter TUT" + n + " location: ");
+            tutLocation = getString();
+
+            System.out.println("Enter TUT" + n + " START time in 24hrs format(HHMM): ");
+            startTime = getTime();
+
+            System.out.println("Enter TUT" + n + " END time in 24hrs format(HHMM): " );
+            endTime = getTime();
+
+            stars.admin_AddIndexTutTimeSlot(index, timeSlotDay.toString(), startTime/100, startTime%100, endTime/100, endTime%100, tutLocation );
+        }
+    }
+
+    private static void admin_AddLecture(String courseId){
+        System.out.println("Please enter the number of lectures to add for " + courseId);
+        int noOfLect = getInt();
+
+        //Add the lectures here
+        for (int i = 1; i <= noOfLect; ++i)
+        {
+            System.out.println("Options for the days of the week : M, T, W, Th, F, S, Su");
+            System.out.println("Enter the day for the lecture:");
+            DAY timeSlotDay = null;
+            timeSlotDay = getDay();
+
+            System.out.println("Enter the lecture START time in 24hrs format for " + timeSlotDay.name());
+            int startTime = getTime();
+
+            System.out.println("Enter the lecture END time in 24hrs format for " + timeSlotDay.name());
+            int endTime = getTime();
+
+            System.out.println("Please enter the LT number for the Lecture  " + timeSlotDay.name());
+            String locationLT = getString();
+
+            boolean success = stars.admin_AddLecTimeSlot(courseId, timeSlotDay.toString(), startTime/100, startTime%100, endTime/100, endTime%100, locationLT);
+
+            if (success)
+                System.out.println("Lecture on " + timeSlotDay.name() + " successfully added!");
+            else
+                System.out.println("Lecture on " + timeSlotDay.name() + " failed to be added!");
+
+        } //finish loop for entering Lecture
+    }
+
+    private static void admin_DeleteLecture(String courseId){
+        int choice;
+        boolean success = false;
+        System.out.println(stars.admin_GetLecTimeList(courseId));
+        System.out.println("Please select which lecture to delete (1,2...) or type -1 to exit: ");
+        while (!success) {
+            choice = getInt();
+            if(choice == -1)
+                return;
+            if(stars.admin_DeleteLecTimeSlot(courseId,choice)){
+                success = true;
+                System.out.println("Lecture successfully deleted");
+            }else{
+                System.out.println("Invalid Input. Try again.");
+            }
+        }
+    }
+
+
 
 
     //--------------------------------------Helper Methods----------------------------------------------
@@ -911,7 +1033,7 @@ public class UI
             System.out.println("Please input again!");
         }
 
-        System.out.println("Format is fine!");
+        //System.out.println("Format is fine!");
 
         return courseId;
     }

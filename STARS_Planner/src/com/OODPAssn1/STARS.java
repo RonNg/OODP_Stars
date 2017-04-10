@@ -3,6 +3,7 @@ package com.OODPAssn1;
 import com.OODPAssn1.Entities.*;
 import com.OODPAssn1.Managers.CourseManager;
 import com.OODPAssn1.Managers.UserManager;
+import com.sun.javafx.binding.StringFormatter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -114,15 +115,12 @@ public class STARS
 
 	public boolean checkDateFormat (String date)
 	{
-
 		try
 		{
 			Date dateObj = new SimpleDateFormat("dd/MM/yyyy").parse(date);
 			if (Integer.parseInt(date.substring(0, 2)) > 31 || Integer.parseInt(date.substring(3, 5)) > 12)
 				return false;
-
-
-		} catch (ParseException e)
+		} catch (Exception e)
 		{
 			return false;
 		}
@@ -135,6 +133,7 @@ public class STARS
 		Date startDate;
 		Date currentDate = new Date();
 
+
 		try
 		{
 			startDate = new SimpleDateFormat("dd/MM/yyyy").parse(start);
@@ -144,6 +143,7 @@ public class STARS
 		{
 			return false;
 		}
+
 		return startDate.after(currentDate);
 	}
 
@@ -372,6 +372,10 @@ public class STARS
 			return true;
 		else
 			return false;
+	}
+
+	public boolean checkIfIndexIsInCourse(int indexNo, String courseID){
+		return courseManager.getCourseByCourseId(courseID).equals(courseManager.getCourseByIndexNo(indexNo));
 	}
 
 	public boolean areIndexSameCourse (int indexNo1, int indexNo2)
@@ -684,7 +688,6 @@ public class STARS
 	public String printStudentsInCourse (String courseId)
 	{
 
-
 		String retStr = "";
 		String courseNotFoundErr = "Error! Course not found!";
 		String deleteCourseErr = "Error in deletion of course!";
@@ -847,6 +850,96 @@ public class STARS
 		return false;
 	}
 
+	public boolean admin_AddIndexLabTimeSlot(int indexNo, String dayStr, int startH, int startM, int endH, int endM, String labLocation)
+	{
+		Index tempIndex = courseManager.getIndexByIndexNo(indexNo);
+		//Can't find the index
+		if (tempIndex == null)
+			return false;
+		TimeSlot.DAY day = TimeSlot.DAY.valueOf(dayStr);
+		boolean success = tempIndex.addLabTimeSlot(day, startH, startM, endH, endM, labLocation);
+
+		if (success)
+		{
+			courseManager.save();
+			return true;
+		}
+
+		return true;
+	}
+
+	public boolean admin_AddIndexTutTimeSlot(int indexNo, String dayStr, int startH, int startM, int endH, int endM, String tutLocation)
+	{
+		Index tempIndex = courseManager.getIndexByIndexNo(indexNo);
+		//Can't find the index
+		if (tempIndex == null)
+			return false;
+		TimeSlot.DAY day = TimeSlot.DAY.valueOf(dayStr);
+		boolean success = tempIndex.addTutTimeSlot(day, startH, startM, endH, endM, tutLocation);
+
+		if (success)
+		{
+			courseManager.save();
+			return true;
+		}
+
+		return true;
+	}
+
+	public String admin_GetLecTimeList(String courseId){
+		List<TimeSlot> temp = courseManager.getLecTimeSlot(courseManager.getCourseByCourseId(courseId));
+		String output = "";
+		StringBuilder sb = new StringBuilder();
+		Formatter formatter = new Formatter(sb,Locale.ENGLISH);
+		for (int n = 0; n < temp.size(); n++)
+		{
+			TimeSlot tempTimeSlot = temp.get(n);
+			sb = new StringBuilder();
+			formatter = new Formatter(sb, Locale.ENGLISH);
+			formatter.format("%4d)  %-5s | %-5s | %s-%-7s | %s %n", n+1, tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+			output += sb.toString();
+		}
+		return output;
+	}
+
+	public boolean admin_DeleteLecTimeSlot(String courseId, int lecSelect){
+		Course tempCourse = courseManager.getCourseByCourseId(courseId);
+		List<TimeSlot> tempTsList = courseManager.getLecTimeSlot(tempCourse);
+		boolean success = false;
+		try{
+			success =courseManager.deleteLecTimeSlot(tempCourse,tempTsList.get(lecSelect-1));
+		}catch (Exception e){
+			return false;
+		}
+		return success;
+	}
+	
+	public String admin_GetLabTutList(String courseId, int indexToGet){
+		String output = "";
+		Course tempCourse = courseManager.getCourseByCourseId(courseId);
+		if(indexToGet == -1){
+			return "Unable to find Index.";
+		}
+		Index tempIndex = tempCourse.getIndex(indexToGet);
+		StringBuilder sb = new StringBuilder();
+		Formatter formatter = new Formatter(sb,Locale.ENGLISH);
+		List<TimeSlot> tsList = tempIndex.getTutLabTimeSlotList();
+		for(int n = 0; n < tsList.size(); n++){
+			TimeSlot tempTimeSlot = tsList.get(n);
+			sb = new StringBuilder();
+			formatter = new Formatter(sb, Locale.ENGLISH);
+			formatter.format("%4d) %-5s | %-5s | %s-%-7s | %s %n", n+1, tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+			output += sb.toString();
+		}
+		return output;
+	}
+
+	public boolean admin_DeleteLabTutTimeSlot(String courseId, int indexToGet, int choice){
+		Course tempCourse = courseManager.getCourseByCourseId(courseId);
+		Index tempIndex = tempCourse.getIndex(indexToGet);
+		return tempIndex.deleteTutLabTimeSlot(tempIndex.getTutLabTimeSlotList().get(choice));
+	}
+
 
 	//------------------------------------Method to delete index from course------------------------------------------------
 /*
@@ -912,44 +1005,6 @@ public class STARS
 		return rtrStr;
 	}
 
-	
-    public boolean admin_AddIndexLabTimeSlot(int indexNo, String dayStr, int startH, int startM, int endH, int endM, String labLocation)
-	{
-		Index tempIndex = courseManager.getIndexByIndexNo(indexNo);
-		//Can't find the index
-		if (tempIndex == null)
-			return false;
-		TimeSlot.DAY day = TimeSlot.DAY.valueOf(dayStr);
-		boolean success = tempIndex.addLabTimeSlot(day, startH, startM, endH, endM, labLocation);
-
-		if (success)
-		{
-			courseManager.save();
-			return true;
-		}
-
-		return true;
-	}
-
-    public boolean admin_AddIndexTutTimeSlot(int indexNo, String dayStr, int startH, int startM, int endH, int endM, String tutLocation)
-	{
-		Index tempIndex = courseManager.getIndexByIndexNo(indexNo);
-		//Can't find the index
-		if (tempIndex == null)
-			return false;
-		TimeSlot.DAY day = TimeSlot.DAY.valueOf(dayStr);
-		boolean success = tempIndex.addTutTimeSlot(day, startH, startM, endH, endM, tutLocation);
-
-		if (success)
-		{
-			courseManager.save();
-			return true;
-		}
-
-		return true;
-	}
-
-
 //-------------------------------Method for enrolling of Student into STARS---------------------------------------------
 //This method will make use of UserManager to create student and write it into database.
 
@@ -1011,6 +1066,44 @@ public class STARS
 					output += ", " + Integer.toString(indexList.get(j).getIndexNum());
 			}
 			output += "\n";
+		}
+		return output;
+	}
+
+	public String printCourseDetails(String course){
+		if(!doesCourseExist(course))
+			return "Course does not exist";
+		Course cTemp = courseManager.getCourseByCourseId(course);
+		String output = "";
+		StringBuilder sb = new StringBuilder();
+		Formatter formatter = new Formatter(sb,Locale.ENGLISH);
+		List<Index> iTemp = cTemp.getIndexList();
+		List<TimeSlot> tsTemp = cTemp.getLecTimeSlotList();
+		for (int n = 0; n < tsTemp.size(); n++)
+		{
+			TimeSlot tempTimeSlot = tsTemp.get(n);
+			sb = new StringBuilder();
+			formatter = new Formatter(sb, Locale.ENGLISH);
+			if (n <= 0)
+				formatter.format("%-8s | %-8s | %-5s | %-5s | %s-%-7s | %s %n", cTemp.getCourseId(), "", tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+			else
+				formatter.format("%-8s | %-8s | %-5s | %-5s | %s-%-7s | %s %n", "", "", tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+			output += sb.toString();
+		}
+		for(int m = 0; m < iTemp.size(); m++){
+			tsTemp = iTemp.get(m).getTutLabTimeSlotList();
+			for(int n = 0; n < tsTemp.size(); n++){
+				TimeSlot tempTimeSlot = tsTemp.get(n);
+				sb = new StringBuilder();
+				formatter = new Formatter(sb, Locale.ENGLISH);
+				if(n==0){
+					formatter.format("%-8s | %-8d | %-5s | %-5s | %s-%-7s | %s %n", "", iTemp.get(m).getIndexNum(), tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+				}else{
+					formatter.format("%-8s | %-8s | %-5s | %-5s | %s-%-7s | %s %n", "", "", tempTimeSlot.getType(), tempTimeSlot.getDay().toString(), tempTimeSlot.getStartTime(), tempTimeSlot.getEndTime(), tempTimeSlot.getLocation());
+				}
+
+				output += sb.toString();
+			}
 		}
 		return output;
 	}

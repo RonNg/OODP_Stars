@@ -72,8 +72,16 @@ public class CourseManager extends DataManager {
     }
 
     public boolean deleteLecTimeSlot(Course course, TimeSlot timeSlot) {
-        return courseList.get(courseList.indexOf(course)).deleteLectTimeSlot(timeSlot);
+        return course.deleteLectTimeSlot(timeSlot);
     }
+
+    public List<TimeSlot> getLecTimeSlot(Course course){
+        return course.getLecTimeSlotList();
+    }
+
+
+
+
 
     public Course getCourseByCourseId(String courseId) {
         if (courseList == null) {
