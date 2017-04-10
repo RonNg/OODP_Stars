@@ -10,15 +10,13 @@ import java.util.Properties;
  * The Notification class contains methods to send email blasts and SMSes to specified email addresses
  * and numbers.
  */
-public class Notification
-{
+public class Notification {
     //This is the email address and password used for the emailing system
     final String username = "ce2002fep2group6@gmail.com";
     final String password = "boblaiqinghui";
     private Session session = null;
 
-    Notification()
-    {
+    Notification() {
         //Properties of the email service
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -36,17 +34,15 @@ public class Notification
 
     /**
      * Sends an email to a single email addresses
-     * @param emailAddress The specific emailAddress to send to
-     * @param subject Subject of email
-     * @param text Message to send to recipient
      *
+     * @param emailAddress The specific emailAddress to send to
+     * @param subject      Subject of email
+     * @param text         Message to send to recipient
      * @return -1 on failure to send <br>
-     *          1 on success
+     * 1 on success
      */
-    public void sendMessage ( final String emailAddress, final String subject, final String text )
-    {
-        try
-        {
+    public void sendMessage(final String emailAddress, final String subject, final String text) {
+        try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("ce2002fep2group6@gmail.com"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailAddress));
@@ -56,10 +52,7 @@ public class Notification
             message.setText(text);
 
             Transport.send(message);
-        }
-
-        catch (MessagingException e)
-        {
+        } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
     }
@@ -68,16 +61,13 @@ public class Notification
      * Overloaded function, sends an email blast to all email addresses in the String array.
      *
      * @param emailAddress Array of emailAddress
-     * @param subject Subject of email
-     * @param text Message to send to recipient
-     *
+     * @param subject      Subject of email
+     * @param text         Message to send to recipient
      * @return -1 on failure to send <br>
-     *          1 on success
+     * 1 on success
      */
-    public void sendMessage ( final String[] emailAddress, final String subject, final String text )
-    {
-        try
-        {
+    public void sendMessage(final String[] emailAddress, final String subject, final String text) {
+        try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("ce2002fep2group6@gmail.com"));
 
@@ -88,8 +78,7 @@ public class Notification
             message.setText(text);
 
             Transport.send(message);
-        } catch (MessagingException e)
-        {
+        } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
     }
@@ -98,15 +87,13 @@ public class Notification
      * Sends an SMS to the specified handphone number.
      *
      * @param number Handphone number of recipient
-     * @param text Message to send to recipient
-     *
+     * @param text   Message to send to recipient
      * @return -1 on failure to send <br>
-     *          1 on success
+     * 1 on success
      */
-    public int sendSMS (final int number, final String text)
-    {
+    public int sendSMS(final int number, final String text) {
 
-        System.out.println ("SMS has been sent to notify HP No. " + number);
+        System.out.println("SMS has been sent to notify HP No. " + number);
         return 1;
     }
 
@@ -114,14 +101,12 @@ public class Notification
      * Sends an SMS to the specified list of handphone numbers.
      *
      * @param number array of Handphone numbers of recipients
-     * @param text Message to send to recipient
+     * @param text   Message to send to recipient
      * @return -1 on failure to send <br>
-     *          1 on success
+     * 1 on success
      */
-    public int sendSMS (final int [] number, final String text)
-    {
-        for( int i = 0; i < number.length; ++ i )
-        {
+    public int sendSMS(final int[] number, final String text) {
+        for (int i = 0; i < number.length; ++i) {
             System.out.println("SMS has been sent to notify HP No. " + number);
         }
 

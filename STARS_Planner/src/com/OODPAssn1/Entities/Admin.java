@@ -7,8 +7,7 @@ import java.io.Serializable;
  * matriculation number, phone number and gender. the STARS application checks the instance of User
  * and grants access depending on whether its an Admin or User.
  */
-public class Admin extends User implements Serializable
-{
+public class Admin extends User implements Serializable {
 
     //SerialVersionUID of this Class used to deconflict serialisation
     static final long serialVersionUID = 1L;
@@ -17,12 +16,13 @@ public class Admin extends User implements Serializable
 
     /**
      * Constructor to create an Admin object
-     * @param name name of the admin
-     * @param email email of the admin
+     *
+     * @param name     name of the admin
+     * @param email    email of the admin
      * @param userName username of the admin
      * @param password password of the admin
      */
-    public Admin(String name, String email, String userName, String password){
+    public Admin(String name, String email, String userName, String password) {
 
         this.name = name;
         this.email = email;
