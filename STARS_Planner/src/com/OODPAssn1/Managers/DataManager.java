@@ -11,7 +11,8 @@ import java.util.List;
  */
 public class DataManager
 {
-    private static final String cFilePath = System.getProperty("user.dir") + "\\STARS_Planner\\database\\"; // To specify location to store database files
+    //private static final String cFilePath = System.getProperty("user.dSir") + "\\STARS_Planner\\database\\"; // To specify location to store database files
+    private static final String cFilePath = "C:\\Users\\jonah\\Desktop\\STARS_Planner\\database\\"; // To specify location to store database files
     //private static final String cFilePath = System.getProperty("user.dir") + "\\database\\"; // To specify location to store database files
 
 
@@ -22,10 +23,18 @@ public class DataManager
         //Creates the directory
         if (!directory.exists())
         { // Checks if directory already exist
-            if (!directory.mkdir()) // Creates directory if not available
-            {
-                System.out.println(cFilePath + filepath + " directory created");
+            try{
+                if (directory.mkdirs()) // Creates directory if not available
+                {
+                    System.out.println(cFilePath + " directory created");
+                }else{
+                    System.out.println(cFilePath + " directory not created");
+                }
+            }catch(SecurityException e){
+                e.printStackTrace();
+                System.out.println("Program does not have enough privilege to create folder.");
             }
+
         }
 
         //Creates the file if none exists
@@ -57,9 +66,16 @@ public class DataManager
         //Creates the directory
         if (!directory.exists())
         { // Checks if directory already exist
-            if (!directory.mkdir()) // Creates directory if not available
-            {
-                System.out.println(cFilePath + " directory created");
+            try{
+                if (directory.mkdirs()) // Creates directory if not available
+                {
+                    System.out.println(cFilePath + " directory created");
+                }else{
+                    System.out.println(cFilePath + " directory not created");
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+                System.out.println("Program does not have enough privilege to create folder.");
             }
         }
 
