@@ -812,10 +812,13 @@ public class STARS
 		if (course != null)
 		{
 			//Save after adding
-			course.addLecTimeSlot(timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT);
-			courseManager.save();
 
-			return true;
+			if(course.addLecTimeSlot(timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT)) {
+				courseManager.save();
+				return true;
+			}else return false;
+
+
 		}
 		else
 		{
@@ -883,7 +886,7 @@ public class STARS
 			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	public String admin_GetLecTimeList(String courseId){
