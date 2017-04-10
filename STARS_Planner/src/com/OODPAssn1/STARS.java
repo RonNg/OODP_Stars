@@ -4,6 +4,7 @@ import com.OODPAssn1.Entities.*;
 import com.OODPAssn1.Managers.CourseManager;
 import com.OODPAssn1.Managers.UserManager;
 
+import javax.mail.internet.InternetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -361,6 +362,42 @@ public class STARS
 
 	}
 
+	/**
+	 * @param indexNo  Index number to check
+	 * @param matricNo Leave empty if matric no to check is the current user's matric no
+	 * @return -1 Error <br>
+	 * 0 if student is not in waitlist of  in this index <br>
+	 * 1 if student is in waitlist of in this index
+	 */
+	public int checkIfInWaitList(int indexNo, String matricNo){
+		Index tempIndex = courseManager.getIndexByIndexNo(indexNo);
+
+		if (tempIndex == null)
+			return -1; //Index does not exist
+
+		if (matricNo == "")
+		{
+			if (currentLogOnUser instanceof Student)
+			{
+				Student currLoggedStudent = (Student) currentLogOnUser;
+
+				if (tempIndex.checkIfStudentInWaitList(currLoggedStudent.getMatricNo()))
+					return 1;
+				else
+					return 0;
+			}
+			else
+				return -1;
+		}
+		else
+		{
+			if (tempIndex.checkIfStudentInWaitList(matricNo))
+				return 1;
+			else
+				return 0;
+		}
+	}
+
 	public boolean checkIfIndexExists (int indexNo)
 	{
 		if (courseManager.getIndexByIndexNo(indexNo) != null)
@@ -426,6 +463,15 @@ public class STARS
 	 * Already in another index of the same course -> 5 <br>
 	 * Succesfully switched index -> 6 <br>
 	 * Switched index but added into waitlist of the target index -> 7
+	 *
+	 * Error = 0
+	 * Success = 1
+	 * Success(In waitlist) = 2
+	 * Failed(Already in Index) = 3
+	 * Failed(Already in Index waitlist) = 4
+	 * Failed(Already in another Index of the same course) = 5
+	 * Failed(Already in wait list of another Index of the same course) = 6
+
 	 */
 	public int student_EnrolIndex (int indexNo)
 	{
@@ -443,6 +489,52 @@ public class STARS
 		boolean switchInWaitList = false;
 		Course courseOfIndexToJoin = courseManager.getCourseByIndexNo(indexToJoin.getIndexNum());
 
+		if(indexToJoin.checkIfStudentEnrolled(tempStud.getMatricNo()))
+			return 3; // If student enrolled in the index return 3
+		if(indexToJoin.checkIfStudentInWaitList(tempStud.getMatricNo()))
+			return 4; // If student in waitlist of index return 4
+
+		List<Integer> studEnrolledIndexList = tempStud.getCourseIndexList();
+		for(int n = 0; n < studEnrolledIndexList.size(); n++){
+			Course toCheck = courseManager.getCourseByIndexNo(studEnrolledIndexList.get(n));
+			if(toCheck.equals(courseOfIndexToJoin)){
+				if(studEnrolledIndexList.get(n) == indexNo)
+					return 3; // If student enrolled in the index return 3
+				else
+					return 5; // If student enrolled in another index of the same course return 5
+			}
+		}
+
+		List<Index> indexOfCourseToJoinList = courseOfIndexToJoin.getIndexList();
+		for(int n = 0; n < indexOfCourseToJoinList.size(); n++){
+			Index toCheck = indexOfCourseToJoinList.get(n);
+			if(toCheck.checkIfStudentInWaitList(tempStud.getMatricNo())){
+				if(toCheck.equals(indexToJoin)){
+					return 4; // If student in waitlist of index return 111
+				}else{ // In waitlist of another index of the same course
+					return 6;
+				}
+			}
+		}
+
+		switch(courseManager.enrolInIndex(tempStud.getMatricNo(),indexNo)){
+			case -1:
+				return 2;
+			case 0:
+				return 0;
+			case 1:
+				tempStud.addCourseIndex(indexNo);
+				return 1;
+			case 2:
+				return 3;
+			case 3:
+				return 4;
+			default:
+				return 0;
+
+		}
+		/*
+		// UNTIL HERE
 		//Loops through to find if student is enrolled or in waitlist in the same CourseID of the index he wants to join
 		for (int i = 0; i < courseOfIndexToJoin.getIndexList().size(); ++i)
 		{
@@ -495,7 +587,7 @@ public class STARS
 		 ===================================*/
 		//Checks every single index in the current user against the index to join to see if there is a clash
 
-		for (int i = 0; i < currentUserIndexList.size(); ++i)
+		/*for (int i = 0; i < currentUserIndexList.size(); ++i)
 		{
 			Index currUserIndex = courseManager.getIndexByIndexNo(currentUserIndexList.get(i));
 
@@ -504,7 +596,7 @@ public class STARS
 			if (result.equals("NO CLASH") == false)
 			{
 				if (result.equals("SAME COURSE"))
-					return 5; //Changed to 5************************************ QYQYQYQYQYQYQYQY
+					return 5; //SAME COURSE
 
 				return 4; //Index clashes
 			}
@@ -519,7 +611,7 @@ public class STARS
 		{
 			 /*======================================
 					 ADDED INTO INDEX/WAITLIST
-			=======================================*/
+			=======================================*//*
 			//Successfully enrolled
 			case 1:
 				//Enroll into student index list
@@ -531,10 +623,8 @@ public class STARS
 			//Cases 0, 2 and 3 do not do anything as nothing is being changed in CourseManager. See error code.
 
 		}
-		saveData();
-		return result;
+		saveData();*/
 	}
-
 
 	/**
 	 * Withdraw from the Index number specified by the current logged in student
@@ -619,19 +709,54 @@ public class STARS
 
 	}
 
-	public int student_SwitchIndex (int currentIndexNo, int targetIndexNo, boolean switchInWaitList)
+
+	/**
+	 * @param currentIndexNo Index Number to de-enrol
+	 * @param targetIndexNo Index Number to de-enrol
+	 * @return Serious Error occured -> -1 <br>
+	 * @return Error occured -> 0 <br>
+	 * Successfully switched -> 1 <br>
+	 * Successfully switch(in waitlist) -> 2 <br>
+	 */
+	public int student_SwitchIndex (int currentIndexNo, int targetIndexNo)
 	{
 		Index currentIndex = courseManager.getIndexByIndexNo(currentIndexNo);
 		Index targetIndex = courseManager.getIndexByIndexNo(targetIndexNo);
 		String currentUserMatric = ((Student) currentLogOnUser).getMatricNo();
 
-
-		//If there is a vacancy, we switch between indexs
-		//Waitlist to target index
-
-
-		int result = courseManager.enrolInIndex(currentUserMatric, targetIndexNo);
-
+		int result = student_EnrolIndex(targetIndexNo);
+		switch (result){
+			case 1:
+			case 2:
+				return -1;
+			case 5:
+				if(student_DropIndex(currentIndexNo)==1){
+					switch (student_EnrolIndex(targetIndexNo)) {
+						case 0:
+							switch (student_EnrolIndex(currentIndexNo)) {
+								case 1:
+									return 0;
+								case 2:
+									return 0;
+							}
+						case 1:
+							return 1;
+						case 2:
+							return 2;
+					}
+				}
+			case 6:
+				if(currentIndex.removeStudentFromWaitlist(currentUserMatric)){
+					switch (student_EnrolIndex(currentIndexNo)){
+						case 1:
+							return 1;
+						case 2:
+							return 2;
+					}
+				}
+		}
+		return 0;
+/*
 		if(result == 0)
 			return 0;
 
@@ -652,7 +777,7 @@ public class STARS
 				return -1;
 		}
 
-		return 0; //error occured
+		return 0; //error occured*/
 	}
 
 
@@ -807,10 +932,13 @@ public class STARS
 		if (course != null)
 		{
 			//Save after adding
-			course.addLecTimeSlot(timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT);
-			courseManager.save();
 
-			return true;
+			if(course.addLecTimeSlot(timeSlotDay, startTimeHH, startTimeMM, endTimeHH, endTimeMM, locationLT)) {
+				courseManager.save();
+				return true;
+			}else return false;
+
+
 		}
 		else
 		{
@@ -878,7 +1006,7 @@ public class STARS
 			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	public String admin_GetLecTimeList(String courseId){
@@ -1517,5 +1645,9 @@ public class STARS
 		courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10042, 2);
 		courseManager.createIndex(courseManager.getCourseByCourseId("CE2003"), 10043, 2);
 		*/
+	}
+
+	public String getCourseOfIndex(int index){
+		return courseManager.getCourseByIndexNo(index).getCourseId();
 	}
 }
