@@ -4,6 +4,8 @@ package com.OODPAssn1;
 
 
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.io.Console;
 import java.util.Scanner;
 
@@ -663,7 +665,18 @@ public class UI
         String name = getString();
 
         System.out.println("Please enter email of student:");
-        String email = getString();
+        String email = "";
+        boolean emailCheck = false;
+        while (!emailCheck){
+            try{
+                email = getString();
+                new InternetAddress(email).validate();
+                emailCheck = true;
+            }catch (AddressException e){
+                System.out.println("Invalid email format. Please try again.");
+            }
+        }
+
 
         System.out.println("Please enter Matric no. of student: ");
         String matricNo;
@@ -695,12 +708,15 @@ public class UI
                       char[] passString = c.readPassword();
                       String password = new String(passString );
                     */
-        boolean result = stars.admin_addStudent(name, email, matricNo, contact, stGender.toString(), nationality, username, password);
-        if(result)
-            System.out.println(name + " successfully added to STARS");
-        else {
-            System.out.println("Another student with " + matricNo + " already exist in STARS!\nPlease re-enter another Matric No: ");
-            matricNo = getString();
+        boolean result = false;
+        while (!result){
+            result = stars.admin_addStudent(name, email, matricNo, contact, stGender.toString(), nationality, username, password);
+            if(result)
+                System.out.println(name + " successfully added to STARS");
+            else {
+                System.out.println("Another student with " + matricNo + " already exist in STARS!\nPlease re-enter another Matric No: ");
+                matricNo = getString();
+            }
         }
 
     }
