@@ -210,7 +210,7 @@ public class UI
 
 
             //Enrols student into index
-            int result = stars.student_EnrolIndex(indexToEnroll);
+            int result = stars.student_EnrolIndex(indexToEnroll,"");
             int[] studentPosInWaitList;
             switch (result){
                 case 0:
@@ -237,10 +237,10 @@ public class UI
                     System.out.println("You are already in the waitlist of another Index of this course");
                     break;
                 case 7:
-                    System.out.println("Cannot enrol in Index. Class timing clash with your other Indexes.");
+                    System.out.println("Cannot enrol in Index. Class timing clash with your other Indexes");
                     break;
                 default:
-                    System.out.println("AN ERROR OCCURED");
+                    System.out.println("AN ERROR OCCURRED");
                     break;
             }
             /*switch (result)
@@ -511,13 +511,14 @@ public class UI
                     "2) Add a student\n" +//done
                     "3) Add a course\n" +//done
                     "4) Update a course\n" +//done
-                    "5) Check available slot for an index number (vacancy in a class)\n" +//done
-                    "6) Print student list by index number.\n" +//done
-                    "7) Print student list by course (all students registered for the selected course).\n" +//done
-                    "8) Print all student.\n" +
-                    "9) Log out and save all changes\n" +//done
-                    "10) Quit STARS and save all changes\n" +//done
-                    "11) Debug");
+                    "5) Enrol student to Index\n" +
+                    "6) Check available slot for an index number (vacancy in a class)\n" +//done
+                    "7) Print student list by index number.\n" +//done
+                    "8) Print student list by course (all students registered for the selected course).\n" +//done
+                    "9) Print all student.\n" +
+                    "10) Log out and save all changes\n" +//done
+                    "11) Quit STARS and save all changes\n" +//done
+                    "12) Debug");
 
 
             choice = getInt();
@@ -536,12 +537,14 @@ public class UI
                 case 4://Update Course
                     admin_UpdateCourse();
                    break;
-
-                case 5://Check available slot for an index number (vacancy in a class)
+                case 5: //Enrol student to index
+                    admin_EnrolStudent();
+                    break;
+                case 6://Check available slot for an index number (vacancy in a class)
                     admin_CheckVacancy();
                     break;
 
-                case 6://Print student list by index number
+                case 7://Print student list by index number
                     printTitle("Print student list by index");
                     System.out.println("Please enter Index No. for printing: " );
                     int ino = getInt();
@@ -550,7 +553,7 @@ public class UI
                     System.out.println(stars.getStudentsInIndex(ino));
                     break;
 
-                case 7://Print student list by course (all students registered for the selected course)
+                case 8://Print student list by course (all students registered for the selected course)
                     printTitle("Print student list by course");
                     System.out.println("Please enter course ID for printing: " );
                     String cId = getString();
@@ -559,20 +562,20 @@ public class UI
                     String outputStr = stars.getStudentsInCourse(cId);
                     System.out.println(outputStr);
                     break;
-                case 8:
+                case 9: //Print all student
                     printTitle("Print all student");
                     System.out.println(stars.admin_GetStudentList());
                     break;
-                case 9://Save changes and return to login menu
+                case 10://Save changes and return to login menu
                     stars.saveData();
                     return;
 
-                case 10://Save changes and quit program
+                case 11://Save changes and quit program
                     stars.saveData();
                     loggedOnUserType = -2;
                     return;
 
-                case 11://Use for debugging purposes
+                case 12://Use for debugging purposes
                     stars.printAllList();
                     break;
                 default:
@@ -583,6 +586,66 @@ public class UI
         }//end of while loop
     }
 
+
+    public static void admin_EnrolStudent(){
+        String student = "";
+        int index = -1;
+        printTitle("Enrol Student");
+        System.out.println("Please enter Index to enrol student(-1 to exit): ");
+        boolean indexCheck = false;
+        while(indexCheck == false){
+            index = getInt();
+            if(index == -1)
+                return;
+            if(stars.checkIfIndexExists(index))
+                indexCheck = true;
+            else
+                System.out.println("Invalid Index. Please try again.");
+        }
+        System.out.println("Please enter Matric no of student to enroll(-1 to exit): ");
+        boolean studentCheck = false;
+        while(studentCheck==false){
+            student = getString();
+            if(student.equals("-1"))
+                return;
+            if(stars.checkStudentExist(student))
+                studentCheck = true;
+            else
+                System.out.println("Invalid Matric No. Please try again.");
+        }
+        switch (stars.student_EnrolIndex(index, student)){
+            case 0:
+                System.out.println("AN ERROR OCCURED");
+                break;
+            case 1:
+                System.out.println("Student have successfully enrolled into the Index");
+                break;
+            case 2:
+                int[] studentPosInWaitList = stars.student_getPositionInWaitlist(index); //Gets the student's position in the waitlist
+                System.out.println("Student have been placed into the wait list of this Index");
+                System.out.println("Student current position is " + studentPosInWaitList[0] + " out of " + studentPosInWaitList[1] + " in the waitlist");
+                break;
+            case 3:
+                System.out.println("Student already enrolled in this Index");
+                break;
+            case 4:
+                System.out.println("Student already in the waitlist of this Index");
+                break;
+            case 5:
+                System.out.println("Student already enrolled in another Index of this course");
+                break;
+            case 6:
+                System.out.println("Student already in the waitlist of another Index of this course");
+                break;
+            case 7:
+                System.out.println("Cannot enrol in Index. Class timing clash with other Indexes of the student");
+                break;
+            default:
+                System.out.println("AN ERROR OCCURRED");
+                break;
+        }
+
+    }
 
     /**
      * @return courseId if Course is successfully added into the system
@@ -702,6 +765,8 @@ public class UI
             username = getString();
             if(!stars.doesUserNameExist(username))
                 userNameCheck = true;
+            else
+                System.out.println("User Name already exist. Please enter other user name.");
         }
 
         System.out.println("Please enter password of student: ");

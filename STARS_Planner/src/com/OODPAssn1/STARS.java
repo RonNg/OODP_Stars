@@ -475,12 +475,15 @@ public class STARS
 	 * Failed(Clash timing) = 7
 
 	 */
-	public int student_EnrolIndex (int indexNo)
+	public int student_EnrolIndex (int indexNo, String matricNo)
 	{
-		if (currentLogOnUser.getType() != User.USER_TYPE.STUDENT) //only students can enroll into indexes
-			return 0;
-
-		Student tempStud = (Student) currentLogOnUser;
+		Student tempStud;
+		if(matricNo == ""){
+			if (currentLogOnUser.getType() != User.USER_TYPE.STUDENT) //only students can enroll into indexes
+				return 0;
+			tempStud = (Student) currentLogOnUser;
+		}
+		tempStud = userManager.getStudentByMatricNo(matricNo);
 
 
 		//Check if we can switch index
@@ -751,16 +754,16 @@ public class STARS
 		Index targetIndex = courseManager.getIndexByIndexNo(targetIndexNo);
 		String currentUserMatric = ((Student) currentLogOnUser).getMatricNo();
 
-		int result = student_EnrolIndex(targetIndexNo);
+		int result = student_EnrolIndex(targetIndexNo,"");
 		switch (result){
 			case 1:
 			case 2:
 				return -1;
 			case 5:
 				if(student_DropIndex(currentIndexNo)==1){
-					switch (student_EnrolIndex(targetIndexNo)) {
+					switch (student_EnrolIndex(targetIndexNo,"")) {
 						case 0:
-							switch (student_EnrolIndex(currentIndexNo)) {
+							switch (student_EnrolIndex(currentIndexNo,"")) {
 								case 1:
 									return 0;
 								case 2:
@@ -774,7 +777,7 @@ public class STARS
 				}
 			case 6:
 				if(currentIndex.removeStudentFromWaitlist(currentUserMatric)){
-					switch (student_EnrolIndex(currentIndexNo)){
+					switch (student_EnrolIndex(currentIndexNo,"")){
 						case 1:
 							return 1;
 						case 2:
@@ -1546,6 +1549,7 @@ public class STARS
 	public boolean doesUserNameExist(String usrName){
 		return userManager.doesUserExist(usrName);
 	}
+
 
 	public void printAllList ()
 	{
