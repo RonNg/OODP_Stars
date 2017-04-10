@@ -677,19 +677,31 @@ public class STARS
 			{
 				Student tempStudent = userManager.getStudentByMatricNo(result[1]);
 				tempStudent.addCourseIndex(Integer.parseInt(result[2]));
-				saveData();
 
-
-				//TODO: Email the student that s/he has been added into the course
 				String courseId = courseManager.getCourseByIndexNo(indexNo).getCourseId();
 				String courseName = courseManager.getCourseByIndexNo(indexNo).getCourseName();
-
 				String subject = "Successfully enrolled into Index " + indexNo;
-
 				String message = "Dear " + tempStudent.getName() + ",\n\nAs a student has withdrawn from the index, you have been removed from the waitlist and enrolled into the Index " + indexNo
 						+ " for " + courseId + " - " + courseName;
+
+				List<Integer> sEnrollIndex = tempStudent.getCourseIndexList();
+				Index indexJoined = courseManager.getIndexByIndexNo(indexNo);
+				for (int i = 0; i < sEnrollIndex.size(); ++i) {
+					Index currUserIndex = courseManager.getIndexByIndexNo(sEnrollIndex.get(i));
+					String cClash = checkIfIndexClash(currUserIndex, indexJoined);
+					if (!result.equals("NO CLASH"))
+					{
+						if (!result.equals("SAME COURSE")){
+							student_DropIndex(indexNo);
+							subject = "Failed to enrol into Index " + indexNo;
+							message = "Dear " + tempStudent.getName() + ",\n\nAlthough a student has withdrawn from the index, you have not enrolled into Index " + indexNo + " for " + courseId +
+									" as the timing clashed with your current registered Indexes.\nYou have been removed from the waitlist. Please enroll to the Index again.";
+						}
+					}
+				}
+
 				studentNotification.sendMessage(tempStudent.getEmail(), subject, message);
-				System.out.println("STARS: Student " + tempStudent.getName() + " has been removed from waitlist and enrolled in Index" + indexNo+". Email has been sent to the student.");
+				saveData();
 				return 1;
 			}
 		}

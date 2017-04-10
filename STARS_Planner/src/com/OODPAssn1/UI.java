@@ -238,6 +238,7 @@ public class UI
                     break;
                 case 7:
                     System.out.println("Cannot enrol in Index. Class timing clash with your other Indexes.");
+                    break;
                 default:
                     System.out.println("AN ERROR OCCURED");
                     break;
