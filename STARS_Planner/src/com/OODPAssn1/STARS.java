@@ -7,6 +7,7 @@ import com.OODPAssn1.Managers.UserManager;
 import javax.mail.internet.InternetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.*;
 
 
@@ -113,9 +114,9 @@ public class STARS
 	{
 		try
 		{
-			Date dateObj = new SimpleDateFormat("dd/MM/yyyy").parse(date);
-			if (Integer.parseInt(date.substring(0, 2)) > 31 || Integer.parseInt(date.substring(3, 5)) > 12)
-				return false;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			sdf.setLenient(false);
+			Date dateObj = sdf.parse(date);
 		} catch (Exception e)
 		{
 			return false;
@@ -140,7 +141,7 @@ public class STARS
 			return false;
 		}
 
-		return startDate.after(currentDate);
+		return (startDate.after(currentDate));
 	}
 
 	public boolean checkEndDateCompatibility (String start, String end)
@@ -839,7 +840,7 @@ public class STARS
 					{
 						matricNo = index.getEnrolledStudentList().get(j);
 						student = userManager.getStudentByMatricNo(matricNo);
-						student.deEnrollCourseIndex(index.getIndexNum());
+						student.removeCourseIndex(index.getIndexNum());
 						retStr = retStr + "Matric no.: " + matricNo + "    Name:" + student.getName() +
 								"    From Index: " + index.getIndexNum() + "\n";
 					}
@@ -886,7 +887,7 @@ public class STARS
 					{
 						matricNo = index.getEnrolledStudentList().get(j);
 						student = userManager.getStudentByMatricNo(matricNo);
-						student.deEnrollCourseIndex(index.getIndexNum());
+						student.removeCourseIndex(index.getIndexNum());
 						retStr = retStr + "Matric no.: " + matricNo + "    Name:" + student.getName() +
 								"    From Index: " + index.getIndexNum() + "\n";
 					}
@@ -980,6 +981,13 @@ public class STARS
 		if (tempIndex == null)
 			return false;
 		TimeSlot.DAY day = TimeSlot.DAY.valueOf(dayStr);
+		List<TimeSlot> lecTime = courseManager.getLecTimeSlot(courseManager.getCourseByIndexNo(indexNo));
+		for(int i = 0; i < lecTime.size(); i++){
+			if(lecTime.get(i).getDay() == day) {
+				if (lecTime.get(i).getStartTime().equals(LocalTime.of(startH, startM).toString()))
+					return false;
+			}
+		}
 		boolean success = tempIndex.addLabTimeSlot(day, startH, startM, endH, endM, labLocation);
 
 		if (success)
@@ -998,6 +1006,13 @@ public class STARS
 		if (tempIndex == null)
 			return false;
 		TimeSlot.DAY day = TimeSlot.DAY.valueOf(dayStr);
+		List<TimeSlot> lecTime = courseManager.getLecTimeSlot(courseManager.getCourseByIndexNo(indexNo));
+		for(int i = 0; i < lecTime.size(); i++){
+			if(lecTime.get(i).getDay() == day) {
+				if (lecTime.get(i).getStartTime().equals(LocalTime.of(startH, startM).toString()))
+					return false;
+			}
+		}
 		boolean success = tempIndex.addTutTimeSlot(day, startH, startM, endH, endM, tutLocation);
 
 		if (success)
@@ -1098,7 +1113,7 @@ public class STARS
 			{
 				matricNo = index.getEnrolledStudentList().get(j);
 				student = userManager.getStudentByMatricNo(matricNo);
-				student.deEnrollCourseIndex(index.getIndexNum());
+				student.removeCourseIndex(index.getIndexNum());
 				rtrStr = rtrStr + "Matric no.: " + matricNo + "    Name:" + student.getName() +
 						"    From Index: " + index.getIndexNum() + "\n";
 			}

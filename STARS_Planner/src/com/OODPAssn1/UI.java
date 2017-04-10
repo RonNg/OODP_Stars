@@ -724,12 +724,18 @@ public class UI
     public static void admin_UpdateCourse()
     {
         printTitle("Update Course");
+        String courseId;
         System.out.println(stars.printCourseList()); //prints out all course for selection
-        System.out.println("\nEnter the Course ID for the course which you would you like to update(Enter -1 to quit): ");
-        String courseId = getString();
+        while(true){
+            System.out.println("\nEnter the Course ID for the course which you would you like to update(Enter -1 to quit): ");
+            courseId = getString();
+            if(courseId.equals("quit"))
+                return;
+            else if(stars.doesCourseExist(courseId))
+                break;
+        }
 
-        if (stars.doesCourseExist(courseId))
-        {
+
             System.out.println(stars.printCourseDetails(courseId));
             System.out.println("What would you like to edit for " + courseId + "?");
 
@@ -784,7 +790,6 @@ public class UI
                     System.out.println("Invalid choice. Returning to main menu");
                     break;
             }
-        }
 
     }
 
@@ -897,7 +902,12 @@ public class UI
 
             System.out.println("Enter LAB" + n + " END time in 24hrs format(HHMM): " );
             endTime = getTime(startTime);
-            stars.admin_AddIndexLabTimeSlot(index, timeSlotDay.toString(), startTime/100, startTime%100, endTime/100, endTime%100, labLocation );
+            if(!stars.admin_AddIndexLabTimeSlot(index, timeSlotDay.toString(), startTime/100, startTime%100, endTime/100, endTime%100, labLocation )){
+
+                System.out.println("TimeSlot for " + index + " on " + timeSlotDay.toString() + ", " + startTime + "-" + endTime + " failed to be added!");
+                System.out.println("Please check there is no other Tut/Lab/Lec happening during that time slot!");
+            }else System.out.println("TimeSlot for " + index + " on " + timeSlotDay.toString() + ", " + startTime + "-" + endTime + " added successfully!");
+
 
         }
     }
@@ -975,8 +985,8 @@ public class UI
             if(!stars.admin_AddIndexTutTimeSlot(index, timeSlotDay.toString(), startTime/100, startTime%100, endTime/100, endTime%100, tutLocation )){
 
                 System.out.println("TimeSlot for " + index + " on " + timeSlotDay.toString() + ", " + startTime + "-" + endTime + " failed to be added!");
-                System.out.println("Please check there is no other tut/lab happening during that time slot!");
-            }
+                System.out.println("Please check there is no other Tut/Lab/Lec happening during that time slot!");
+            }else System.out.println("TimeSlot for " + index + " on " + timeSlotDay.toString() + ", " + startTime + "-" + endTime + " added successfully!");
         }
     }
 
