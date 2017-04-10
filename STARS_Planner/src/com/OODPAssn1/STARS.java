@@ -5,6 +5,7 @@ import com.OODPAssn1.Managers.CourseManager;
 import com.OODPAssn1.Managers.UserManager;
 import com.sun.javafx.binding.StringFormatter;
 
+import javax.mail.internet.InternetAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -586,10 +587,10 @@ public class STARS
 
 				String subject = "Succesfully enrolled into Index " + indexNo;
 
-				String message = "As a student has withdrawn from the index, you have been removed from the waitlist and enrolled into the Index " + indexNo
+				String message = "Dear " + tempStudent.getName() + ",\n\nAs a student has withdrawn from the index, you have been removed from the waitlist and enrolled into the Index " + indexNo
 						+ " for " + courseId + " - " + courseName;
-
 				studentNotification.sendMessage(tempStudent.getEmail(), subject, message);
+				System.out.println("STARS: Student " + tempStudent.getName() + " has been removed from waitlist and enrolled in Index" + indexNo+". Email has been sent to the student.");
 				return 1;
 			}
 		}
@@ -1001,7 +1002,7 @@ public class STARS
 		Index index = courseManager.getIndexByIndexNo(indexNo);
 		if (index == null)
 			return indexNotFoundStr;
-		rtrStr = "Number of vacancy in Index " + indexNo + ": " + index.getNumberOfVacancy();
+		rtrStr = "Number of vacancy in Index " + indexNo + ": " + index.getNumberOfVacancy() + "/" + index.getMaxNumberOfStudent();
 		return rtrStr;
 	}
 
