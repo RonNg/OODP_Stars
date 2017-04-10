@@ -472,6 +472,7 @@ public class STARS
 	 * Failed(Already in Index waitlist) = 4
 	 * Failed(Already in another Index of the same course) = 5
 	 * Failed(Already in wait list of another Index of the same course) = 6
+	 * Failed(Clash timing) = 7
 
 	 */
 	public int student_EnrolIndex (int indexNo)
@@ -511,11 +512,24 @@ public class STARS
 			Index toCheck = indexOfCourseToJoinList.get(n);
 			if(toCheck.checkIfStudentInWaitList(tempStud.getMatricNo())){
 				if(toCheck.equals(indexToJoin)){
-					return 4; // If student in waitlist of index return 111
-				}else{ // In waitlist of another index of the same course
-					return 6;
+					return 4; // If student in waitlist of index return 4
+				}else{
+					return 6; // If student in waitlist of another index of the same course return 6
 				}
 			}
+		}
+
+		for (int i = 0; i < studEnrolledIndexList.size(); ++i) {
+			Index currUserIndex = courseManager.getIndexByIndexNo(studEnrolledIndexList.get(i));
+
+			String result = checkIfIndexClash(currUserIndex, indexToJoin);
+			if (result.equals("NO CLASH") == false)
+			{
+				if (result.equals("SAME COURSE"))
+					return 3; // If student enrolled in the index return 3
+				return 7; // If timing clash with other index of the student return 7
+			}
+
 		}
 
 		switch(courseManager.enrolInIndex(tempStud.getMatricNo(),indexNo)){
@@ -663,19 +677,31 @@ public class STARS
 			{
 				Student tempStudent = userManager.getStudentByMatricNo(result[1]);
 				tempStudent.addCourseIndex(Integer.parseInt(result[2]));
-				saveData();
 
-
-				//TODO: Email the student that s/he has been added into the course
 				String courseId = courseManager.getCourseByIndexNo(indexNo).getCourseId();
 				String courseName = courseManager.getCourseByIndexNo(indexNo).getCourseName();
-
-				String subject = "Succesfully enrolled into Index " + indexNo;
-
+				String subject = "Successfully enrolled into Index " + indexNo;
 				String message = "Dear " + tempStudent.getName() + ",\n\nAs a student has withdrawn from the index, you have been removed from the waitlist and enrolled into the Index " + indexNo
 						+ " for " + courseId + " - " + courseName;
+
+				List<Integer> sEnrollIndex = tempStudent.getCourseIndexList();
+				Index indexJoined = courseManager.getIndexByIndexNo(indexNo);
+				for (int i = 0; i < sEnrollIndex.size(); ++i) {
+					Index currUserIndex = courseManager.getIndexByIndexNo(sEnrollIndex.get(i));
+					String cClash = checkIfIndexClash(currUserIndex, indexJoined);
+					if (!result.equals("NO CLASH"))
+					{
+						if (!result.equals("SAME COURSE")){
+							student_DropIndex(indexNo);
+							subject = "Failed to enrol into Index " + indexNo;
+							message = "Dear " + tempStudent.getName() + ",\n\nAlthough a student has withdrawn from the index, you have not enrolled into Index " + indexNo + " for " + courseId +
+									" as the timing clashed with your current registered Indexes.\nYou have been removed from the waitlist. Please enroll to the Index again.";
+						}
+					}
+				}
+
 				studentNotification.sendMessage(tempStudent.getEmail(), subject, message);
-				System.out.println("STARS: Student " + tempStudent.getName() + " has been removed from waitlist and enrolled in Index" + indexNo+". Email has been sent to the student.");
+				saveData();
 				return 1;
 			}
 		}
