@@ -249,7 +249,7 @@ public class ConsoleUI implements UserInterface
                     System.out.println("You have successfully enrolled into the Index");
                     break;
                 case 2:
-                    studentPosInWaitList = stars.student_getPositionInWaitlist(indexToEnroll); //Gets the student's position in the waitlist
+                    studentPosInWaitList = stars.student_getPositionInWaitlist(indexToEnroll,""); //Gets the student's position in the waitlist
                     System.out.println("You have been placed into the wait list of this Index");
                     System.out.println("You are currently position " + studentPosInWaitList[0] + " out of " + studentPosInWaitList[1] + " in the waitlist");
                     break;
@@ -706,7 +706,7 @@ public class ConsoleUI implements UserInterface
                 System.out.println("Student have successfully enrolled into the Index");
                 break;
             case 2:
-                int[] studentPosInWaitList = stars.student_getPositionInWaitlist(index); //Gets the student's position in the waitlist
+                int[] studentPosInWaitList = stars.student_getPositionInWaitlist(index,student); //Gets the student's position in the waitlist
                 System.out.println("Student have been placed into the wait list of this Index");
                 System.out.println("Student current position is " + studentPosInWaitList[0] + " out of " + studentPosInWaitList[1] + " in the waitlist");
                 break;
@@ -909,7 +909,7 @@ public class ConsoleUI implements UserInterface
         {
             System.out.println("\nEnter the Course ID for the course which you would you like to update(Enter -1 to quit): ");
             courseId = getString();
-            if (courseId.equals("quit"))
+            if (courseId.equals("-1"))
                 return;
             else if (stars.checkCourseExist(courseId))
                 break;
@@ -1079,9 +1079,14 @@ public class ConsoleUI implements UserInterface
     public void admin_AddLab (String courseId, Integer indexToAdd)
     {
         int index = 0;
+<<<<<<< HEAD
+        if (indexToAdd == null) {
+            System.out.println("Please enter index to add Lab");
+=======
         if (indexToAdd == null)
         {
             System.out.println("Please enter index to add lecture");
+>>>>>>> 32ecdb9f3828e0330c2517b866a024cb9cb5443a
             boolean inputCheck = false;
             while (!inputCheck)
             {
@@ -1179,9 +1184,14 @@ public class ConsoleUI implements UserInterface
     public void admin_AddTut (String courseId, Integer indexToAdd)
     {
         int index = 0;
+<<<<<<< HEAD
+        if (indexToAdd == null) {
+            System.out.println("Please enter index to add Tutorial");
+=======
         if (indexToAdd == null)
         {
             System.out.println("Please enter index to add tutorial");
+>>>>>>> 32ecdb9f3828e0330c2517b866a024cb9cb5443a
             boolean inputCheck = false;
             while (!inputCheck)
             {
