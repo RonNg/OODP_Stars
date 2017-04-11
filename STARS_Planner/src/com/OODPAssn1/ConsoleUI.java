@@ -7,14 +7,14 @@ import java.io.Console;
 import java.util.Scanner;
 
 
-public class UI {
+public class ConsoleUI implements UserInterface {
 
-    private static Scanner s = new Scanner(System.in);
-    private static Console c = System.console();
-    private static STARS stars = STARS.getInstance();
-    private static int loggedOnUserType;
+    private Scanner s = new Scanner(System.in);
+    private Console c = System.console();
+    private STARS stars = STARS.getInstance();
+    private int loggedOnUserType;
 
-    public static void main(String[] args) {
+    public void start() {
         //stars.populateDatabase();
         while (true) {//Main UI loop
 
@@ -33,7 +33,7 @@ public class UI {
 
     }
 
-    public static int loginScreen() {
+    public int loginScreen() {
 
         String userName;
         String passWord;
@@ -72,7 +72,7 @@ public class UI {
 
     }
 
-    public static void studentMenu() {
+    public void studentMenu() {
         int choice;
         clearScreen();
         printTitle("STARS");
@@ -149,7 +149,7 @@ public class UI {
     }
 //----------------------------------------Method to display Login screen----------------------------------------------
 
-    public static void student_AddCourse() {
+    public void student_AddCourse() {
         boolean addFinish = false;
         printTitle("Add Course");
         while (!addFinish) {
@@ -281,7 +281,7 @@ public class UI {
 
 //------------------------------------Method to display Student's menu--------------------------------------------------
 
-    public static void student_DropIndex() {
+    public void student_DropIndex() {
         boolean dropFinish = false;
         boolean inputCheck = false;
         printTitle("Drop Index");
@@ -316,13 +316,13 @@ public class UI {
         }
     }
 
-    public static void student_PrintCourseRegistered() {
+    public void student_PrintCourseRegistered() {
         printTitle("Course Registered");
         String toPrint = stars.getStudentTimeTable("");
         System.out.println(toPrint);
     }
 
-    public static void student_CheckVacancies() {
+    public void student_CheckVacancies() {
         printTitle("Check Vacancies of Index");
         System.out.println(stars.printCourseList());
         System.out.print("Please enter index no. that you wish to check: ");
@@ -330,7 +330,7 @@ public class UI {
         System.out.println(stars.checkIndexVacancy(indexNo));
     }
 
-    public static void student_SwitchIndex() {
+    public void student_SwitchIndex() {
 
         int indexToSwitch = -1, indexToSwitchTo = -1;
         boolean loopCheck = false;
@@ -395,7 +395,7 @@ public class UI {
 
     }
 
-    public static void student_SwapIndex() {
+    public void student_SwapIndex() {
         boolean swapFinish = false;
         printTitle("Swap Index");
         while (!swapFinish) {
@@ -462,7 +462,7 @@ public class UI {
 
     }
 
-    public static void adminMenu() {
+    public void adminMenu() {
 
         int choice;
 
@@ -549,7 +549,7 @@ public class UI {
         }//end of while loop
     }
 
-    public static void admin_EnrolStudent() {
+    public void admin_EnrolStudent() {
         String student = "";
         int index = -1;
         printTitle("Enrol Student");
@@ -615,7 +615,7 @@ public class UI {
     /**
      * @return courseId if Course is successfully added into the system
      */
-    public static void admin_AddCourse() {
+    public void admin_AddCourse() {
         printTitle("Add Course");
         String courseId;
         System.out.println("Please enter Course ID");
@@ -642,7 +642,7 @@ public class UI {
         return;
     }
 
-    public static void admin_EditStudentAccessPeriod() {
+    public void admin_EditStudentAccessPeriod() {
         printTitle("Edit Access Period");
         System.out.println("\nCurrent Access period: ");
         System.out.println("------------------------");
@@ -656,7 +656,8 @@ public class UI {
             startDate = getString();
             if (startDate.equals("quit"))
                 return;
-            if (stars.checkDateFormat(startDate) && stars.checkStartDateCompatibility(startDate))
+            if (stars.checkDateFormat(startDate))
+            //if (stars.checkDateFormat(startDate) && stars.checkStartDateCompatibility(startDate))
                 break;
             else System.out.println("Please enter in the format as shown! e.g. 01/04/2017 " +
                     "and make sure start date entered is today or after today!");
@@ -679,7 +680,7 @@ public class UI {
         System.out.println(stars.setAccessPeriod(startDate, endDate));
     }
 
-    public static void admin_AddStudent() {
+    public void admin_AddStudent() {
         printTitle("Add Student");
 
         System.out.println("Please enter name of student:");
@@ -750,7 +751,7 @@ public class UI {
 
     }
 
-    public static void admin_UpdateCourse() {
+    public void admin_UpdateCourse() {
         printTitle("Update Course");
         String courseId;
         System.out.println(stars.printCourseList()); //prints out all course for selection
@@ -820,7 +821,7 @@ public class UI {
 
     }
 
-    public static void admin_DeleteCourse(String courseId) {
+    public void admin_DeleteCourse(String courseId) {
         String toBePrint = stars.deleteCourseViaCourseId(courseId);
         if (!toBePrint.equals("Error! Course not found!") && !toBePrint.equals("Error in deletion of course!")) {
             System.out.println("\nCourse " + courseId + " deletion is successful!");
@@ -832,7 +833,7 @@ public class UI {
 
     }
 
-    public static void admin_CheckVacancy() {
+    public void admin_CheckVacancy() {
         printTitle("Check vacancy by Index number");
         System.out.println(stars.printCourseList());
         System.out.print("Please enter index no. that you wish to check: ");
@@ -848,7 +849,7 @@ public class UI {
      *
      * @param courseId Adds index(s) to this course
      */
-    public static void admin_AddIndex(String courseId) {
+    public void admin_AddIndex(String courseId) {
 
         System.out.println("\nHow many index(s) do you want to add for " + courseId + "(-1 to exit)?");
         int numberOfIndexToAdd = getInt();
@@ -887,7 +888,7 @@ public class UI {
 
 //--------------------------------------Method to check vacancy in a index----------------------------------------------
 
-    private static void admin_DeleteIndex() {
+    private void admin_DeleteIndex() {
         System.out.println("Please input the index no. that you wish to remove from course: ");
         int indexNo = getInt();
         String toBePrint = stars.deleteIndexFromCourse(indexNo);
@@ -901,7 +902,7 @@ public class UI {
 
     }
 
-    private static void admin_AddLab(String courseId, Integer indexToAdd) {
+    private void admin_AddLab(String courseId, Integer indexToAdd) {
         int index = 0;
         if (indexToAdd == null) {
             System.out.println("Please enter index to add lecture");
@@ -945,7 +946,7 @@ public class UI {
         }
     }
 
-    private static void admin_DeleteLabTuT(String courseId) {
+    private void admin_DeleteLabTuT(String courseId) {
 
         int indexToGet = -1;
         int choice = -1;
@@ -976,7 +977,7 @@ public class UI {
 
     }
 
-    private static void admin_AddTut(String courseId, Integer indexToAdd) {
+    private void admin_AddTut(String courseId, Integer indexToAdd) {
         int index = 0;
         if (indexToAdd == null) {
             System.out.println("Please enter index to add tutorial");
@@ -1021,7 +1022,7 @@ public class UI {
         }
     }
 
-    private static void admin_AddLecture(String courseId) {
+    private void admin_AddLecture(String courseId) {
         System.out.println("Please enter the number of lectures to add for " + courseId);
         int noOfLect = getInt();
 
@@ -1053,7 +1054,7 @@ public class UI {
         } //finish loop for entering Lecture
     }
 
-    private static void admin_DeleteLecture(String courseId) {
+    private void admin_DeleteLecture(String courseId) {
         int choice;
         boolean success = false;
         System.out.println(stars.admin_GetLecTimeList(courseId));
@@ -1071,7 +1072,7 @@ public class UI {
         }
     }
 
-    public static int getInt() {
+    public int getInt() {
         boolean inputCheck = false;
         String input = "";
         while (!inputCheck) {
@@ -1088,7 +1089,7 @@ public class UI {
         return Integer.parseInt(input);
     }
 
-    public static String getString() {
+    public String getString() {
         boolean inputCheck = false;
         String input = "";
         while (!inputCheck) {
@@ -1107,7 +1108,7 @@ public class UI {
 
     //--------------------------------------Helper Methods----------------------------------------------
 
-    public static boolean getYesNo() {
+    public boolean getYesNo() {
         String input;
         while (true) {
             try {
@@ -1129,7 +1130,7 @@ public class UI {
         }
     }
 
-    public static int getTime() {
+    public int getTime() {
         boolean inputCheck = false;
         String input;
         int output = 0;
@@ -1156,7 +1157,7 @@ public class UI {
         return output;
     }
 
-    public static int getTime(int startTime) {
+    public int getTime(int startTime) {
         boolean inputCheck = false;
         String input;
         int output = 0;
@@ -1185,7 +1186,7 @@ public class UI {
         return output;
     }
 
-    public static String getCourseId() {
+    public String getCourseId() {
 
         String courseId;
         boolean format = false;
@@ -1222,7 +1223,7 @@ public class UI {
         return courseId;
     }
 
-    public static DAY getDay() {
+    public DAY getDay() {
         boolean inputCheck = false;
         String input = "";
 
@@ -1287,7 +1288,7 @@ public class UI {
         return output;
     }
 
-    public static GENDER getGender() {
+    public GENDER getGender() {
         String input;
         while (true) {
             try {
@@ -1307,12 +1308,12 @@ public class UI {
         }
     }
 
-    public static void printTitle(String title) {
+    public void printTitle(String title) {
         String seperator = "=======================================================";
         System.out.printf("%s%n%" + ((seperator.length() + title.length()) / 2) + "s%n%s%n%n", seperator, title, seperator);
     }
 
-    public static void clearScreen() {
+    public void clearScreen() {
         final String os = System.getProperty("os.name");
         try {
             if (os.contains("Windows"))
