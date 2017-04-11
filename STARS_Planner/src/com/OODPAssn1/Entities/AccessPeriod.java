@@ -8,18 +8,16 @@ import java.util.Calendar;
  * AccessPeriod is a Serializable class that acts as a container for the
  * Start and End dates of the access period
  */
-public class AccessPeriod implements Serializable
-{
+public class AccessPeriod implements Serializable {
     //SerialVersionUID of this Class used to deconflict serialisation
     static final long serialVersionUID = 1L;
-    private Calendar startDate;
     Calendar endDate;
+    private Calendar startDate;
 
     /**
      * Initialises start and end date to default values that should be overwritten.
      */
-    public AccessPeriod ()
-    {
+    public AccessPeriod() {
 
         //Set default access period for student to current month and year
         Calendar startDate = Calendar.getInstance();
@@ -31,33 +29,33 @@ public class AccessPeriod implements Serializable
 
     /**
      * Gets the start date of the access period.
+     *
      * @return Start date of access period.
      */
-    public Calendar getStartDate ()
-    {
+    public Calendar getStartDate() {
         return startDate;
 
     }
 
     /**
      * Gets the end date of the access period.
+     *
      * @return End date of access period.
      */
-    public Calendar getEndDate ()
-    {
+    public Calendar getEndDate() {
         return endDate;
 
     }
 
     /**
      * Sets the access period's start and end dates.
+     *
      * @param startDate Start date using Calendar object
-     * @param endDate End date using Calendar object
+     * @param endDate   End date using Calendar object
      * @return true - success </p>
-     *         false - fail
+     * false - fail
      */
-    public boolean setAccessPeriod (Calendar startDate, Calendar endDate)
-    {
+    public boolean setAccessPeriod(Calendar startDate, Calendar endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
