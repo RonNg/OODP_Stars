@@ -21,6 +21,7 @@ public class TimeSlot implements Serializable {
      * @param endH     End time (hour) (in 24 hours) of this lec/lab/tut
      * @param endM     End time (minutes) of this lec/lab/tut
      * @param location Location of the lec/lab/tut
+     * @param type     Type of session (lecture, tutorial or lab)
      */
     public TimeSlot(DAY day, int startH, int startM, int endH, int endM, String location, String type) {
         this.day = day;

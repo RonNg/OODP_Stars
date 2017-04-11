@@ -163,7 +163,7 @@ public class Index implements Serializable {
      * @param endH     End time (hour) (in 24 hours) of this tutorial
      * @param endM     End time (minutes) of this tutorial
      * @param location Location of the tutorial
-     * @return
+     * @return true if successful
      */
     public boolean addTutTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location) {
         for (int i = 0; i < tutLabTimeSlotList.size(); i++) {
@@ -185,7 +185,7 @@ public class Index implements Serializable {
      * @param endH     End time (hour) (in 24 hours) of this lab
      * @param endM     End time (minutes) of this lab
      * @param location Location of the lab
-     * @return
+     * @return true if successful
      */
     public boolean addLabTimeSlot(TimeSlot.DAY day, int startH, int startM, int endH, int endM, String location) {
         for (int i = 0; i < tutLabTimeSlotList.size(); i++) {
@@ -217,9 +217,9 @@ public class Index implements Serializable {
     }
 
     /**
-     * @param matricNo
-     * @param bypassWaitlist pass in FALSE if we want to handle the waitlist.
-     * @return
+     * @param matricNo Matriculation number of the student
+     * @param bypassWaitlist Pass in FALSE if we want to handle the waitlist.
+     * @return true if successful
      */
     public boolean withdrawStudent(String matricNo, boolean bypassWaitlist) {
         boolean success = studentsEnrolledList.remove(matricNo);

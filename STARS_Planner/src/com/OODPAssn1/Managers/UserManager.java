@@ -59,10 +59,10 @@ public class UserManager extends DataManager
     }
 
     /**
-     * Searches {@link List} for {@link Student} by name and returns the {@link List} index if matched
-     *
-     * @return index of the student if found in List.
-     * <p>returns -1 if student could not be found</p>
+     * Searches {@link List} for {@link Student} by name and returns the index of the list where the student was found
+     * @param name Name of the student to search
+     * @return index of the student if found in List. <br>
+     *         returns -1 if student could not be found
      */
     public int getStudentByName (String name)
     {
@@ -218,11 +218,12 @@ public class UserManager extends DataManager
     }
 
     /**
+     * This function adds an admin user into the database
      * @param name          name of the admin
      * @param email         email of the admin
      * @param username      username of the admin
      * @param password      passwordof the admin
-     * @return
+     * @return              true if successfully added
      */
     public boolean addAdmin (final String name, final String email, final String username, final String password)
     {

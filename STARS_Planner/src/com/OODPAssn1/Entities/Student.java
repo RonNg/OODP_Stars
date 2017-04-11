@@ -89,6 +89,7 @@ public class Student extends User implements Serializable {
 
     /**
      * @param indexNo index number to remove from this student's index list
+     * @return true if successful
      */
     public boolean removeCourseIndex(int indexNo) {
         for (int j = 0; j < courseIndexList.size(); j++) {

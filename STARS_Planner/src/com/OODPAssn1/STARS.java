@@ -34,6 +34,10 @@ public class STARS
         init();
     }//Not sure why constructor require argument for it to be recognize
 
+    /**
+     * Gets the instance of STARS
+     * @return STARS instance
+     */
     public static STARS getInstance ()
     {
         if (instance == null)
@@ -44,12 +48,16 @@ public class STARS
         return instance;
     }
 
-    public int init ()
+    /**
+     * Initialises the CourseManagers and UserManagers as well as the notification system
+     * @return true if successfully initialised
+     */
+    public boolean init ()
     {
         if (isInitAlready)
         {
             System.out.println("STARS is being reinitialised again!");
-            return -1;
+            return false;
         }
 
 
@@ -57,7 +65,7 @@ public class STARS
         courseManager = CourseManager.getInstance();
         studentNotification = new Notification();
 
-        return 1;
+        return true;
 
     }
 
@@ -71,6 +79,14 @@ public class STARS
   - Receive and store the logged-on User object to keep track of logged-on user identity
 */
 
+    /**
+     * Authenticates a user and logs him in
+     * @param userName username of user
+     * @param password password of user
+     * @return returns 0 if the user is a Student<br>
+     *         returns 1 if the user is an Admin<br>
+     *         returns -1 if an error occured
+     */
     public int loginToStars (String userName, String password)
     {
 
@@ -302,8 +318,8 @@ public class STARS
 
     /**
      * Checks if the end date is after the start date
-     *
-     * @param start end date to check
+     * @param start start date to check
+     * @param end   end date to check
      * @return true if end date is after the start date
      */
     public boolean checkIfEndDateValid (String start, String end)
@@ -475,8 +491,8 @@ public class STARS
 
     /**
      * print entire index of a course
-     *
      * @param courseId courseId to print index
+     * @return The list of indexes in the course in String format
      */
     public String getIndexListOfCourse (String courseId)
     {
@@ -763,24 +779,25 @@ public class STARS
 
     /**
      * @param indexNo Index Number to enrol into
-     * @return Error occured -> 0 <br>
-     * Added into waitlist -> -1 <br>
-     * Successfully enrolled into index -> 1 <br>
-     * Already enrolled in index -> 2 <br>
-     * Already in waitlist of the index -> 3 <br>
-     * Index Clash -> 4 <br>
-     * Already in another index of the same course -> 5 <br>
-     * Succesfully switched index -> 6 <br>
-     * Switched index but added into waitlist of the target index -> 7
+     * @param matricNo Matriculation number of the student to enroll
+     * @return Error occured -  0 <br>
+     * Added into waitlist  - 1 <br>
+     * Successfully enrolled into index  - 1 <br>
+     * Already enrolled in index - 2 <br>
+     * Already in waitlist of the index - 3 <br>
+     * Index Clash - 4 <br>
+     * Already in another index of the same course - 5 <br>
+     * Succesfully switched index - 6 <br>
+     * Switched index but added into waitlist of the target index - 7
      * <p>
-     * Error = 0
-     * Success = 1
-     * Success(In waitlist) = 2
-     * Failed(Already in Index) = 3
-     * Failed(Already in Index waitlist) = 4
-     * Failed(Already in another Index of the same course) = 5
-     * Failed(Already in wait list of another Index of the same course) = 6
-     * Failed(Clash timing) = 7
+     * Error - 0 <br>
+     * Success - 1 <br>
+     * Success(In waitlist) - 2 <br>
+     * Failed(Already in Index) - 3 <br>
+     * Failed(Already in Index waitlist) - 4 <br>
+     * Failed(Already in another Index of the same course) - 5 <br>
+     * Failed(Already in wait list of another Index of the same course) - 6 <br>
+     * Failed(Clash timing) - 7 <br>
      */
     public int student_EnrolIndex (int indexNo, String matricNo)
     {
@@ -960,10 +977,9 @@ public class STARS
 
     /**
      * Withdraw from the Index number specified by the current logged in student
-     *
-     * @param indexNo
+     * @param indexNo Index number to drop the student from
      * @return returns 1 if index succesfully dropped <br>
-     * returns 0 if error occured
+     *          returns 0 if error occured
      */
     public int student_DropIndex (int indexNo)
     {
@@ -1067,9 +1083,9 @@ public class STARS
     /**
      * @param currentIndexNo Index Number to de-enrol
      * @param targetIndexNo  Index Number to de-enrol
-     * @return Error occured -> 0 <br>
-     * Successfully switched -> 1 <br>
-     * Successfully switch(in waitlist) -> 2 <br>
+     * @return Error occured - 0 <br>
+     * Successfully switched - 1 <br>
+     * Successfully switch(in waitlist) - 2 <br>
      */
     public int student_SwitchIndex (int currentIndexNo, int targetIndexNo)
     {
@@ -1261,7 +1277,7 @@ public class STARS
      * @param endTimeHH      End time (hour) (in 24 hours) of this lecture
      * @param endTimeMM      End time (minutes) of this lecture
      * @param locationLT     Location of the lecture
-     * @return
+     * @return  true if successful
      */
     public boolean admin_AddLecTimeSlot (String courseId, String timeSlotDayStr, int startTimeHH, int startTimeMM, int endTimeHH, int endTimeMM, String locationLT)
     {
@@ -1418,7 +1434,7 @@ public class STARS
      *
      * @param courseId   Course ID of the index
      * @param indexToGet Index to get the list from
-     * @return
+     * @return  The lab/tutorial list in String format
      */
     public String admin_GetLabTutList (String courseId, int indexToGet)
     {

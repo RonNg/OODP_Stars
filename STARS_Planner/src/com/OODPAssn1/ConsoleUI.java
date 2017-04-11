@@ -53,6 +53,7 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Login screen of the UI
+     *
      * @return the userType if successfully logged in
      */
     public int loginScreen ()
@@ -401,7 +402,7 @@ public class ConsoleUI implements UserInterface
     }
 
     /**
-     *  Menu shown when students want to switch indexes of the same course
+     * Menu shown when students want to switch indexes of the same course
      */
     public void student_SwitchIndex ()
     {
@@ -480,7 +481,7 @@ public class ConsoleUI implements UserInterface
     }
 
     /**
-     * Menu shown to students who want ot swap indexes with another student
+     * Menu shown to students who want to swap indexes with another student
      */
     public void student_SwapIndex ()
     {
@@ -569,6 +570,7 @@ public class ConsoleUI implements UserInterface
                ADMIN
 
      ==========================*/
+
     /**
      * The main menu shown to logged in admins
      */
@@ -973,6 +975,7 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Menu for deleting course from the course database
+     *
      * @param courseId Course ID to delete
      */
     public void admin_DeleteCourse (String courseId)
@@ -1004,6 +1007,7 @@ public class ConsoleUI implements UserInterface
 
     /**
      * This function adds indexes to the course object arg
+     *
      * @param courseId Adds indexes to this course
      */
     public void admin_AddIndex (String courseId)
@@ -1048,9 +1052,9 @@ public class ConsoleUI implements UserInterface
     }
 
     /**
-     *  Menu shown for deleting indexes
+     * Menu shown for deleting indexes
      */
-    private void admin_DeleteIndex ()
+    public void admin_DeleteIndex ()
     {
         System.out.println("Please input the index no. that you wish to remove from course: ");
         int indexNo = getInt();
@@ -1068,10 +1072,11 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Menu shown for adding a Lab session in an Index
-     * @param courseId Course in which the index is in
+     *
+     * @param courseId   Course in which the index is in
      * @param indexToAdd Index to add the lab
      */
-    private void admin_AddLab (String courseId, Integer indexToAdd)
+    public void admin_AddLab (String courseId, Integer indexToAdd)
     {
         int index = 0;
         if (indexToAdd == null)
@@ -1125,9 +1130,10 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Menu for deleting a lab or tutorial timeslot in an index
+     *
      * @param courseId Course to which the index belongs to for deleting of the lab/tutorial timeslots
      */
-    private void admin_DeleteLabTuT (String courseId)
+    public void admin_DeleteLabTuT (String courseId)
     {
 
         int indexToGet = -1;
@@ -1166,10 +1172,11 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Menu for adding a tutorial timeslot into an index
-     * @param courseId Course which the index belongs to
+     *
+     * @param courseId   Course which the index belongs to
      * @param indexToAdd Index of course specified in the courseId argument
      */
-    private void admin_AddTut (String courseId, Integer indexToAdd)
+    public void admin_AddTut (String courseId, Integer indexToAdd)
     {
         int index = 0;
         if (indexToAdd == null)
@@ -1225,9 +1232,10 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Menu for adding a lecture into a course
+     *
      * @param courseId course to add lecture to
      */
-    private void admin_AddLecture (String courseId)
+    public void admin_AddLecture (String courseId)
     {
         System.out.println("Please enter the number of lectures to add for " + courseId);
         int noOfLect = getInt();
@@ -1264,9 +1272,10 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Menu for deleting a lecture into a course
+     *
      * @param courseId course to delete the lecture timeslot from
      */
-    private void admin_DeleteLecture (String courseId)
+    public void admin_DeleteLecture (String courseId)
     {
         int choice;
         boolean success = false;
@@ -1294,6 +1303,7 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Checks if user input is a yes or no
+     *
      * @return true if yes
      */
     public boolean getYesNo ()
@@ -1325,8 +1335,9 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Gets user's input for a time and converts it into an integer value
+     *
      * @return integer form of the time that the user inputs <br>
-     *          e.g. if user input 14:00, the function returns 1400
+     * e.g. if user input 14:00, the function returns 1400
      */
     public int getTime ()
     {
@@ -1362,6 +1373,7 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Gets user input for the end time and checks whether it is valid by comparing it with a start time
+     *
      * @param startTime Start time to compare the end time to
      * @return the end time in int format
      */
@@ -1401,6 +1413,7 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Gets user input for integer values and checks whether it is valid
+     *
      * @return the user input as an int value
      */
     public int getInt ()
@@ -1426,6 +1439,7 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Gets user input for String values and checks whether it is valid
+     *
      * @return the user input in String format
      */
     public String getString ()
@@ -1450,6 +1464,7 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Gets user input for a Course ID and checks whether the Course ID is valid and if the course exists
+     *
      * @return The Course ID as in String format
      */
     public String getCourseId ()
@@ -1499,6 +1514,7 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Gets the user input for the DAY enums and checks whether the input is valid
+     *
      * @return DAY enum based on input
      */
     public DAY getDay ()
@@ -1573,6 +1589,7 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Gets the user input for GENDER enum and checks whether the input is valid
+     *
      * @return GENDER enum based on input
      */
     public GENDER getGender ()
@@ -1602,6 +1619,7 @@ public class ConsoleUI implements UserInterface
 
     /**
      * Prints a formatted title based on the function argument
+     *
      * @param title Title to print
      */
     public void printTitle (String title)
