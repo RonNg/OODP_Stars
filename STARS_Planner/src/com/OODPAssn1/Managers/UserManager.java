@@ -43,6 +43,10 @@ public class UserManager extends DataManager
             acccessPeriod = new AccessPeriod();
     }
 
+
+    /*=================================
+                 ACCESSORS
+     ==================================*/
     public static UserManager getInstance ()
     {
         if (instance == null)
@@ -77,8 +81,9 @@ public class UserManager extends DataManager
     }
 
     /**
-     * @param matricNumber matriculation number of the
-     * @return
+     * @param matricNumber matriculation number of the student to retrieve
+     * @return Student object. <br>
+     *         <i>null</i> if student not found
      */
     public Student getStudentByMatricNo (String matricNumber)
     {
@@ -94,14 +99,21 @@ public class UserManager extends DataManager
         return null;
     }
 
-    public User authenticateUser (String userName, String password)
+    /**
+     * Authenticates the user and logs him/her in if username and password is correct
+     * @param username username of user
+     * @param password password of user
+     * @return User object if succesfully logged in <br>
+     *         <i>null</i> if user not found
+     */
+    public User authenticateUser (String username, String password)
     {
         password = MD5Hasher.hash(password); //Need to hash the user input password as we are comparing hashes and not plaintext password
         User user;
         for (int i = 0; i < userList.size(); ++i)
         {
             user = userList.get(i);
-            if (userName.equals(user.getUsername()))
+            if (username.equals(user.getUsername()))
             {
                 if (!user.getPassword().equals(password))
                 {
@@ -117,17 +129,70 @@ public class UserManager extends DataManager
 
     }
 
+    /**
+     * @return returns the {@link AccessPeriod} object
+     */
     public AccessPeriod getAccessPeriod ()
     {
         return acccessPeriod;
     }
 
+    /**
+     * Gets the entire student list
+     * @return List of students.
+     */
+    public List<Student> getAllStudent(){
+        List<Student> stList = new ArrayList<>();
+        for(int n = 0; n < userList.size(); n++){
+            if(userList.get(n).getType() == User.USER_TYPE.STUDENT){
+                stList.add((Student)userList.get(n));
+            }
+        }
+        return stList;
+    }
 
+    /**
+     * Check if the username already exists
+     * @param username username to check
+     * @return true if username already exists
+     */
+    public boolean doesUserExist(String username)
+    {
+        for(int n = 0; n < userList.size(); n++){
+            if(userList.get(n).getUsername().equals(username))
+                return true;
+        }
+        return false;
+    }
+
+
+    /*==================================
+
+                 MUTATORS
+
+     ==================================*/
+
+    /**
+     * Saves the current {@link #userList} into the database file
+     * @return true if successful
+     */
     public boolean save ()
     {//Return true if save succeed
         return (this.write(userList, USER_PATH) && this.write(acccessPeriod, ACCESS_Period_PATH));
     }
 
+    /**
+     * Adds a student into the {@link #userList}
+     * @param name               name of the student
+     * @param email              email of the student
+     * @param matricNo           matriculation number of the student
+     * @param contact            contact number of the student
+     * @param gender             gender of the student
+     * @param nationality        nationality of the student
+     * @param username           username of the student
+     * @param password           password of the student
+     * @return true if successful
+     */
     public boolean addStudent (String name, String email, String matricNo,
                                int contact, Student.GENDER gender, String nationality,
                                String username, String password)
@@ -152,6 +217,13 @@ public class UserManager extends DataManager
         return true;
     }
 
+    /**
+     * @param name          name of the admin
+     * @param email         email of the admin
+     * @param username      username of the admin
+     * @param password      passwordof the admin
+     * @return
+     */
     public boolean addAdmin (final String name, final String email, final String username, final String password)
     {
         try
@@ -168,6 +240,12 @@ public class UserManager extends DataManager
 
     }
 
+    /**
+     * Changes the access period
+     * @param start start date of the access period
+     * @param end   end date of the access period
+     * @return trueif successful
+     */
     public boolean changeAccessPeriod (Calendar start, Calendar end)
     {
         return acccessPeriod.setAccessPeriod(start, end);
@@ -177,23 +255,7 @@ public class UserManager extends DataManager
 
 //----------------------Methods for debugging purpose only. Remove for production--------------------------------------
 
-    public List<Student> getAllStudent(){
-        List<Student> stList = new ArrayList<>();
-        for(int n = 0; n < userList.size(); n++){
-            if(userList.get(n).getType() == User.USER_TYPE.STUDENT){
-                stList.add((Student)userList.get(n));
-            }
-        }
-        return stList;
-    }
 
-    public boolean doesUserExist(String usrName){
-        for(int n = 0; n < userList.size(); n++){
-           if(userList.get(n).getUsername().equals(usrName))
-               return true;
-        }
-        return false;
-    }
 
     public int printAllUser()
     {
