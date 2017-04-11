@@ -378,8 +378,19 @@ public class STARS {
      * The first value in the array is the Student's position in the waitlist
      * The second value in the array is the total number of Students in the waitlist
      */
-    public int[] student_getPositionInWaitlist(int indexNo) {
-        if (doesIndexExist(indexNo) == false || currentLogOnUser.getType() != User.USER_TYPE.STUDENT)
+    public int[] student_getPositionInWaitlist(int indexNo, String matricNo) {
+		Student st;
+    	if(matricNo.equals("")){
+			if(currentLogOnUser.getType() != User.USER_TYPE.STUDENT){
+				return null;
+			}else{
+                st =(Student)currentLogOnUser;
+			}
+		}else{
+            st = userManager.getStudentByMatricNo(matricNo);
+		}
+
+        if (doesIndexExist(indexNo) == false)
             return null;
 
         int[] returnPos = new int[2];
@@ -387,7 +398,7 @@ public class STARS {
         List<String> tempWaitList = courseManager.getIndexByIndexNo(indexNo).getWaitList();
 
         for (int i = 0; i < tempWaitList.size(); ++i) {
-            if (((Student) currentLogOnUser).getMatricNo() == tempWaitList.get(i)) {
+            if (st.getMatricNo() == tempWaitList.get(i)) {
                 returnPos[0] = i + 1; //+1 since index starts at 0. If you're at index 0, you're in fact in position 1.
                 returnPos[1] = tempWaitList.size();
                 return returnPos;
@@ -477,6 +488,7 @@ public class STARS {
                 return 0;
             case 1:
                 tempStud.addCourseIndex(indexNo);
+                saveData();
                 return 1;
             case 2:
                 return 3;

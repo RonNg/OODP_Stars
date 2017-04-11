@@ -231,6 +231,8 @@ public class Index implements Serializable {
                 //TODO: Handle waitlist here
                 //Flag for handling waitlist. For Coursemanager use
                 handleWaitList = true;
+            }else{
+                handleWaitList = false;
             }
         }
         return success;
