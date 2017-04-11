@@ -52,8 +52,7 @@ public class AccessPeriod implements Serializable {
      *
      * @param startDate Start date using Calendar object
      * @param endDate   End date using Calendar object
-     * @return true - success </p>
-     * false - fail
+     * @return true if successfully set
      */
     public boolean setAccessPeriod(Calendar startDate, Calendar endDate) {
         this.startDate = startDate;

@@ -19,7 +19,7 @@ public class CourseManager extends DataManager {
 
 
     /**
-     * Constructor for CourseManager. When CourseManager is first instantiated, it reads the list of courses from the database and stores it in an {@alink ArrayList}
+     * Constructor for CourseManager. When CourseManager is first instantiated, it reads the list of courses from the database and stores it in an {@link ArrayList}
      */
     private CourseManager() {
         super(COURSE_PATH);
@@ -45,8 +45,7 @@ public class CourseManager extends DataManager {
 
     /**
      * Writes the {@link #courseList} into the database
-     *
-     * @return
+     * @return true if successful
      */
     public boolean save() {
         return this.write(courseList, COURSE_PATH);
@@ -152,11 +151,11 @@ public class CourseManager extends DataManager {
     /**
      * @param matricNo Matriculation number of the student who is enrolling into this index
      * @param indexNo  Index Number of the index the student is attempting to enrol into
-     * @return Error occured -> 0 <br>
-     * Added into waitlist -> -1 <br>
-     * Successfully enrolled into index -> 1 <br>
-     * Already enrolled in index -> 2 <br>
-     * Already in waitlist of the index -> 3
+     * @return returns 0 if an Error occured <br>
+     *         returns -1 if added into waitlist <br>
+     *         returns 1 if successfully enrolled into index <br>
+     *         returns 2 if already enrolled in index<br>
+     *         returns 3 if already in waitlist of the index
      */
     public int enrolInIndex(String matricNo, int indexNo) {
         //-1 - index full
@@ -205,7 +204,7 @@ public class CourseManager extends DataManager {
 
     /**
      * Adds a lecture time slot into this Course
-     *
+     * @param course   Course to add timeslot into
      * @param day      Day of the lecture
      * @param startH   Start time (hour) (in 24 hours) of this lecture
      * @param startM   Start time (minutes) of this lecture
@@ -302,8 +301,10 @@ public class CourseManager extends DataManager {
     }
 
     /**
-     * @param matricNo
-     * @param indexNo
+     * This function drops a student from the index
+     * @param matricNo      matriculation number of the student to drop
+     * @param indexNo       index to drop student from
+     * @param bypassWaitlist true if we do not wish to handle the waitlist
      * @return a string array of size 3. <br><br>
      * first index - SUCCESS, ERROR or HANDLE. HANDLE is an indication to handle the waitlist in UserManager <br><br>
      * second index - contains student's matriculation number to add into index <br><br>
@@ -355,8 +356,6 @@ public class CourseManager extends DataManager {
 
     /**
      * Print the details of all the indexes
-     *
-     * @return
      */
     public void printAllIndexDetails() {
         Index temp = null;

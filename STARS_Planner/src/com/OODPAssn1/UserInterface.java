@@ -1,9 +1,10 @@
 package com.OODPAssn1;
 
 /**
- * Created by qingh on 09/04/2017.
- */
-public interface UserInterface {
+ * An interface with a list of functions that the STARS UI must implement
+ * */
+public interface UserInterface
+{
 
 //---------------------Methods for displaying of menu in UI------------------------
 

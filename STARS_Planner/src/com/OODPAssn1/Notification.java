@@ -38,8 +38,6 @@ public class Notification {
      * @param emailAddress The specific emailAddress to send to
      * @param subject      Subject of email
      * @param text         Message to send to recipient
-     * @return -1 on failure to send <br>
-     * 1 on success
      */
     public void sendMessage(final String emailAddress, final String subject, final String text) {
         try {
@@ -63,8 +61,6 @@ public class Notification {
      * @param emailAddress Array of emailAddress
      * @param subject      Subject of email
      * @param text         Message to send to recipient
-     * @return -1 on failure to send <br>
-     * 1 on success
      */
     public void sendMessage(final String[] emailAddress, final String subject, final String text) {
         try {

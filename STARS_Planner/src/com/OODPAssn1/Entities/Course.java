@@ -76,7 +76,7 @@ public class Course implements Serializable {
     /**
      * Returns a List object containing the {@link Index} class that this course contains.
      *
-     * @return
+     * @return list of indexes
      */
     public List<Index> getIndexList() {
         return indexList;
@@ -86,7 +86,7 @@ public class Course implements Serializable {
      * Searches for an {@link Index} object in this course by its index number and returns it.
      *
      * @param indexNum Index number to search for
-     * @return {@link Index}
+     * @return {@link Index} object corresponding to its index number
      */
     public Index getIndex(int indexNum) {
         for (int n = 0; n < indexList.size(); n++) {
@@ -172,7 +172,6 @@ public class Course implements Serializable {
 
     /**
      * Deletes the lecture occupying the specified timeslot
-     *
      * @param dTimeSlot Timeslot of the lecture to delete
      * @return true if succesfully deleted
      */
