@@ -218,7 +218,7 @@ public class UserManager extends DataManager
     }
 
     /**
-     * This function adds an admin user into the database
+     * This method adds an admin user into the database
      * @param name          name of the admin
      * @param email         email of the admin
      * @param username      username of the admin

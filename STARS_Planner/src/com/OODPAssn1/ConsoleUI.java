@@ -1006,7 +1006,7 @@ public class ConsoleUI implements UserInterface
     }
 
     /**
-     * This function adds indexes to the course object arg
+     * This method adds indexes to the course object arg
      *
      * @param courseId Adds indexes to this course
      */
@@ -1079,14 +1079,9 @@ public class ConsoleUI implements UserInterface
     public void admin_AddLab (String courseId, Integer indexToAdd)
     {
         int index = 0;
-<<<<<<< HEAD
-        if (indexToAdd == null) {
-            System.out.println("Please enter index to add Lab");
-=======
         if (indexToAdd == null)
         {
             System.out.println("Please enter index to add lecture");
->>>>>>> 32ecdb9f3828e0330c2517b866a024cb9cb5443a
             boolean inputCheck = false;
             while (!inputCheck)
             {
@@ -1184,14 +1179,9 @@ public class ConsoleUI implements UserInterface
     public void admin_AddTut (String courseId, Integer indexToAdd)
     {
         int index = 0;
-<<<<<<< HEAD
-        if (indexToAdd == null) {
-            System.out.println("Please enter index to add Tutorial");
-=======
         if (indexToAdd == null)
         {
             System.out.println("Please enter index to add tutorial");
->>>>>>> 32ecdb9f3828e0330c2517b866a024cb9cb5443a
             boolean inputCheck = false;
             while (!inputCheck)
             {
@@ -1628,7 +1618,7 @@ public class ConsoleUI implements UserInterface
 
 
     /**
-     * Prints a formatted title based on the function argument
+     * Prints a formatted title based on the method argument
      *
      * @param title Title to print
      */

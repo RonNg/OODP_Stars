@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * <i>CourseManager</i> handles every {@link Course } object and by extension the list of {@link Index} in each Course object. <br><br>
  * <p>
- * <i>CourseManager</i> is a <b>Singleton</b> class and hence to access it you must call the {@link #getInstance()} function.
+ * <i>CourseManager</i> is a <b>Singleton</b> class and hence to access it you must call the {@link #getInstance()} method
  */
 public class CourseManager extends DataManager {
     public static final String COURSE_PATH = "course.dat";
