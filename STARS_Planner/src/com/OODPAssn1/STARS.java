@@ -752,6 +752,7 @@ public class STARS
 
     /**
      * @param indexNo The waitlist's index
+     * @param matricNo Matriculation number of student
      * @return returns an int array of size 2 <br>
      * The first value in the array is the Student's position in the waitlist
      * The second value in the array is the total number of Students in the waitlist
