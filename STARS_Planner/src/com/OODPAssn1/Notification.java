@@ -56,7 +56,7 @@ public class Notification {
     }
 
     /**
-     * Overloaded function, sends an email blast to all email addresses in the String array.
+     * Overloaded method, sends an email blast to all email addresses in the String array.
      *
      * @param emailAddress Array of emailAddress
      * @param subject      Subject of email

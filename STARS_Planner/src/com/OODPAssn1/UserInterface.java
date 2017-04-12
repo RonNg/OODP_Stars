@@ -1,7 +1,7 @@
 package com.OODPAssn1;
 
 /**
- * An interface with a list of functions that the STARS UI must implement
+ * An interface with a list of methods that the STARS UI must implement
  * */
 public interface UserInterface
 {
